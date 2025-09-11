@@ -15,22 +15,22 @@ import jakarta.persistence.Id;
  * @author User
  */
 @Entity
-public class Estado_cuenta {
+public class TipoContrato {
+    
+    
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     
-    @Column (nullable = false)
-    private String nombre; 
+    @Column(nullable = false)
+    private String nombre;
 
-    public Estado_cuenta(int id, String nombre) {
+    public TipoContrato(int id, String nombre) {
         this.id = id;
         this.nombre = nombre;
     }
-    
-    
 
-    public Estado_cuenta() {
+    public TipoContrato() {
     }
 
     public int getId() {
@@ -48,6 +48,7 @@ public class Estado_cuenta {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
+
     
-    
+
 }

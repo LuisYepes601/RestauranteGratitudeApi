@@ -15,22 +15,21 @@ import jakarta.persistence.Id;
  * @author User
  */
 @Entity
-public class Estado_cuenta {
+public class CategoriaProducto {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    
-    @Column (nullable = false)
-    private String nombre; 
 
-    public Estado_cuenta(int id, String nombre) {
+    @Column(nullable = false)
+    private String nombre;
+
+    public CategoriaProducto(int id, String nombre) {
         this.id = id;
         this.nombre = nombre;
     }
-    
-    
 
-    public Estado_cuenta() {
+    public CategoriaProducto() {
     }
 
     public int getId() {
@@ -48,6 +47,4 @@ public class Estado_cuenta {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-    
-    
 }

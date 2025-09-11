@@ -15,22 +15,22 @@ import jakarta.persistence.Id;
  * @author User
  */
 @Entity
-public class Estado_cuenta {
+public class EstadoEstudio {
+    
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     
-    @Column (nullable = false)
-    private String nombre; 
+    @Column(nullable = false)
+    private String nombre;
 
-    public Estado_cuenta(int id, String nombre) {
+    public EstadoEstudio(int id, String nombre) {
         this.id = id;
         this.nombre = nombre;
     }
-    
-    
 
-    public Estado_cuenta() {
+    public EstadoEstudio() {
     }
 
     public int getId() {
