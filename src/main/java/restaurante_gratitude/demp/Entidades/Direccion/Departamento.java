@@ -2,20 +2,22 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package restaurante_gratitude.demp.Entidades;
+package restaurante_gratitude.demp.Entidades.Direccion;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import java.util.List;
 
 /**
  *
  * @author User
  */
 @Entity
-public class Pais {
+public class Departamento {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,12 +26,16 @@ public class Pais {
     @Column(nullable = false)
     private String nombre;
 
-    public Pais(int id, String nombre) {
+    @OneToMany(mappedBy = "departamento")
+    private List<Direccion> direcciones;
+
+    public Departamento(int id, String nombre, List<Direccion> direcciones) {
         this.id = id;
         this.nombre = nombre;
+        this.direcciones = direcciones;
     }
 
-    public Pais() {
+    public Departamento() {
     }
 
     public int getId() {
