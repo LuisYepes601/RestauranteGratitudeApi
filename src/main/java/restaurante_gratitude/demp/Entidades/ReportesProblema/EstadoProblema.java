@@ -2,34 +2,42 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package restaurante_gratitude.demp.Entidades;
+package restaurante_gratitude.demp.Entidades.ReportesProblema;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import java.util.List;
 
 /**
  *
  * @author User
  */
 @Entity
-public class CategoriaProblema {
-    
+public class EstadoProblema {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    
+
     @Column(nullable = false)
     private String nombre;
 
-    public CategoriaProblema(int id, String nombre) {
+    @OneToMany(mappedBy = "estadoProblema")
+    private List<ReporteProblema> reporteProblemas;
+
+    public EstadoProblema(int id, String nombre, List<ReporteProblema> reporteProblemas) {
         this.id = id;
         this.nombre = nombre;
+        this.reporteProblemas = reporteProblemas;
     }
+    
+    
 
-    public CategoriaProblema() {
+    public EstadoProblema() {
     }
 
     public int getId() {
@@ -47,6 +55,13 @@ public class CategoriaProblema {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-    
-    
+
+    public List<ReporteProblema> getReporteProblemas() {
+        return reporteProblemas;
+    }
+
+    public void setReporteProblemas(List<ReporteProblema> reporteProblemas) {
+        this.reporteProblemas = reporteProblemas;
+    }
+
 }
