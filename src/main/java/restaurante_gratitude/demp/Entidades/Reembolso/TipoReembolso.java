@@ -2,22 +2,20 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package restaurante_gratitude.demp.Entidades.Preferencias;
+package restaurante_gratitude.demp.Entidades.Reembolso;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import java.util.List;
 
 /**
  *
- * @author User
+ * @author Usuario
  */
 @Entity
-public class Modo {
+public class TipoReembolso {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,18 +24,12 @@ public class Modo {
     @Column(nullable = false)
     private String nombre;
 
-    @OneToMany(mappedBy = "modo")
-    List<Preferencia> preferencias;
-
-    public Modo(int id, String nombre, List<Preferencia> preferencias) {
+    public TipoReembolso(int id, String nombre) {
         this.id = id;
         this.nombre = nombre;
-        this.preferencias = preferencias;
     }
 
-  
-
-    public Modo() {
+    public TipoReembolso() {
     }
 
     public int getId() {
@@ -55,15 +47,5 @@ public class Modo {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-
-    public List<Preferencia> getPreferencias() {
-        return preferencias;
-    }
-
-    public void setPreferencias(List<Preferencia> preferencias) {
-        this.preferencias = preferencias;
-    }
-
- 
 
 }

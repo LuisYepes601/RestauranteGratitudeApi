@@ -9,6 +9,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import java.util.List;
 
 /**
  *
@@ -16,18 +18,23 @@ import jakarta.persistence.Id;
  */
 @Entity
 public class Idioma {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    
+
     @Column(nullable = false)
     private String nombre;
 
-    public Idioma(int id, String nombre) {
+    @OneToMany(mappedBy = "idioma")
+    List<Preferencia> preferencias;
+
+    public Idioma(int id, String nombre, List<Preferencia> preferencias) {
         this.id = id;
         this.nombre = nombre;
+        this.preferencias = preferencias;
     }
+
 
     public Idioma() {
     }
@@ -47,6 +54,14 @@ public class Idioma {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-    
-    
+
+    public List<Preferencia> getPreferencias() {
+        return preferencias;
+    }
+
+    public void setPreferencias(List<Preferencia> preferencias) {
+        this.preferencias = preferencias;
+    }
+
+   
 }

@@ -11,41 +11,40 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import java.util.List;
 
 /**
  *
- * @author User
+ * @author Usuario
  */
 @Entity
-public class TipoIdentificacion {
+public class Identificacion {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @Column(nullable = false)
-    private String nombre;
+    private String numero;
 
-    @OneToMany(mappedBy = "tipoIdentificacion")  
-    private List<Identificacion> identificaciones;
+    @ManyToOne
+    @JoinColumn(name = "id_tipo_identificacion")
+    private TipoIdentificacion tipoIdentificacion;
 
-    public TipoIdentificacion(int id, String nombre, List<Identificacion> identificaciones) {
+    public Identificacion(int id, String numero, TipoIdentificacion tipoIdentificacion) {
         this.id = id;
-        this.nombre = nombre;
-        this.identificaciones = identificaciones;
+        this.numero = numero;
+        this.tipoIdentificacion = tipoIdentificacion;
     }
 
-    public List<Identificacion> getIdentificaciones() {
-        return identificaciones;
+    public Identificacion() {
     }
 
-    public void setIdentificaciones(List<Identificacion> identificaciones) {
-        this.identificaciones = identificaciones;
+    public TipoIdentificacion getTipoIdentificacion() {
+        return tipoIdentificacion;
     }
 
-    public TipoIdentificacion() {
+    public void setTipoIdentificacion(TipoIdentificacion tipoIdentificacion) {
+        this.tipoIdentificacion = tipoIdentificacion;
     }
 
     public int getId() {
@@ -56,12 +55,12 @@ public class TipoIdentificacion {
         this.id = id;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getNumero() {
+        return numero;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setNumero(String numero) {
+        this.numero = numero;
     }
 
 }

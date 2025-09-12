@@ -2,13 +2,15 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package restaurante_gratitude.demp.Entidades;
+package restaurante_gratitude.demp.Entidades.Contratos;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import java.util.List;
 
 /**
  *
@@ -16,21 +18,32 @@ import jakarta.persistence.Id;
  */
 @Entity
 public class TipoContrato {
-    
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    
+
     @Column(nullable = false)
     private String nombre;
 
-    public TipoContrato(int id, String nombre) {
-        this.id = id;
-        this.nombre = nombre;
-    }
+    @OneToMany(mappedBy = "tipoContrato")
+    List<Contrato> contratos;
 
     public TipoContrato() {
+    }
+
+    public TipoContrato(int id, String nombre, List<Contrato> contratos) {
+        this.id = id;
+        this.nombre = nombre;
+        this.contratos = contratos;
+    }
+
+    public List<Contrato> getContratos() {
+        return contratos;
+    }
+
+    public void setContratos(List<Contrato> contratos) {
+        this.contratos = contratos;
     }
 
     public int getId() {
@@ -48,7 +61,5 @@ public class TipoContrato {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-
-    
 
 }
