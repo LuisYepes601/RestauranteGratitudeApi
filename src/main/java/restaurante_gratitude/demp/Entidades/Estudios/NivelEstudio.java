@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package restaurante_gratitude.demp.Entidades;
+package restaurante_gratitude.demp.Entidades.Estudios;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,14 +11,13 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import java.util.List;
-import restaurante_gratitude.demp.Entidades.InformacionLaboral.InformacionLaboral;
 
 /**
  *
  * @author User
  */
 @Entity
-public class TipoHorario {
+public class NivelEstudio {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,16 +26,16 @@ public class TipoHorario {
     @Column(nullable = false)
     private String nombre;
 
-    @OneToMany(mappedBy = "tipoHorario")
-    private List<InformacionLaboral> informacionLaborales;
+    @OneToMany(mappedBy = "nivelEstudio")
+    List<Estudio> estudios;
 
-    public TipoHorario(int id, String nombre, List<InformacionLaboral> informacionLaborales) {
+    public NivelEstudio(int id, String nombre, List<Estudio> estudios) {
         this.id = id;
         this.nombre = nombre;
-        this.informacionLaborales = informacionLaborales;
+        this.estudios = estudios;
     }
 
-    public TipoHorario() {
+    public NivelEstudio() {
     }
 
     public int getId() {
@@ -55,12 +54,12 @@ public class TipoHorario {
         this.nombre = nombre;
     }
 
-    public List<InformacionLaboral> getInformacionLaborales() {
-        return informacionLaborales;
+    public List<Estudio> getEstudios() {
+        return estudios;
     }
 
-    public void setInformacionLaborales(List<InformacionLaboral> informacionLaborales) {
-        this.informacionLaborales = informacionLaborales;
+    public void setEstudios(List<Estudio> estudios) {
+        this.estudios = estudios;
     }
 
 }

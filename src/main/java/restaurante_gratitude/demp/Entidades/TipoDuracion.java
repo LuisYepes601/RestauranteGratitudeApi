@@ -12,6 +12,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import java.util.List;
 import restaurante_gratitude.demp.Entidades.Contratos.Contrato;
+import restaurante_gratitude.demp.Entidades.InformacionLaboral.Experiencia;
 
 /**
  *
@@ -30,10 +31,14 @@ public class TipoDuracion {
     @OneToMany(mappedBy = "tipoDuracion")
     List<Contrato> contratos;
 
-    public TipoDuracion(int id, String nombre, List<Contrato> contratos) {
+    @OneToMany(mappedBy = "tipoDuracion")
+    List<Experiencia> experiencias;
+
+    public TipoDuracion(int id, String nombre, List<Contrato> contratos, List<Experiencia> experiencias) {
         this.id = id;
         this.nombre = nombre;
         this.contratos = contratos;
+        this.experiencias = experiencias;
     }
 
     public TipoDuracion() {
@@ -61,6 +66,14 @@ public class TipoDuracion {
 
     public void setContratos(List<Contrato> contratos) {
         this.contratos = contratos;
+    }
+
+    public List<Experiencia> getExperiencias() {
+        return experiencias;
+    }
+
+    public void setExperiencias(List<Experiencia> experiencias) {
+        this.experiencias = experiencias;
     }
 
 }

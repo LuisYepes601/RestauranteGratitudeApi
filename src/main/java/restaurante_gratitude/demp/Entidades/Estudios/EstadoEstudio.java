@@ -2,34 +2,48 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package restaurante_gratitude.demp.Entidades;
+package restaurante_gratitude.demp.Entidades.Estudios;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import java.util.List;
 
 /**
  *
  * @author User
  */
 @Entity
-public class NivelEstudio {
-    
+public class EstadoEstudio {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    
+
     @Column(nullable = false)
     private String nombre;
 
-    public NivelEstudio(int id, String nombre) {
+    @OneToMany(mappedBy = "estadoEstudio")
+    private List<Estudio> estudios;
+
+    public EstadoEstudio(int id, String nombre, List<Estudio> estudios) {
         this.id = id;
         this.nombre = nombre;
+        this.estudios = estudios;
     }
 
-    public NivelEstudio() {
+    public EstadoEstudio() {
+    }
+
+    public List<Estudio> getEstudios() {
+        return estudios;
+    }
+
+    public void setEstudios(List<Estudio> estudios) {
+        this.estudios = estudios;
     }
 
     public int getId() {
@@ -47,7 +61,5 @@ public class NivelEstudio {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-    
-    
-    
+
 }
