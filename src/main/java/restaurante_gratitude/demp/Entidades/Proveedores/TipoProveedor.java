@@ -2,20 +2,22 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package restaurante_gratitude.demp.Entidades;
+package restaurante_gratitude.demp.Entidades.Proveedores;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import java.util.List;
 
 /**
  *
  * @author User
  */
 @Entity
-public class EstadoMesa {
+public class TipoProveedor {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,12 +26,17 @@ public class EstadoMesa {
     @Column(nullable = false)
     private String nombre;
 
-    public EstadoMesa(int id, String nombre) {
+    @OneToMany(mappedBy = "tipoProveedor")
+    List<Proveedor> proveedores;
+
+    public TipoProveedor(int id, String nombre, List<Proveedor> proveedores) {
         this.id = id;
         this.nombre = nombre;
+        this.proveedores = proveedores;
     }
+    
 
-    public EstadoMesa() {
+    public TipoProveedor() {
     }
 
     public int getId() {
@@ -46,6 +53,14 @@ public class EstadoMesa {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public List<Proveedor> getProveedores() {
+        return proveedores;
+    }
+
+    public void setProveedores(List<Proveedor> proveedores) {
+        this.proveedores = proveedores;
     }
 
 }

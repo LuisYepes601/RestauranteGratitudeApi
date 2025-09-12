@@ -2,15 +2,18 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package restaurante_gratitude.demp.Entidades;
+package restaurante_gratitude.demp.Entidades.Contactanos;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import java.awt.List;
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -33,32 +36,35 @@ public class MensajeContactanos {
     @Column(nullable = false)
     private String mensaje;
 
-    @Column(nullable = false)
     private String telefono;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(nullable = false)
-    private Date fechaEnvio;
+    private Date fecha_envio;
 
-    @Column(nullable = false)
     private boolean estado;
 
     @Column(nullable = false)
     private String asunto;
 
-    public MensajeContactanos(int id, String nombre, String correo, String mensaje, String telefono, Date fechaEnvio, boolean estado, String asunto) {
+    @OneToMany(mappedBy = "mensajeContactanos")
+    private ArrayList<RespuestaContactanos> respuestaContactanos;
+
+    public MensajeContactanos(int id, String nombre, String correo, String mensaje, String telefono, Date fecha_envio, boolean estado, String asunto, ArrayList<RespuestaContactanos> respuestaContactanos) {
         this.id = id;
         this.nombre = nombre;
         this.correo = correo;
         this.mensaje = mensaje;
         this.telefono = telefono;
-        this.fechaEnvio = fechaEnvio;
+        this.fecha_envio = fecha_envio;
         this.estado = estado;
         this.asunto = asunto;
+        this.respuestaContactanos = respuestaContactanos;
     }
 
     public MensajeContactanos() {
     }
+    
+    
 
     public int getId() {
         return id;
@@ -100,12 +106,12 @@ public class MensajeContactanos {
         this.telefono = telefono;
     }
 
-    public Date getFechaEnvio() {
-        return fechaEnvio;
+    public Date getFecha_envio() {
+        return fecha_envio;
     }
 
-    public void setFechaEnvio(Date fechaEnvio) {
-        this.fechaEnvio = fechaEnvio;
+    public void setFecha_envio(Date fecha_envio) {
+        this.fecha_envio = fecha_envio;
     }
 
     public boolean isEstado() {
@@ -122,6 +128,14 @@ public class MensajeContactanos {
 
     public void setAsunto(String asunto) {
         this.asunto = asunto;
+    }
+
+    public ArrayList<RespuestaContactanos> getRespuestaContactanos() {
+        return respuestaContactanos;
+    }
+
+    public void setRespuestaContactanos(ArrayList<RespuestaContactanos> respuestaContactanos) {
+        this.respuestaContactanos = respuestaContactanos;
     }
     
     

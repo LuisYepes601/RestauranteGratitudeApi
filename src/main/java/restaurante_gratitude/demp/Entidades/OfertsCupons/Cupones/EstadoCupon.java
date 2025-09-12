@@ -2,20 +2,22 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package restaurante_gratitude.demp.Entidades;
+package restaurante_gratitude.demp.Entidades.OfertsCupons.Cupones;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import java.util.List;
 
 /**
  *
- * @author User
+ * @author Usuario
  */
 @Entity
-public class TipoCupon {
+public class EstadoCupon {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,12 +26,16 @@ public class TipoCupon {
     @Column(nullable = false)
     private String nombre;
 
-    public TipoCupon() {
-    }
+    @OneToMany(mappedBy = "estadoCupon")
+    List<Cupon> cupones;
 
-    public TipoCupon(int id, String nombre) {
+    public EstadoCupon(int id, String nombre, List<Cupon> cupones) {
         this.id = id;
         this.nombre = nombre;
+        this.cupones = cupones;
+    }
+
+    public EstadoCupon() {
     }
 
     public int getId() {
@@ -47,5 +53,15 @@ public class TipoCupon {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
+
+    public List<Cupon> getCupones() {
+        return cupones;
+    }
+
+    public void setCupones(List<Cupon> cupones) {
+        this.cupones = cupones;
+    }
+    
+    
 
 }

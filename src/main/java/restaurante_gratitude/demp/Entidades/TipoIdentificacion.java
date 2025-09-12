@@ -9,10 +9,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import java.util.List;
+import restaurante_gratitude.demp.Entidades.Proveedores.Proveedor;
 
 /**
  *
@@ -28,13 +27,17 @@ public class TipoIdentificacion {
     @Column(nullable = false)
     private String nombre;
 
-    @OneToMany(mappedBy = "tipoIdentificacion")  
+    @OneToMany(mappedBy = "tipoIdentificacion")
     private List<Identificacion> identificaciones;
 
-    public TipoIdentificacion(int id, String nombre, List<Identificacion> identificaciones) {
+    @OneToMany(mappedBy = "tipoIdentificacion")
+    List<Proveedor> proveedores;
+
+    public TipoIdentificacion(int id, String nombre, List<Identificacion> identificaciones, List<Proveedor> proveedores) {
         this.id = id;
         this.nombre = nombre;
         this.identificaciones = identificaciones;
+        this.proveedores = proveedores;
     }
 
     public List<Identificacion> getIdentificaciones() {
@@ -62,6 +65,14 @@ public class TipoIdentificacion {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public List<Proveedor> getProveedores() {
+        return proveedores;
+    }
+
+    public void setProveedores(List<Proveedor> proveedores) {
+        this.proveedores = proveedores;
     }
 
 }
