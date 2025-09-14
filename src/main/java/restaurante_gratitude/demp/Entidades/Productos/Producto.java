@@ -12,6 +12,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
+import restaurante_gratitude.demp.Entidades.InventarioStockProducto.StockProducto;
 import restaurante_gratitude.demp.Entidades.OfertsCupons.Promociones.Promocion;
 
 /**
@@ -48,8 +49,11 @@ public class Producto {
     @ManyToOne
     @JoinColumn(name = "id_promocion")
     private Promocion promocion;
+    
+    @OneToOne(mappedBy = "producto")
+    private StockProducto stockProducto;
 
-    public Producto(int id, String nombre, double precio, String descripcion, String imagen, Categoria categoria, Contenido contenido, Promocion promocion) {
+    public Producto(int id, String nombre, double precio, String descripcion, String imagen, Categoria categoria, Contenido contenido, Promocion promocion, StockProducto stockProducto) {
         this.id = id;
         this.nombre = nombre;
         this.precio = precio;
@@ -58,7 +62,10 @@ public class Producto {
         this.categoria = categoria;
         this.contenido = contenido;
         this.promocion = promocion;
+        this.stockProducto = stockProducto;
     }
+
+   
 
     public Producto() {
     }
@@ -125,6 +132,14 @@ public class Producto {
 
     public void setPromocion(Promocion promocion) {
         this.promocion = promocion;
+    }
+
+    public StockProducto getStockProducto() {
+        return stockProducto;
+    }
+
+    public void setStockProducto(StockProducto stockProducto) {
+        this.stockProducto = stockProducto;
     }
 
 }

@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package restaurante_gratitude.demp.Entidades;
+package restaurante_gratitude.demp.Entidades.DatosBasicos.Identificaciones;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,6 +11,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import restaurante_gratitude.demp.Entidades.Usuarios.Usuario;
 
 /**
  *
@@ -30,10 +33,14 @@ public class Identificacion {
     @JoinColumn(name = "id_tipo_identificacion")
     private TipoIdentificacion tipoIdentificacion;
 
-    public Identificacion(int id, String numero, TipoIdentificacion tipoIdentificacion) {
+    @OneToOne(mappedBy = "identificacion")
+    private Usuario usuario;
+
+    public Identificacion(int id, String numero, TipoIdentificacion tipoIdentificacion, Usuario usuario) {
         this.id = id;
         this.numero = numero;
         this.tipoIdentificacion = tipoIdentificacion;
+        this.usuario = usuario;
     }
 
     public Identificacion() {
@@ -61,6 +68,14 @@ public class Identificacion {
 
     public void setNumero(String numero) {
         this.numero = numero;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 
 }

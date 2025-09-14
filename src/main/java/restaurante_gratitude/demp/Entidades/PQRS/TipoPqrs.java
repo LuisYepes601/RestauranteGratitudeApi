@@ -9,6 +9,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import java.util.List;
 
 /**
  *
@@ -24,11 +26,18 @@ public class TipoPqrs {
     @Column(nullable = false)
     private String nombre;
 
-    public TipoPqrs(int id, String nombre) {
+    @OneToMany(mappedBy = "tipoPqrs")
+    private List<PQRS>pqrses;
+
+    public TipoPqrs(int id, String nombre, List<PQRS> pqrses) {
         this.id = id;
         this.nombre = nombre;
+        this.pqrses = pqrses;
     }
 
+    
+    
+    
     public TipoPqrs() {
     }
 
@@ -48,4 +57,13 @@ public class TipoPqrs {
         this.nombre = nombre;
     }
 
+    public List<PQRS> getPqrses() {
+        return pqrses;
+    }
+
+    public void setPqrses(List<PQRS> pqrses) {
+        this.pqrses = pqrses;
+    }
+
+  
 }

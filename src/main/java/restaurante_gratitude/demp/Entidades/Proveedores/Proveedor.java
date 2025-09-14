@@ -14,8 +14,8 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import java.util.Date;
-import restaurante_gratitude.demp.Entidades.Identificacion;
-import restaurante_gratitude.demp.Entidades.TipoIdentificacion;
+import restaurante_gratitude.demp.Entidades.DatosBasicos.Identificaciones.Identificacion;
+import restaurante_gratitude.demp.Entidades.DatosBasicos.Identificaciones.TipoIdentificacion;
 
 /**
  *

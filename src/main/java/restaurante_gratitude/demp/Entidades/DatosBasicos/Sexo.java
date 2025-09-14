@@ -2,13 +2,17 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package restaurante_gratitude.demp.Entidades;
+package restaurante_gratitude.demp.Entidades.DatosBasicos;
 
+import restaurante_gratitude.demp.Entidades.*;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import java.util.List;
+import restaurante_gratitude.demp.Entidades.Usuarios.Usuario;
 
 /**
  *
@@ -16,17 +20,21 @@ import jakarta.persistence.Id;
  */
 @Entity
 public class Sexo {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    
-    @Column (nullable = false)
+
+    @Column(nullable = false)
     private String nombre;
 
-    public Sexo(int id, String nombre) {
+    @OneToMany(mappedBy = "sexo")
+    private List<Usuario> usuarios;
+
+    public Sexo(int id, String nombre, List<Usuario> usuarios) {
         this.id = id;
         this.nombre = nombre;
+        this.usuarios = usuarios;
     }
 
     public Sexo() {
@@ -47,6 +55,13 @@ public class Sexo {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-    
-    
+
+    public List<Usuario> getUsuarios() {
+        return usuarios;
+    }
+
+    public void setUsuarios(List<Usuario> usuarios) {
+        this.usuarios = usuarios;
+    }
+
 }

@@ -11,7 +11,10 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import java.util.List;
+import restaurante_gratitude.demp.Entidades.Pedidos.Pedido;
 
 /**
  *
@@ -32,21 +35,23 @@ public class Cupon {
 
     @Column(nullable = false)
     private double valor;
-    
-    @ManyToOne 
+
+    @ManyToOne
     @JoinColumn(name = "id_tipo_cupon")
     private TipoCupon tipoCupon;
-    
+
     @ManyToOne
     @JoinColumn(name = "id_estado_cupon")
     private EstadoCupon estadoCupon;
-    
-    
+
     @OneToOne
     @JoinColumn(name = "id_limite_de_uso")
     private LimitesUso limitesUso;
 
-    public Cupon(int id, String nombre, String descripcion, double valor, TipoCupon tipoCupon, EstadoCupon estadoCupon, LimitesUso limitesUso) {
+    @OneToMany(mappedBy = "cupon")
+    private List<Pedido> pedidos;
+
+    public Cupon(int id, String nombre, String descripcion, double valor, TipoCupon tipoCupon, EstadoCupon estadoCupon, LimitesUso limitesUso, List<Pedido> pedidos) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
@@ -54,7 +59,10 @@ public class Cupon {
         this.tipoCupon = tipoCupon;
         this.estadoCupon = estadoCupon;
         this.limitesUso = limitesUso;
+        this.pedidos = pedidos;
     }
+
+
 
     public Cupon() {
     }
@@ -114,10 +122,13 @@ public class Cupon {
     public void setLimitesUso(LimitesUso limitesUso) {
         this.limitesUso = limitesUso;
     }
-    
-    
-    
-    
 
-    
+    public List<Pedido> getPedidos() {
+        return pedidos;
+    }
+
+    public void setPedidos(List<Pedido> pedidos) {
+        this.pedidos = pedidos;
+    }
+
 }

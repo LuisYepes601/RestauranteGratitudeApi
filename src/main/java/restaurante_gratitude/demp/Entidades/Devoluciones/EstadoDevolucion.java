@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package restaurante_gratitude.demp.Entidades.PQRS;
+package restaurante_gratitude.demp.Entidades.Devoluciones;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -17,7 +17,7 @@ import java.util.List;
  * @author Usuario
  */
 @Entity
-public class EstadoPqrs {
+public class EstadoDevolucion {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,16 +26,16 @@ public class EstadoPqrs {
     @Column(nullable = false)
     private String nombre;
 
-    @OneToMany(mappedBy = "estadoPqrs")
-    private List<PQRS> pqrses;
+    @OneToMany(mappedBy = "estadoDevolucion")
+    private List<Devolucion> devoluciones;
 
-    public EstadoPqrs(int id, String nombre, List<PQRS> pqrses) {
+    public EstadoDevolucion(int id, String nombre, List<Devolucion> devoluciones) {
         this.id = id;
         this.nombre = nombre;
-        this.pqrses = pqrses;
+        this.devoluciones = devoluciones;
     }
 
-    public EstadoPqrs() {
+    public EstadoDevolucion() {
     }
 
     public int getId() {
@@ -54,12 +54,13 @@ public class EstadoPqrs {
         this.nombre = nombre;
     }
 
-    public List<PQRS> getPqrses() {
-        return pqrses;
+    public List<Devolucion> getDevoluciones() {
+        return devoluciones;
     }
 
-    public void setPqrses(List<PQRS> pqrses) {
-        this.pqrses = pqrses;
+    public void setDevoluciones(List<Devolucion> devoluciones) {
+        this.devoluciones = devoluciones;
     }
-
+    
+    
 }

@@ -11,6 +11,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
+import restaurante_gratitude.demp.Entidades.Usuarios.Usuario;
 
 /**
  *
@@ -50,5 +52,106 @@ public class Direccion {
     @ManyToOne
     @JoinColumn(name = "id_tipo_direccion")
     private TipoDireccion tipoDireccion;
+    
+    @OneToOne(mappedBy = "direccion")
+    private Usuario usuario;
+
+    public Direccion(int id, String barrio, String calle, String detalles, Pais pais, Departamento departamento, Municipio municipio, Ciudad ciudad, TipoDireccion tipoDireccion, Usuario usuario) {
+        this.id = id;
+        this.barrio = barrio;
+        this.calle = calle;
+        this.detalles = detalles;
+        this.pais = pais;
+        this.departamento = departamento;
+        this.municipio = municipio;
+        this.ciudad = ciudad;
+        this.tipoDireccion = tipoDireccion;
+        this.usuario = usuario;
+    }
+
+    public Direccion() {
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getBarrio() {
+        return barrio;
+    }
+
+    public void setBarrio(String barrio) {
+        this.barrio = barrio;
+    }
+
+    public String getCalle() {
+        return calle;
+    }
+
+    public void setCalle(String calle) {
+        this.calle = calle;
+    }
+
+    public String getDetalles() {
+        return detalles;
+    }
+
+    public void setDetalles(String detalles) {
+        this.detalles = detalles;
+    }
+
+    public Pais getPais() {
+        return pais;
+    }
+
+    public void setPais(Pais pais) {
+        this.pais = pais;
+    }
+
+    public Departamento getDepartamento() {
+        return departamento;
+    }
+
+    public void setDepartamento(Departamento departamento) {
+        this.departamento = departamento;
+    }
+
+    public Municipio getMunicipio() {
+        return municipio;
+    }
+
+    public void setMunicipio(Municipio municipio) {
+        this.municipio = municipio;
+    }
+
+    public Ciudad getCiudad() {
+        return ciudad;
+    }
+
+    public void setCiudad(Ciudad ciudad) {
+        this.ciudad = ciudad;
+    }
+
+    public TipoDireccion getTipoDireccion() {
+        return tipoDireccion;
+    }
+
+    public void setTipoDireccion(TipoDireccion tipoDireccion) {
+        this.tipoDireccion = tipoDireccion;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+    
+    
 
 }
