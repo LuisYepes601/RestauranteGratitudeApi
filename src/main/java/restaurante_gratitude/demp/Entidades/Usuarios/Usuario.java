@@ -22,6 +22,7 @@ import restaurante_gratitude.demp.Entidades.Direccion.Direccion;
 import restaurante_gratitude.demp.Entidades.DatosBasicos.Genero;
 import restaurante_gratitude.demp.Entidades.DatosBasicos.Sexo;
 import restaurante_gratitude.demp.Entidades.Cuenta.Estado_cuenta;
+import restaurante_gratitude.demp.Entidades.Preferencias.Preferencia;
 import restaurante_gratitude.demp.Entidades.ReportesProblema.ReporteProblema;
 import restaurante_gratitude.demp.Entidades.Roles.Rol;
 
@@ -95,4 +96,8 @@ public class Usuario {
 
     @OneToMany(mappedBy = "usuario")
     private List<ReporteProblema> reporteProblemas;
+
+    @ManyToOne
+    @JoinColumn(name = "id_preferencias")
+    private Preferencia preferencia;
 }
