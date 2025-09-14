@@ -11,10 +11,12 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import java.util.Date;
-import restaurante_gratitude.demp.Entidades.DatosBasicos.Identificaciones.Identificacion;
+import java.util.List;
+import restaurante_gratitude.demp.Entidades.ComprasSuministros.Compra;
 import restaurante_gratitude.demp.Entidades.DatosBasicos.Identificaciones.TipoIdentificacion;
 
 /**
@@ -58,7 +60,10 @@ public class Proveedor {
     @JoinColumn(name = "id_tipo_proveedor")
     private TipoProveedor tipoProveedor;
 
-    public Proveedor(int id, String nombre_empresa, TipoIdentificacion tipoIdentificacion, Date fecha_registro, String url_logo, String telefono, String email, boolean estado, String numero_identificacion, TipoProveedor tipoProveedor) {
+    @OneToMany(mappedBy = "proveedor")
+    private List<Compra> compras;
+
+    public Proveedor(int id, String nombre_empresa, TipoIdentificacion tipoIdentificacion, Date fecha_registro, String url_logo, String telefono, String email, boolean estado, String numero_identificacion, TipoProveedor tipoProveedor, List<Compra> compras) {
         this.id = id;
         this.nombre_empresa = nombre_empresa;
         this.tipoIdentificacion = tipoIdentificacion;
@@ -69,6 +74,7 @@ public class Proveedor {
         this.estado = estado;
         this.numero_identificacion = numero_identificacion;
         this.tipoProveedor = tipoProveedor;
+        this.compras = compras;
     }
 
     public Proveedor() {
@@ -153,6 +159,13 @@ public class Proveedor {
     public void setTipoProveedor(TipoProveedor tipoProveedor) {
         this.tipoProveedor = tipoProveedor;
     }
-    
-    
+
+    public List<Compra> getCompras() {
+        return compras;
+    }
+
+    public void setCompras(List<Compra> compras) {
+        this.compras = compras;
+    }
+
 }
