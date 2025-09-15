@@ -7,6 +7,7 @@ package restaurante_gratitude.demp.Entidades.Usuarios;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import java.util.List;
+import restaurante_gratitude.demp.Entidades.Devoluciones.Devolucion;
 import restaurante_gratitude.demp.Entidades.Devoluciones.RespuestaDevolucion;
 import restaurante_gratitude.demp.Entidades.PQRS.PQRS;
 import restaurante_gratitude.demp.Entidades.PQRS.RespuestaPqrs;
@@ -30,6 +31,11 @@ public class Admin extends Empleado {
 
     @OneToMany(mappedBy = "usuario")
     private List<PQRS> pqrses;
+    
+    @OneToMany(mappedBy = "admin")
+    private List<Devolucion>devoluciones;
+    
+    
     
  
 }

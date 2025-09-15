@@ -11,9 +11,14 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import java.util.List;
 import restaurante_gratitude.demp.Entidades.InventarioStockProducto.StockProducto;
 import restaurante_gratitude.demp.Entidades.OfertsCupons.Promociones.Promocion;
+import restaurante_gratitude.demp.Entidades.Pedidos.DetallePedido;
+import restaurante_gratitude.demp.Entidades.RangoCalificacion.CalficacionProducto;
+import restaurante_gratitude.demp.Entidades.RangoCalificacion.CalificacionProductoId;
 
 /**
  *
@@ -49,11 +54,20 @@ public class Producto {
     @ManyToOne
     @JoinColumn(name = "id_promocion")
     private Promocion promocion;
-    
+
     @OneToOne(mappedBy = "producto")
     private StockProducto stockProducto;
 
-    public Producto(int id, String nombre, double precio, String descripcion, String imagen, Categoria categoria, Contenido contenido, Promocion promocion, StockProducto stockProducto) {
+    @OneToMany(mappedBy = "producto")
+    private List<CalficacionProducto> calficacionProductos;
+
+    @OneToMany(mappedBy = "producto")
+    private List<DetallePedido> detallePedidos;
+
+    @OneToMany(mappedBy = "producto")
+    private List<ProductosFavoritos> productosFavoritos;
+
+    public Producto(int id, String nombre, double precio, String descripcion, String imagen, Categoria categoria, Contenido contenido, Promocion promocion, StockProducto stockProducto, List<CalficacionProducto> calficacionProductos, List<DetallePedido> detallePedidos, List<ProductosFavoritos> productosFavoritos) {
         this.id = id;
         this.nombre = nombre;
         this.precio = precio;
@@ -63,9 +77,10 @@ public class Producto {
         this.contenido = contenido;
         this.promocion = promocion;
         this.stockProducto = stockProducto;
+        this.calficacionProductos = calficacionProductos;
+        this.detallePedidos = detallePedidos;
+        this.productosFavoritos = productosFavoritos;
     }
-
-   
 
     public Producto() {
     }
@@ -140,6 +155,30 @@ public class Producto {
 
     public void setStockProducto(StockProducto stockProducto) {
         this.stockProducto = stockProducto;
+    }
+
+    public List<CalficacionProducto> getCalficacionProductos() {
+        return calficacionProductos;
+    }
+
+    public void setCalficacionProductos(List<CalficacionProducto> calficacionProductos) {
+        this.calficacionProductos = calficacionProductos;
+    }
+
+    public List<DetallePedido> getDetallePedidos() {
+        return detallePedidos;
+    }
+
+    public void setDetallePedidos(List<DetallePedido> detallePedidos) {
+        this.detallePedidos = detallePedidos;
+    }
+
+    public List<ProductosFavoritos> getProductosFavoritos() {
+        return productosFavoritos;
+    }
+
+    public void setProductosFavoritos(List<ProductosFavoritos> productosFavoritos) {
+        this.productosFavoritos = productosFavoritos;
     }
 
 }

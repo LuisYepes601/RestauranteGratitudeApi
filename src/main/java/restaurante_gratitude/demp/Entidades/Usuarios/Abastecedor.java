@@ -18,4 +18,21 @@ public class Abastecedor extends Empleado {
 
     @OneToMany(mappedBy = "abastecedor")
     private List<Compra> compras;
+
+    public Abastecedor(List<Compra> compras) {
+        this.compras = compras;
+    }
+
+    public Abastecedor() {
+    }
+
+    public List<Compra> getCompras() {
+        return compras;
+    }
+
+    public void setCompras(List<Compra> compras) {
+        this.compras = compras;
+    }
+    
+    
 }

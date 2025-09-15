@@ -30,13 +30,15 @@ public class RangoCalificacion {
     @OneToMany(mappedBy = "rangoCalificacion")
     private List<Pedido> pedidos;
 
-    public RangoCalificacion(int id, String nombre, List<Pedido> pedidos) {
+    @OneToMany(mappedBy = "rangoCalificacion")
+    private List<CalficacionProducto> calficacionProductos;
+
+    public RangoCalificacion(int id, String nombre, List<Pedido> pedidos, List<CalficacionProducto> calficacionProductos) {
         this.id = id;
         this.nombre = nombre;
         this.pedidos = pedidos;
+        this.calficacionProductos = calficacionProductos;
     }
-    
-    
 
     public RangoCalificacion() {
     }
@@ -63,6 +65,14 @@ public class RangoCalificacion {
 
     public void setPedidos(List<Pedido> pedidos) {
         this.pedidos = pedidos;
+    }
+
+    public List<CalficacionProducto> getCalficacionProductos() {
+        return calficacionProductos;
+    }
+
+    public void setCalficacionProductos(List<CalficacionProducto> calficacionProductos) {
+        this.calficacionProductos = calficacionProductos;
     }
 
 }

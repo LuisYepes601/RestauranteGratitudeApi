@@ -50,8 +50,11 @@ public class Cupon {
 
     @OneToMany(mappedBy = "cupon")
     private List<Pedido> pedidos;
+    
+    @OneToMany(mappedBy = "cupon")
+    private List<UsoCupon>usoCupones;
 
-    public Cupon(int id, String nombre, String descripcion, double valor, TipoCupon tipoCupon, EstadoCupon estadoCupon, LimitesUso limitesUso, List<Pedido> pedidos) {
+    public Cupon(int id, String nombre, String descripcion, double valor, TipoCupon tipoCupon, EstadoCupon estadoCupon, LimitesUso limitesUso, List<Pedido> pedidos, List<UsoCupon> usoCupones) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
@@ -60,7 +63,9 @@ public class Cupon {
         this.estadoCupon = estadoCupon;
         this.limitesUso = limitesUso;
         this.pedidos = pedidos;
+        this.usoCupones = usoCupones;
     }
+    
 
 
 
@@ -129,6 +134,14 @@ public class Cupon {
 
     public void setPedidos(List<Pedido> pedidos) {
         this.pedidos = pedidos;
+    }
+
+    public List<UsoCupon> getUsoCupones() {
+        return usoCupones;
+    }
+
+    public void setUsoCupones(List<UsoCupon> usoCupones) {
+        this.usoCupones = usoCupones;
     }
 
 }
