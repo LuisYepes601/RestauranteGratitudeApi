@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package restaurante_gratitude.demp.Entidades.PQRS;
+package restaurante_gratitude.demp.Entidades.Devoluciones;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -21,36 +21,36 @@ import restaurante_gratitude.demp.Entidades.Usuarios.Admin;
  * @author Usuario
  */
 @Entity
-public class RespuestaPqrs {
+public class RespuestaDevolucion {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @Column(nullable = false)
-    private String descripcion;
+    private String mensaje;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false)
     private Date fechaRespuesta;
 
     @ManyToOne
+    @JoinColumn(name = "id_devolucion")
+    private Devolucion devolucion;
+
+    @ManyToOne
     @JoinColumn(name = "id_admin")
     private Admin admin;
 
-    @ManyToOne
-    @JoinColumn(name = "id_pqrs")
-    private PQRS pqrs;
-
-    public RespuestaPqrs(int id, String descripcion, Date fechaRespuesta, Admin admin, PQRS pqrs) {
+    public RespuestaDevolucion(int id, String mensaje, Date fechaRespuesta, Devolucion devolucion, Admin admin) {
         this.id = id;
-        this.descripcion = descripcion;
+        this.mensaje = mensaje;
         this.fechaRespuesta = fechaRespuesta;
+        this.devolucion = devolucion;
         this.admin = admin;
-        this.pqrs = pqrs;
     }
 
-    public RespuestaPqrs() {
+    public RespuestaDevolucion() {
     }
 
     public int getId() {
@@ -61,12 +61,12 @@ public class RespuestaPqrs {
         this.id = id;
     }
 
-    public String getDescripcion() {
-        return descripcion;
+    public String getMensaje() {
+        return mensaje;
     }
 
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
+    public void setMensaje(String mensaje) {
+        this.mensaje = mensaje;
     }
 
     public Date getFechaRespuesta() {
@@ -75,6 +75,14 @@ public class RespuestaPqrs {
 
     public void setFechaRespuesta(Date fechaRespuesta) {
         this.fechaRespuesta = fechaRespuesta;
+    }
+
+    public Devolucion getDevolucion() {
+        return devolucion;
+    }
+
+    public void setDevolucion(Devolucion devolucion) {
+        this.devolucion = devolucion;
     }
 
     public Admin getAdmin() {

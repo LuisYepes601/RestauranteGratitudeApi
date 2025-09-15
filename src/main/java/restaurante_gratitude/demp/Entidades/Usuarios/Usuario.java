@@ -9,6 +9,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
@@ -22,8 +24,10 @@ import restaurante_gratitude.demp.Entidades.Direccion.Direccion;
 import restaurante_gratitude.demp.Entidades.DatosBasicos.Genero;
 import restaurante_gratitude.demp.Entidades.DatosBasicos.Sexo;
 import restaurante_gratitude.demp.Entidades.Cuenta.Estado_cuenta;
+import restaurante_gratitude.demp.Entidades.PQRS.PQRS;
 import restaurante_gratitude.demp.Entidades.Preferencias.Preferencia;
 import restaurante_gratitude.demp.Entidades.ReportesProblema.ReporteProblema;
+import restaurante_gratitude.demp.Entidades.Reservas.Reserva;
 import restaurante_gratitude.demp.Entidades.Roles.Rol;
 
 /**
@@ -31,6 +35,7 @@ import restaurante_gratitude.demp.Entidades.Roles.Rol;
  * @author Usuario
  */
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Usuario {
 
     @Id
@@ -100,4 +105,10 @@ public class Usuario {
     @ManyToOne
     @JoinColumn(name = "id_preferencias")
     private Preferencia preferencia;
+
+    @OneToMany(mappedBy = "usuario")
+    private List<Reserva> reservas;
+
+    @OneToMany(mappedBy = "admin")
+    private List<PQRS> pqrses;
 }

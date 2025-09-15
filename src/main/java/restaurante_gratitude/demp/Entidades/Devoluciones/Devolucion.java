@@ -11,10 +11,12 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import java.util.Date;
+import java.util.List;
 import restaurante_gratitude.demp.Entidades.Devoluciones.Reembolso.Reembolso;
 
 /**
@@ -42,11 +44,12 @@ public class Devolucion {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false)
     private Date fechaSolicitud;
-    
+
     @ManyToOne
     @JoinColumn(name = "id_estado")
     private EstadoDevolucion estadoDevolucion;
-    
-    
+
+    @OneToMany(mappedBy = "devolucion")
+    private List<RespuestaDevolucion> respuestaDevoluciones;
 
 }

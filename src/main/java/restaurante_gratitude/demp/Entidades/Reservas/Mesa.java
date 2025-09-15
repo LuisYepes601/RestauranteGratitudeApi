@@ -11,6 +11,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import java.util.List;
+import restaurante_gratitude.demp.Entidades.Usuarios.Usuario;
 
 /**
  *
@@ -23,7 +26,6 @@ public class Mesa {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    
     @Column(nullable = false)
     private int numero;
 
@@ -35,6 +37,15 @@ public class Mesa {
     @ManyToOne
     @JoinColumn(name = "id_estado_mesa")
     private EstadoMesa estadoMesa;
+
+    @OneToMany(mappedBy = "mesa")
+    private List<Reserva> reservas;
+    
+    @Column(nullable = false)
+    private int cantidadPersonas;
+    
+  
+    
 
     public Mesa(int id, int numero, int capacidad, String ur_img_mesa, EstadoMesa estadoMesa) {
         this.id = id;

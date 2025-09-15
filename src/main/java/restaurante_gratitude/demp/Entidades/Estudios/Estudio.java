@@ -14,7 +14,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import java.util.Date;
-import jdk.jfr.Timestamp;
+import restaurante_gratitude.demp.Entidades.Usuarios.Empleado;
 
 /**
  *
@@ -45,5 +45,78 @@ public class Estudio {
     @ManyToOne
     @JoinColumn(name = "id_modalidad")
     private Modalidad modalidad;
+
+    @ManyToOne
+    @JoinColumn(name = "id_empleado")
+    private Empleado empleado;
+
+    public Estudio(int id, NivelEstudio nivelEstudio, String nombreInstitucion, Date fechaInicio, EstadoEstudio estadoEstudio, Modalidad modalidad, Empleado empleado) {
+        this.id = id;
+        this.nivelEstudio = nivelEstudio;
+        this.nombreInstitucion = nombreInstitucion;
+        this.fechaInicio = fechaInicio;
+        this.estadoEstudio = estadoEstudio;
+        this.modalidad = modalidad;
+        this.empleado = empleado;
+    }
+
+    public Estudio() {
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public NivelEstudio getNivelEstudio() {
+        return nivelEstudio;
+    }
+
+    public void setNivelEstudio(NivelEstudio nivelEstudio) {
+        this.nivelEstudio = nivelEstudio;
+    }
+
+    public String getNombreInstitucion() {
+        return nombreInstitucion;
+    }
+
+    public void setNombreInstitucion(String nombreInstitucion) {
+        this.nombreInstitucion = nombreInstitucion;
+    }
+
+    public Date getFechaInicio() {
+        return fechaInicio;
+    }
+
+    public void setFechaInicio(Date fechaInicio) {
+        this.fechaInicio = fechaInicio;
+    }
+
+    public EstadoEstudio getEstadoEstudio() {
+        return estadoEstudio;
+    }
+
+    public void setEstadoEstudio(EstadoEstudio estadoEstudio) {
+        this.estadoEstudio = estadoEstudio;
+    }
+
+    public Modalidad getModalidad() {
+        return modalidad;
+    }
+
+    public void setModalidad(Modalidad modalidad) {
+        this.modalidad = modalidad;
+    }
+
+    public Empleado getEmpleado() {
+        return empleado;
+    }
+
+    public void setEmpleado(Empleado empleado) {
+        this.empleado = empleado;
+    }
 
 }
