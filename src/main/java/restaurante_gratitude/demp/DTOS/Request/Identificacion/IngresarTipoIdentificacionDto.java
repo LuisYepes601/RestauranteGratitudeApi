@@ -9,7 +9,7 @@ package restaurante_gratitude.demp.DTOS.Request.Identificacion;
  * @author User
  */
 public class IngresarTipoIdentificacionDto {
-    
+
     private String nombre;
 
     public IngresarTipoIdentificacionDto(String nombre) {
@@ -26,5 +26,5 @@ public class IngresarTipoIdentificacionDto {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-    
+
 }

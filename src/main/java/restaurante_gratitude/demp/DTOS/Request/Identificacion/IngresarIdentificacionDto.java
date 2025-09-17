@@ -9,8 +9,9 @@ package restaurante_gratitude.demp.DTOS.Request.Identificacion;
  * @author User
  */
 public class IngresarIdentificacionDto {
-
+    
     private String numero;
+    
     private IngresarTipoIdentificacionDto tipoIdentificacionDto;
 
     public IngresarIdentificacionDto(String numero, IngresarTipoIdentificacionDto tipoIdentificacionDto) {

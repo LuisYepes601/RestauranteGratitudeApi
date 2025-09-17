@@ -20,6 +20,7 @@ import restaurante_gratitude.demp.Entidades.Direccion.TipoDireccion;
 import restaurante_gratitude.demp.Entidades.Roles.Rol;
 import restaurante_gratitude.demp.Entidades.Usuarios.Usuario;
 import restaurante_gratitude.demp.Repositorys.DatosBasicos.GeneroRepository;
+import restaurante_gratitude.demp.Repositorys.DatosBasicos.Identificaciones.TipoIdentificacionRepository;
 import restaurante_gratitude.demp.Repositorys.DatosBasicos.SexoRepository;
 import restaurante_gratitude.demp.Repositorys.Direccion.CiudadRepository;
 import restaurante_gratitude.demp.Repositorys.Direccion.DepartamentoRepository;
@@ -46,9 +47,10 @@ public class RegistroUsuarioBasico implements RegistrarUsuariobasico {
     private TipoDireccionRepository tipoDirRepo;
     private GeneroRepository generoRepository;
     private SexoRepository sexoRepo;
+    private TipoIdentificacionRepository tipoIdentificacionRepo;
 
     @Autowired
-    public RegistroUsuarioBasico(UsuarioRepository ususrioRepository, RolRepository rolRepo, PaisRepository paisRepo, DepartamentoRepository deptoRepo, CiudadRepository ciudadRepo, MunicipioRepository municipioRepo, TipoDireccionRepository tipoDirRepo, GeneroRepository generoRepository, SexoRepository sexoRepo) {
+    public RegistroUsuarioBasico(UsuarioRepository ususrioRepository, RolRepository rolRepo, PaisRepository paisRepo, DepartamentoRepository deptoRepo, CiudadRepository ciudadRepo, MunicipioRepository municipioRepo, TipoDireccionRepository tipoDirRepo, GeneroRepository generoRepository, SexoRepository sexoRepo, TipoIdentificacionRepository tipoIdentificacionRepo) {
         this.ususrioRepository = ususrioRepository;
         this.rolRepo = rolRepo;
         this.paisRepo = paisRepo;
@@ -58,6 +60,7 @@ public class RegistroUsuarioBasico implements RegistrarUsuariobasico {
         this.tipoDirRepo = tipoDirRepo;
         this.generoRepository = generoRepository;
         this.sexoRepo = sexoRepo;
+        this.tipoIdentificacionRepo = tipoIdentificacionRepo;
     }
 
     @Override
@@ -72,55 +75,44 @@ public class RegistroUsuarioBasico implements RegistrarUsuariobasico {
         usuario.setEmail(usuarioBasicoDto.getEmail());
 
         Identificacion identificacion = new Identificacion();
-
-        identificacion.setNumero(usuarioBasicoDto.getIngresarIdentificacionDto().getNumero());
+        identificacion.setNumero(usuarioBasicoDto.getNumeroDeIdentificacion());
 
         TipoIdentificacion tipoIdentificacion = new TipoIdentificacion();
-
-        tipoIdentificacion.setNombre(usuarioBasicoDto.getIngresarIdentificacionDto().getTipoIdentificacionDto().getNombre());
-
-        identificacion.setTipoIdentificacion(tipoIdentificacion);
+        tipoIdentificacion = tipoIdentificacionRepo.findByNombre(usuarioBasicoDto.getTipoIdentificacion()).get();
 
         usuario.setIdentificacion(identificacion);
 
         Rol rol = new Rol();
-        rol = rolRepo.findByNombre(usuarioBasicoDto.getRolDto().getNombre().toLowerCase()).get();
+        rol = rolRepo.findByNombre(usuarioBasicoDto.getRol().toLowerCase()).get();
         usuario.setRol(rol);
 
         Direccion direccion = new Direccion();
-        direccion.setBarrio(usuarioBasicoDto.getDireccionDto().getBarrio());
-        direccion.setCalle(usuarioBasicoDto.getDireccionDto().getCalle());
+        direccion.setBarrio(usuarioBasicoDto.getBarrio());
+        direccion.setCalle(usuarioBasicoDto.getCalle());
 
         Pais pais = new Pais();
-        pais = paisRepo.findByNombre(usuarioBasicoDto.getDireccionDto().getPais().toLowerCase()).get();
-
+        pais = paisRepo.findByNombre(usuarioBasicoDto.getPais()).get();
         direccion.setPais(pais);
 
         Departamento departamento = new Departamento();
-        departamento = deptoRepo.findByNombre(usuarioBasicoDto.getDireccionDto().getDepartamento()).get();
-
+        departamento = deptoRepo.findByNombre(usuarioBasicoDto.getDepartamento()).get();
         direccion.setDepartamento(departamento);
 
         Ciudad ciudad = new Ciudad();
-        ciudad = ciudadRepo.findByNombre(usuarioBasicoDto.getDireccionDto().getCiudad()).get();
-
+        ciudad = ciudadRepo.findByNombre(usuarioBasicoDto.getCiudad()).get();
         direccion.setCiudad(ciudad);
 
         Municipio municipio = new Municipio();
-        municipio = municipioRepo.findByNombre(usuarioBasicoDto.getDireccionDto().getMunicipio()).get();
-
+        municipio = municipioRepo.findByNombre(usuarioBasicoDto.getMunicipio()).get();
         direccion.setMunicipio(municipio);
 
         TipoDireccion tipoDireccion = new TipoDireccion();
-        tipoDireccion = tipoDirRepo.findByNombre(usuarioBasicoDto.getDireccionDto().getTipoDireccion()).get();
-
+        tipoDireccion = tipoDirRepo.findByNombre(usuarioBasicoDto.getTipoDireccion()).get();
         direccion.setTipoDireccion(tipoDireccion);
-
         usuario.setDireccion(direccion);
 
         Genero genero = new Genero();
-        genero = generoRepository.findByNombre(usuarioBasicoDto.getGeneroByNameDto().getNombre()).get();
-
+        genero = generoRepository.findByNombre(usuarioBasicoDto.getGenero()).get();
         usuario.setGenero(genero);
 
         Sexo sexo = new Sexo();
@@ -132,10 +124,6 @@ public class RegistroUsuarioBasico implements RegistrarUsuariobasico {
         usuario.setContraseña(usuarioBasicoDto.getContraseña());
 
         ususrioRepository.save(usuario);
-
-        if (usuarioBasicoDto == null) {
-            throw new IllegalArgumentException("Debe enviar los datos solicitados");
-        }
 
         return usuarioBasicoDto;
 

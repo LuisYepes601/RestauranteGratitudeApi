@@ -7,12 +7,8 @@ package restaurante_gratitude.demp.DTOS.Request.Login;
 import java.util.Date;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-import restaurante_gratitude.demp.DTOS.Request.Direccion.DireccionDto;
-import restaurante_gratitude.demp.DTOS.Request.Genero.IngresarGeneroByNameDto;
-import restaurante_gratitude.demp.DTOS.Request.Identificacion.IngresarIdentificacionDto;
-import restaurante_gratitude.demp.DTOS.Request.Rol.RolDto;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  *
@@ -32,75 +28,81 @@ public class RegistroUsuarioBasicoDto {
     private String segundoApellido;
 
     @Pattern(regexp = "^\\+?57?\\s?(\\d{1,4}[-\\s]?){2,3}\\d{3,4}$", message = "Teléfono inválido. Ingresa un número válido, ejemplo: 3101234567")
+    @NotBlank(message = "Rellene el campo Telefono, por ejemplo, Telefono: 3008998311")
     private String telefono;
 
     @Email(message = "Correo inválido")
     private String email;
 
-    private IngresarIdentificacionDto ingresarIdentificacionDto;
-    private RolDto rolDto;
-    private DireccionDto direccionDto;
+    @NotBlank(message = "El tipo de identificación no debe de estar vacio")
+    private String tipoIdentificacion;
+
+    @NotBlank(message = "El número de identificación no debe de estar vacio")
+    private String numeroDeIdentificacion;
+
+    @NotBlank(message = "El campo rol no puede quedar vacio. Por ejemplo Rol: usuario")
+    private String rol;
+
+    @NotBlank(message = "Selecciona un pais, el campo pais no puede quedar vacio")
+    private String pais;
+
+    @NotBlank(message = "Rellena el campo Barrio, por ejemplo Barrio: El prado")
+    private String barrio;
+
+    @NotBlank(message = "Rellena el campo Departamento, por ejemplo, Departamento: Bolivar")
+    private String departamento;
+
+    @NotBlank(message = "Rellena el campo Ciudad, por ejemplo, Ciudad: Bógota")
+    private String ciudad;
+
+    @NotBlank(message = "Rellena el campo Municipio, por ejemplo, Municipio: El Carmen de Bolivar")
+    private String municipio;
+
+    @NotBlank(message = "Rellena el campo Calle, por ejemplo, Calle 20 #40-52")
+    private String calle;
+
+    @NotBlank(message = "Rellena el campo Tipo de dirección, por ejemplo, Tipo de dirección: Casa")
+    private String tipoDireccion;
+
+    @NotBlank(message = "Rellena el campo Fecha de nacimiento, por ejemplo, Fecha de nacimiento: 17/03/2004")
     private Date fechaNacimiento;
+
+    @NotBlank(message = "Rellena el campo de Contraseña, por ejemplo, Contraseña: Juan123@")
+    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\\\d)(?=.*[@$!%*?&])[A-Za-z\\\\d@$!%*?&]{8,}$",
+            message = "La contraseña debe tener mínimo 8 caracteres, una mayúscula, una minúscula, un número y un carácter especial")
     private String contraseña;
-    private IngresarGeneroByNameDto generoByNameDto;
+
+    @NotBlank(message = "Escoge una opcion de genero, Por ejemplo Genero: Heterosexual")
+    private String genero;
+
+    @NotBlank(message = "Escoge una opcion de sexo, Por ejemplo Sexo: Masculino")
     private String sexo;
+
     private Date fechaRegistro;
 
-    public RegistroUsuarioBasicoDto(String primerNombre, String segundoNombre, String primerApellido, String segundoApellido, String telefono, String email, IngresarIdentificacionDto ingresarIdentificacionDto, RolDto rolDto, DireccionDto direccionDto, Date fechaNacimiento, String contraseña, IngresarGeneroByNameDto generoByNameDto, String sexo, Date fechaRegistro) {
+    @Autowired
+    public RegistroUsuarioBasicoDto(String primerNombre, String segundoNombre, String primerApellido, String segundoApellido, String telefono, String email, String tipoIdentificacion, String numeroDeIdentificacion, String rol, String pais, String barrio, String departamento, String ciudad, String municipio, String calle, String tipoDireccion, Date fechaNacimiento, String contraseña, String genero, String sexo, Date fechaRegistro) {
         this.primerNombre = primerNombre;
         this.segundoNombre = segundoNombre;
         this.primerApellido = primerApellido;
         this.segundoApellido = segundoApellido;
         this.telefono = telefono;
         this.email = email;
-        this.ingresarIdentificacionDto = ingresarIdentificacionDto;
-        this.rolDto = rolDto;
-        this.direccionDto = direccionDto;
+        this.tipoIdentificacion = tipoIdentificacion;
+        this.numeroDeIdentificacion = numeroDeIdentificacion;
+        this.rol = rol;
+        this.pais = pais;
+        this.barrio = barrio;
+        this.departamento = departamento;
+        this.ciudad = ciudad;
+        this.municipio = municipio;
+        this.calle = calle;
+        this.tipoDireccion = tipoDireccion;
         this.fechaNacimiento = fechaNacimiento;
         this.contraseña = contraseña;
-        this.generoByNameDto = generoByNameDto;
+        this.genero = genero;
         this.sexo = sexo;
         this.fechaRegistro = new Date();
-    }
-
-    public Date getFechaNacimiento() {
-        return fechaNacimiento;
-    }
-
-    public void setFechaNacimiento(Date fechaNacimiento) {
-        this.fechaNacimiento = fechaNacimiento;
-    }
-
-    public String getContraseña() {
-        return contraseña;
-    }
-
-    public void setContraseña(String contraseña) {
-        this.contraseña = contraseña;
-    }
-
-    public String getSexo() {
-        return sexo;
-    }
-
-    public void setSexo(String sexo) {
-        this.sexo = sexo;
-    }
-
-    public Date getFechaRegistro() {
-        return fechaRegistro;
-    }
-
-    public void setFechaRegistro(Date fechaRegistro) {
-        this.fechaRegistro = fechaRegistro;
-    }
-
-    public RolDto getRolDto() {
-        return rolDto;
-    }
-
-    public void setRolDto(RolDto rolDto) {
-        this.rolDto = rolDto;
     }
 
     public RegistroUsuarioBasicoDto() {
@@ -154,28 +156,124 @@ public class RegistroUsuarioBasicoDto {
         this.email = email;
     }
 
-    public IngresarIdentificacionDto getIngresarIdentificacionDto() {
-        return ingresarIdentificacionDto;
+    public String getTipoIdentificacion() {
+        return tipoIdentificacion;
     }
 
-    public void setIngresarIdentificacionDto(IngresarIdentificacionDto ingresarIdentificacionDto) {
-        this.ingresarIdentificacionDto = ingresarIdentificacionDto;
+    public void setTipoIdentificacion(String tipoIdentificacion) {
+        this.tipoIdentificacion = tipoIdentificacion;
     }
 
-    public DireccionDto getDireccionDto() {
-        return direccionDto;
+    public String getNumeroDeIdentificacion() {
+        return numeroDeIdentificacion;
     }
 
-    public void setDireccionDto(DireccionDto direccionDto) {
-        this.direccionDto = direccionDto;
+    public void setNumeroDeIdentificacion(String numeroDeIdentificacion) {
+        this.numeroDeIdentificacion = numeroDeIdentificacion;
     }
 
-    public IngresarGeneroByNameDto getGeneroByNameDto() {
-        return generoByNameDto;
+    public String getRol() {
+        return rol;
     }
 
-    public void setGeneroByNameDto(IngresarGeneroByNameDto generoByNameDto) {
-        this.generoByNameDto = generoByNameDto;
+    public void setRol(String rol) {
+        this.rol = rol;
+    }
+
+    public String getPais() {
+        return pais;
+    }
+
+    public void setPais(String pais) {
+        this.pais = pais;
+    }
+
+    public String getBarrio() {
+        return barrio;
+    }
+
+    public void setBarrio(String barrio) {
+        this.barrio = barrio;
+    }
+
+    public String getDepartamento() {
+        return departamento;
+    }
+
+    public void setDepartamento(String departamento) {
+        this.departamento = departamento;
+    }
+
+    public String getCiudad() {
+        return ciudad;
+    }
+
+    public void setCiudad(String ciudad) {
+        this.ciudad = ciudad;
+    }
+
+    public String getMunicipio() {
+        return municipio;
+    }
+
+    public void setMunicipio(String municipio) {
+        this.municipio = municipio;
+    }
+
+    public String getCalle() {
+        return calle;
+    }
+
+    public void setCalle(String calle) {
+        this.calle = calle;
+    }
+
+    public String getTipoDireccion() {
+        return tipoDireccion;
+    }
+
+    public void setTipoDireccion(String tipoDireccion) {
+        this.tipoDireccion = tipoDireccion;
+    }
+
+    public Date getFechaNacimiento() {
+        return fechaNacimiento;
+    }
+
+    public void setFechaNacimiento(Date fechaNacimiento) {
+        this.fechaNacimiento = fechaNacimiento;
+    }
+
+    public String getContraseña() {
+        return contraseña;
+    }
+
+    public void setContraseña(String contraseña) {
+        this.contraseña = contraseña;
+    }
+
+    public String getGenero() {
+        return genero;
+    }
+
+    public void setGenero(String genero) {
+        this.genero = genero;
+    }
+
+    public String getSexo() {
+        return sexo;
+    }
+
+    public void setSexo(String sexo) {
+        this.sexo = sexo;
+    }
+
+    public Date getFechaRegistro() {
+        return fechaRegistro;
+    }
+
+    public void setFechaRegistro(Date fechaRegistro) {
+        this.fechaRegistro = fechaRegistro;
     }
 
 }
