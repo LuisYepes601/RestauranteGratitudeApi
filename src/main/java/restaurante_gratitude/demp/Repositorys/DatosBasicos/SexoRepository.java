@@ -4,6 +4,7 @@
  */
 package restaurante_gratitude.demp.Repositorys.DatosBasicos;
 
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import restaurante_gratitude.demp.Entidades.DatosBasicos.Sexo;
@@ -14,5 +15,7 @@ import restaurante_gratitude.demp.Entidades.DatosBasicos.Sexo;
  */
 @Repository
 public interface SexoRepository extends JpaRepository<Sexo, Integer>{
+    
+    public Optional<Sexo>findByNombre(String nombre);
     
 }

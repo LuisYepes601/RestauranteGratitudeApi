@@ -5,12 +5,14 @@
 package restaurante_gratitude.demp.DTOS.Request.Login;
 
 import java.util.Date;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import restaurante_gratitude.demp.DTOS.Request.Direccion.DireccionDto;
 import restaurante_gratitude.demp.DTOS.Request.Genero.IngresarGeneroByNameDto;
 import restaurante_gratitude.demp.DTOS.Request.Identificacion.IngresarIdentificacionDto;
 import restaurante_gratitude.demp.DTOS.Request.Rol.RolDto;
-import restaurante_gratitude.demp.Entidades.DatosBasicos.Genero;
-import restaurante_gratitude.demp.Entidades.DatosBasicos.Sexo;
 
 /**
  *
@@ -18,22 +20,33 @@ import restaurante_gratitude.demp.Entidades.DatosBasicos.Sexo;
  */
 public class RegistroUsuarioBasicoDto {
 
+    @NotBlank(message = "El primer nombre es obligatorio")
     private String primerNombre;
+
     private String segundoNombre;
+
+    @NotBlank(message = "El primer apellido es obligatorio")
     private String primerApellido;
+
+    @NotBlank(message = "El segundo apellido es obligatorio")
     private String segundoApellido;
+
+    @Pattern(regexp = "^\\+?57?\\s?(\\d{1,4}[-\\s]?){2,3}\\d{3,4}$", message = "Teléfono inválido. Ingresa un número válido, ejemplo: 3101234567")
     private String telefono;
+
+    @Email(message = "Correo inválido")
     private String email;
+
     private IngresarIdentificacionDto ingresarIdentificacionDto;
     private RolDto rolDto;
     private DireccionDto direccionDto;
     private Date fechaNacimiento;
     private String contraseña;
     private IngresarGeneroByNameDto generoByNameDto;
-    private Sexo sexo;
+    private String sexo;
     private Date fechaRegistro;
 
-    public RegistroUsuarioBasicoDto(String primerNombre, String segundoNombre, String primerApellido, String segundoApellido, String telefono, String email, IngresarIdentificacionDto ingresarIdentificacionDto, RolDto rolDto, DireccionDto direccionDto, Date fechaNacimiento, String contraseña, IngresarGeneroByNameDto generoByNameDto, Sexo sexo, Date fechaRegistro) {
+    public RegistroUsuarioBasicoDto(String primerNombre, String segundoNombre, String primerApellido, String segundoApellido, String telefono, String email, IngresarIdentificacionDto ingresarIdentificacionDto, RolDto rolDto, DireccionDto direccionDto, Date fechaNacimiento, String contraseña, IngresarGeneroByNameDto generoByNameDto, String sexo, Date fechaRegistro) {
         this.primerNombre = primerNombre;
         this.segundoNombre = segundoNombre;
         this.primerApellido = primerApellido;
@@ -47,11 +60,40 @@ public class RegistroUsuarioBasicoDto {
         this.contraseña = contraseña;
         this.generoByNameDto = generoByNameDto;
         this.sexo = sexo;
-        this.fechaRegistro = fechaRegistro;
+        this.fechaRegistro = new Date();
     }
 
-  
-  
+    public Date getFechaNacimiento() {
+        return fechaNacimiento;
+    }
+
+    public void setFechaNacimiento(Date fechaNacimiento) {
+        this.fechaNacimiento = fechaNacimiento;
+    }
+
+    public String getContraseña() {
+        return contraseña;
+    }
+
+    public void setContraseña(String contraseña) {
+        this.contraseña = contraseña;
+    }
+
+    public String getSexo() {
+        return sexo;
+    }
+
+    public void setSexo(String sexo) {
+        this.sexo = sexo;
+    }
+
+    public Date getFechaRegistro() {
+        return fechaRegistro;
+    }
+
+    public void setFechaRegistro(Date fechaRegistro) {
+        this.fechaRegistro = fechaRegistro;
+    }
 
     public RolDto getRolDto() {
         return rolDto;

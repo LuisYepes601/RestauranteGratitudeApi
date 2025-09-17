@@ -4,10 +4,13 @@
  */
 package restaurante_gratitude.demp.Service.ServiceImplement;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import restaurante_gratitude.demp.DTOS.Request.Login.RegistroUsuarioBasicoDto;
 import restaurante_gratitude.demp.Entidades.DatosBasicos.Genero;
 import restaurante_gratitude.demp.Entidades.DatosBasicos.Identificaciones.Identificacion;
 import restaurante_gratitude.demp.Entidades.DatosBasicos.Identificaciones.TipoIdentificacion;
+import restaurante_gratitude.demp.Entidades.DatosBasicos.Sexo;
 import restaurante_gratitude.demp.Entidades.Direccion.Ciudad;
 import restaurante_gratitude.demp.Entidades.Direccion.Departamento;
 import restaurante_gratitude.demp.Entidades.Direccion.Direccion;
@@ -17,6 +20,7 @@ import restaurante_gratitude.demp.Entidades.Direccion.TipoDireccion;
 import restaurante_gratitude.demp.Entidades.Roles.Rol;
 import restaurante_gratitude.demp.Entidades.Usuarios.Usuario;
 import restaurante_gratitude.demp.Repositorys.DatosBasicos.GeneroRepository;
+import restaurante_gratitude.demp.Repositorys.DatosBasicos.SexoRepository;
 import restaurante_gratitude.demp.Repositorys.Direccion.CiudadRepository;
 import restaurante_gratitude.demp.Repositorys.Direccion.DepartamentoRepository;
 import restaurante_gratitude.demp.Repositorys.Direccion.MunicipioRepository;
@@ -30,6 +34,7 @@ import restaurante_gratitude.demp.Service.Login.Registro.RegistrarUsuariobasico;
  *
  * @author User
  */
+@Service
 public class RegistroUsuarioBasico implements RegistrarUsuariobasico {
 
     private UsuarioRepository ususrioRepository;
@@ -40,6 +45,20 @@ public class RegistroUsuarioBasico implements RegistrarUsuariobasico {
     private MunicipioRepository municipioRepo;
     private TipoDireccionRepository tipoDirRepo;
     private GeneroRepository generoRepository;
+    private SexoRepository sexoRepo;
+
+    @Autowired
+    public RegistroUsuarioBasico(UsuarioRepository ususrioRepository, RolRepository rolRepo, PaisRepository paisRepo, DepartamentoRepository deptoRepo, CiudadRepository ciudadRepo, MunicipioRepository municipioRepo, TipoDireccionRepository tipoDirRepo, GeneroRepository generoRepository, SexoRepository sexoRepo) {
+        this.ususrioRepository = ususrioRepository;
+        this.rolRepo = rolRepo;
+        this.paisRepo = paisRepo;
+        this.deptoRepo = deptoRepo;
+        this.ciudadRepo = ciudadRepo;
+        this.municipioRepo = municipioRepo;
+        this.tipoDirRepo = tipoDirRepo;
+        this.generoRepository = generoRepository;
+        this.sexoRepo = sexoRepo;
+    }
 
     @Override
     public RegistroUsuarioBasicoDto registrar(RegistroUsuarioBasicoDto usuarioBasicoDto) {
@@ -101,10 +120,23 @@ public class RegistroUsuarioBasico implements RegistrarUsuariobasico {
 
         Genero genero = new Genero();
         genero = generoRepository.findByNombre(usuarioBasicoDto.getGeneroByNameDto().getNombre()).get();
-        
+
         usuario.setGenero(genero);
 
+        Sexo sexo = new Sexo();
+        sexo = sexoRepo.findByNombre(usuarioBasicoDto.getSexo()).get();
+        usuario.setSexo(sexo);
+
+        usuario.setFechaNacimiento(usuarioBasicoDto.getFechaNacimiento());
+        usuario.setFechaRegistro(usuarioBasicoDto.getFechaRegistro());
+        usuario.setContraseña(usuarioBasicoDto.getContraseña());
+
         ususrioRepository.save(usuario);
+
+        if (usuarioBasicoDto == null) {
+            throw new IllegalArgumentException("Debe enviar los datos solicitados");
+        }
+
         return usuarioBasicoDto;
 
     }
