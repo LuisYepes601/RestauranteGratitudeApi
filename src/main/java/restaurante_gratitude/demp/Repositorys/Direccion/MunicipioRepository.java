@@ -4,6 +4,7 @@
  */
 package restaurante_gratitude.demp.Repositorys.Direccion;
 
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import restaurante_gratitude.demp.Entidades.Direccion.Municipio;
@@ -13,6 +14,8 @@ import restaurante_gratitude.demp.Entidades.Direccion.Municipio;
  * @author User
  */
 @Repository
-public interface MunicipioRepository extends JpaRepository<Municipio, Integer>{
-    
+public interface MunicipioRepository extends JpaRepository<Municipio, Integer> {
+
+    Optional<Municipio> findByNombre(String nombre);
+
 }

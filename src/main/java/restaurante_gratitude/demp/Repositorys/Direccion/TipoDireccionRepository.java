@@ -4,6 +4,7 @@
  */
 package restaurante_gratitude.demp.Repositorys.Direccion;
 
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import restaurante_gratitude.demp.Entidades.Direccion.TipoDireccion;
@@ -13,6 +14,8 @@ import restaurante_gratitude.demp.Entidades.Direccion.TipoDireccion;
  * @author User
  */
 @Repository
-public interface TipoDireccionRepository extends JpaRepository<TipoDireccion, Integer>{
-    
+public interface TipoDireccionRepository extends JpaRepository<TipoDireccion, Integer> {
+
+    Optional<TipoDireccion> findByNombre(String nombre);
+
 }
