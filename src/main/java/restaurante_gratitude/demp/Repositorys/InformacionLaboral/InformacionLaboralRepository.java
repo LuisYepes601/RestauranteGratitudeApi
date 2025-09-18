@@ -13,6 +13,6 @@ import restaurante_gratitude.demp.Entidades.InformacionLaboral.InformacionLabora
  * @author Usuario
  */
 @Repository
-public interface InformacionLaboralRepository extends JpaRepository<InformacionLaboral, Integer>{
+public interface InformacionLaboralRepository extends JpaRepository<InformacionLaboral, Integer> {
     
 }

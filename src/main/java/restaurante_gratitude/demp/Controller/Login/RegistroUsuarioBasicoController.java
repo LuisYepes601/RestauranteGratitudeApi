@@ -4,6 +4,8 @@
  */
 package restaurante_gratitude.demp.Controller.Login;
 
+import java.util.HashMap;
+import java.util.Map;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -38,7 +40,8 @@ public class RegistroUsuarioBasicoController {
 
         if (usuarioBasico != null) {
             this.usuarioBasico.registrar(usuarioBasico);
-            return ResponseEntity.status(HttpStatus.CREATED.OK).body(usuarioBasico);
+            return ResponseEntity.status(HttpStatus.CREATED).body(usuarioBasico);
+
         }
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();

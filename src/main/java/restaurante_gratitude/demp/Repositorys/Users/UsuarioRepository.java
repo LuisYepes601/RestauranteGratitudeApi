@@ -4,6 +4,7 @@
  */
 package restaurante_gratitude.demp.Repositorys.Users;
 
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import restaurante_gratitude.demp.Entidades.Usuarios.Usuario;
@@ -13,8 +14,8 @@ import restaurante_gratitude.demp.Entidades.Usuarios.Usuario;
  * @author User
  */
 @Repository
-public interface UsuarioRepository extends JpaRepository<Usuario, Integer>{
-    
-    
-    
+public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
+
+    public Optional<Usuario> findByEmail(String email);
+
 }

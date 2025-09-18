@@ -67,6 +67,13 @@ public class RegistroUsuarioBasico implements RegistrarUsuariobasico {
     public RegistroUsuarioBasicoDto registrar(RegistroUsuarioBasicoDto usuarioBasicoDto) {
 
         Usuario usuario = new Usuario();
+
+        usuario = ususrioRepository.findByEmail(usuarioBasicoDto.getEmail()).get();
+
+        if (usuario != null) {
+
+        }
+
         usuario.setPrimerNombre(usuarioBasicoDto.getPrimerNombre());
         usuario.setSegundoNombre(usuarioBasicoDto.getSegundoNombre());
         usuario.setPrimerApellido(usuarioBasicoDto.getPrimerApellido());

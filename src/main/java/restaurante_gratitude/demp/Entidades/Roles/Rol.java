@@ -27,12 +27,15 @@ public class Rol {
     @Column(nullable = false)
     private String nombre;
 
+    private String codigoRol;
+
     @OneToMany(mappedBy = "rol")
     private List<Usuario> usuarios;
 
-    public Rol(int id, String nombre, List<Usuario> usuarios) {
+    public Rol(int id, String nombre, String codigoRol, List<Usuario> usuarios) {
         this.id = id;
         this.nombre = nombre;
+        this.codigoRol = codigoRol;
         this.usuarios = usuarios;
     }
 
@@ -61,6 +64,14 @@ public class Rol {
 
     public void setUsuarios(List<Usuario> usuarios) {
         this.usuarios = usuarios;
+    }
+
+    public String getCodigoRol() {
+        return codigoRol;
+    }
+
+    public void setCodigoRol(String codigoRol) {
+        this.codigoRol = codigoRol;
     }
 
 }
