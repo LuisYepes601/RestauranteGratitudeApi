@@ -4,10 +4,11 @@
  */
 package restaurante_gratitude.demp.DTOS.Request.Login;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import java.util.Date;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**

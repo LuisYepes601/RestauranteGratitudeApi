@@ -2,15 +2,15 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package restaurante_gratitude.demp.ControlExeptions;
-
-import org.springframework.web.bind.annotation.ControllerAdvice;
+package restaurante_gratitude.demp.DTOS.Request.Login;
 
 /**
  *
- * @author Usuario
+ * @author User
  */
-@ControllerAdvice
-public class GlobalExceptionHandler {
-
+public class RegistroEmpleadoDto extends RegistroUsuarioBasicoDto{
+    
+    private double salario;
+    
+    
 }

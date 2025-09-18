@@ -40,7 +40,7 @@ public class RegistroUsuarioBasicoController {
 
         if (usuarioBasico != null) {
             this.usuarioBasico.registrar(usuarioBasico);
-            return ResponseEntity.status(HttpStatus.CREATED).body(usuarioBasico);
+            return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("Mensaje:", "Usuario " + usuarioBasico.getPrimerNombre() + " registrado con exito"));
 
         }
 
