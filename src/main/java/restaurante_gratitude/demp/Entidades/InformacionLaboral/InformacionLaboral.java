@@ -15,10 +15,8 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import java.util.List;
 import restaurante_gratitude.demp.Entidades.Contratos.Contrato;
-import restaurante_gratitude.demp.Entidades.Contratos.TipoContrato;
 import restaurante_gratitude.demp.Entidades.TipoHorario;
 import restaurante_gratitude.demp.Entidades.Usuarios.Empleado;
-import restaurante_gratitude.demp.Entidades.Usuarios.Mesero;
 
 /**
  *

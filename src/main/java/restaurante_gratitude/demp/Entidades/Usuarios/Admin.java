@@ -20,7 +20,7 @@ import restaurante_gratitude.demp.Entidades.Reservas.Reserva;
 @Entity
 public class Admin extends Empleado {
 
-    @OneToMany(mappedBy = "id_admin")
+    @OneToMany(mappedBy = "admin")
     private List<Reserva> reservas;
 
     @OneToMany(mappedBy = "admin")
@@ -29,13 +29,10 @@ public class Admin extends Empleado {
     @OneToMany(mappedBy = "admin")
     private List<RespuestaPqrs> respuestaPqrses;
 
-    @OneToMany(mappedBy = "usuario")
-    private List<PQRS> pqrses;
-    
     @OneToMany(mappedBy = "admin")
-    private List<Devolucion>devoluciones;
-    
-    
-    
- 
+    private List<PQRS> pqrses;
+
+    @OneToMany(mappedBy = "admin")
+    private List<Devolucion> devoluciones;
+
 }

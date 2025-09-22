@@ -5,6 +5,9 @@
 package restaurante_gratitude.demp.Entidades.Usuarios;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
@@ -20,7 +23,15 @@ import restaurante_gratitude.demp.Entidades.InformacionLaboral.InformacionLabora
  */
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public class Empleado extends Usuario {
+public class Empleado {
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+    
+    @OneToOne
+    @JoinColumn(name = "id_usuario")
+    private Usuario Usuario;
 
     @OneToOne
     @JoinColumn(name = "id_informacion_laboral")
@@ -28,5 +39,29 @@ public class Empleado extends Usuario {
 
     @OneToMany(mappedBy = "empleado")
     private List<Estudio> estudios;
+
+    public Empleado(InformacionLaboral informacionLaboral, List<Estudio> estudios) {
+        this.informacionLaboral = informacionLaboral;
+        this.estudios = estudios;
+    }
+
+    public Empleado() {
+    }
+
+    public InformacionLaboral getInformacionLaboral() {
+        return informacionLaboral;
+    }
+
+    public void setInformacionLaboral(InformacionLaboral informacionLaboral) {
+        this.informacionLaboral = informacionLaboral;
+    }
+
+    public List<Estudio> getEstudios() {
+        return estudios;
+    }
+
+    public void setEstudios(List<Estudio> estudios) {
+        this.estudios = estudios;
+    }
 
 }

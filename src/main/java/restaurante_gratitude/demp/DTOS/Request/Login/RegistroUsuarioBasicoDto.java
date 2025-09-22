@@ -6,6 +6,7 @@ package restaurante_gratitude.demp.DTOS.Request.Login;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import java.util.Date;
 
@@ -28,7 +29,8 @@ public class RegistroUsuarioBasicoDto {
     @NotBlank(message = "El segundo apellido es obligatorio")
     private String segundoApellido;
 
-    @Pattern(regexp = "^\\+?57?\\s?(\\d{1,4}[-\\s]?){2,3}\\d{3,4}$", message = "Teléfono inválido. Ingresa un número válido, ejemplo: 3101234567")
+    @Pattern(regexp = "^\\+?57?\\s?(\\d{1,4}[-\\s]?){2,3}\\d{3,4}$",
+            message = "Teléfono inválido. Ingresa un número válido, ejemplo: 3101234567")
     @NotBlank(message = "Rellene el campo Telefono, por ejemplo, Telefono: 3008998311")
     private String telefono;
 
@@ -65,7 +67,7 @@ public class RegistroUsuarioBasicoDto {
     @NotBlank(message = "Rellena el campo Tipo de dirección, por ejemplo, Tipo de dirección: Casa")
     private String tipoDireccion;
 
-    @NotBlank(message = "Rellena el campo Fecha de nacimiento, por ejemplo, Fecha de nacimiento: 17/03/2004")
+    @NotNull(message = "Rellena el campo Fecha de nacimiento, por ejemplo, Fecha de nacimiento: 17/03/2004")
     private Date fechaNacimiento;
 
     @NotBlank(message = "Rellena el campo de Contraseña, por ejemplo, Contraseña: Juan123@")

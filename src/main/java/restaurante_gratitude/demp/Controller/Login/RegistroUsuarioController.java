@@ -15,36 +15,31 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import restaurante_gratitude.demp.DTOS.Request.Login.RegistroUsuarioBasicoDto;
-import restaurante_gratitude.demp.Service.ServiceImplement.RegistroUsuarioBasico;
+import restaurante_gratitude.demp.Service.ServiceImplement.Login.Registros.RegistroUsuarioBasico;
 
 /**
  *
  * @author User
  */
 @RestController
-@RequestMapping("/login/registro/Usuario")
-public class RegistroUsuarioBasicoController {
+@RequestMapping("/login/registro/usuario")
+public class RegistroUsuarioController {
 
     private RegistroUsuarioBasico usuarioBasico;
 
     @Autowired
-    public RegistroUsuarioBasicoController(RegistroUsuarioBasico usuarioBasico) {
+    public RegistroUsuarioController(RegistroUsuarioBasico usuarioBasico) {
         this.usuarioBasico = usuarioBasico;
     }
 
-    public RegistroUsuarioBasicoController() {
+    public RegistroUsuarioController() {
     }
 
-    @PostMapping()
-    public ResponseEntity<?> registrarUsusarioBasico(@Valid @RequestBody RegistroUsuarioBasicoDto usuarioBasico) {
+    @PostMapping("/basico")
+    public ResponseEntity<?> registrarUsuarioBasico(@Valid @RequestBody RegistroUsuarioBasicoDto usuarioBasico) {
 
-        if (usuarioBasico != null) {
-            this.usuarioBasico.registrar(usuarioBasico);
-            return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("Mensaje:", "Usuario " + usuarioBasico.getPrimerNombre() + " registrado con exito"));
-
-        }
-
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        this.usuarioBasico.registrar(usuarioBasico);
+        return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("Mensaje:", "Usuario " + usuarioBasico.getPrimerNombre() + " registrado con exito"));
 
     }
 

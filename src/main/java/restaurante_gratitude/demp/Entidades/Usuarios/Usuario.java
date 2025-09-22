@@ -115,7 +115,7 @@ public class Usuario {
     @OneToMany(mappedBy = "usuario")
     private List<Reserva> reservas;
 
-    @OneToMany(mappedBy = "admin")
+    @OneToMany(mappedBy = "usuario")
     private List<PQRS> pqrses;
 
     @OneToMany(mappedBy = "usuario")
@@ -136,7 +136,10 @@ public class Usuario {
     @OneToMany(mappedBy = "usuario")
     private List<ProductosFavoritos> productosFavoritos;
 
-    public Usuario(int id, String primerNombre, String segundoNombre, String primerApellido, String segundoApellido, String telefono, String email, Identificacion identificacion, Rol rol, Direccion direccion, String foto_perifl, Date fechaNacimiento, String contraseña, Genero genero, Sexo sexo, Date fechaRegistro, boolean estado, Estado_cuenta estado_cuenta, List<ReporteProblema> reporteProblemas, Preferencia preferencia, List<Reserva> reservas, List<PQRS> pqrses, List<Devolucion> devoluciones, List<Pedido> pedidos, List<UsoCupon> usoCupones, List<CalficacionProducto> calficacionProductos, List<DetallePedido> detallePedidos, List<ProductosFavoritos> productosFavoritos) {
+    @OneToOne(mappedBy = "Usuario")
+    private Empleado empleado;
+
+    public Usuario(int id, String primerNombre, String segundoNombre, String primerApellido, String segundoApellido, String telefono, String email, Identificacion identificacion, Rol rol, Direccion direccion, String foto_perifl, Date fechaNacimiento, String contraseña, Genero genero, Sexo sexo, Date fechaRegistro, boolean estado, Estado_cuenta estado_cuenta, List<ReporteProblema> reporteProblemas, Preferencia preferencia, List<Reserva> reservas, List<PQRS> pqrses, List<Devolucion> devoluciones, List<Pedido> pedidos, List<UsoCupon> usoCupones, List<CalficacionProducto> calficacionProductos, List<DetallePedido> detallePedidos, List<ProductosFavoritos> productosFavoritos, Empleado empleado) {
         this.id = id;
         this.primerNombre = primerNombre;
         this.segundoNombre = segundoNombre;
@@ -165,6 +168,7 @@ public class Usuario {
         this.calficacionProductos = calficacionProductos;
         this.detallePedidos = detallePedidos;
         this.productosFavoritos = productosFavoritos;
+        this.empleado = empleado;
     }
 
     public Usuario() {
@@ -392,6 +396,14 @@ public class Usuario {
 
     public void setProductosFavoritos(List<ProductosFavoritos> productosFavoritos) {
         this.productosFavoritos = productosFavoritos;
+    }
+
+    public Empleado getEmpleado() {
+        return empleado;
+    }
+
+    public void setEmpleado(Empleado empleado) {
+        this.empleado = empleado;
     }
 
 }
