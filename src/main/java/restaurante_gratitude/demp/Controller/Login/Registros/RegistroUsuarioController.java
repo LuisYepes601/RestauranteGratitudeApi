@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package restaurante_gratitude.demp.Controller.Login;
+package restaurante_gratitude.demp.Controller.Login.Registros;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import restaurante_gratitude.demp.DTOS.Request.Login.Empleado.ResgistroEmpleadoDto;
 import restaurante_gratitude.demp.DTOS.Request.Login.RegistroUsuarioBasicoDto;
+import restaurante_gratitude.demp.Service.ServiceImplement.Login.Registros.RegistroEmpleadoService;
 import restaurante_gratitude.demp.Service.ServiceImplement.Login.Registros.RegistroUsuarioBasico;
 
 /**
@@ -26,10 +28,12 @@ import restaurante_gratitude.demp.Service.ServiceImplement.Login.Registros.Regis
 public class RegistroUsuarioController {
 
     private RegistroUsuarioBasico usuarioBasico;
+    private RegistroEmpleadoService empleadoService;
 
     @Autowired
-    public RegistroUsuarioController(RegistroUsuarioBasico usuarioBasico) {
+    public RegistroUsuarioController(RegistroUsuarioBasico usuarioBasico, RegistroEmpleadoService empleadoService) {
         this.usuarioBasico = usuarioBasico;
+        this.empleadoService = empleadoService;
     }
 
     public RegistroUsuarioController() {
@@ -40,6 +44,18 @@ public class RegistroUsuarioController {
 
         this.usuarioBasico.registrar(usuarioBasico);
         return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("Mensaje:", "Usuario " + usuarioBasico.getPrimerNombre() + " registrado con exito"));
+
+    }
+
+    @PostMapping("/empleado")
+    public ResponseEntity<?> registrarEmpleado(@Valid @RequestBody ResgistroEmpleadoDto empleadoDto) {
+
+        ResgistroEmpleadoDto resgistroEmpleadoDto = new ResgistroEmpleadoDto();
+
+        resgistroEmpleadoDto = empleadoService.registrarEmpleado(empleadoDto);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(Map.of("Mensaje", "Usuario con rol " + resgistroEmpleadoDto.getUsuarioBasicoDto().getRol() + " ha sido registrado exitosamente"));
 
     }
 

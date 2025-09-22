@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import restaurante_gratitude.demp.ControlExeptions.Execptions.CorreoEnUso;
 import restaurante_gratitude.demp.ControlExeptions.Execptions.NoDatosQueMostrarExecption;
 import restaurante_gratitude.demp.ControlExeptions.Execptions.PaisYaCreado;
+import restaurante_gratitude.demp.ControlExeptions.Execptions.RolNoExisteExecption;
+import restaurante_gratitude.demp.ControlExeptions.Execptions.UsuarioNoEncontradoException;
 
 /**
  *
@@ -66,6 +68,28 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
 
+    }
+
+    @ExceptionHandler(RolNoExisteExecption.class)
+    public ResponseEntity<Map<String, String>> handleRolNoExisteExecption(RolNoExisteExecption ex) {
+
+        Map<String, String> error = new HashMap<>();
+
+        error.put("Error", ex.getMessage());
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(error);
+
+    }
+
+    @ExceptionHandler(UsuarioNoEncontradoException.class)
+    public ResponseEntity<?> handlerUsuarioNoEncontradoException(UsuarioNoEncontradoException ex) {
+
+        Map<String, String> error = new HashMap<>();
+        error.put("Error", ex.getMessage());
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(error);
     }
 
 }

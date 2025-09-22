@@ -14,11 +14,15 @@ public class InformacionLaboralDto {
 
     private List<ExperienciaDto> experiencias;
     private int id;
+    private String email;
 
-    public InformacionLaboralDto(List<ExperienciaDto> experiencias, int id) {
+    public InformacionLaboralDto(List<ExperienciaDto> experiencias, int id, String email) {
         this.experiencias = experiencias;
         this.id = id;
+        this.email = email;
     }
+
+   
     
 
     public InformacionLaboralDto(List<ExperienciaDto> experiencias) {
@@ -42,6 +46,10 @@ public class InformacionLaboralDto {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getEmail() {
+        return email;
     }
     
     

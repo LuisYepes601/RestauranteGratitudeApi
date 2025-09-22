@@ -24,11 +24,11 @@ import restaurante_gratitude.demp.Entidades.InformacionLaboral.InformacionLabora
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Empleado {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    
+
     @OneToOne
     @JoinColumn(name = "id_usuario")
     private Usuario Usuario;
@@ -62,6 +62,22 @@ public class Empleado {
 
     public void setEstudios(List<Estudio> estudios) {
         this.estudios = estudios;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public Usuario getUsuario() {
+        return Usuario;
+    }
+
+    public void setUsuario(Usuario Usuario) {
+        this.Usuario = Usuario;
     }
 
 }
