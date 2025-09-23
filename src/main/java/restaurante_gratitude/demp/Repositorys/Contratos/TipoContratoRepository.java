@@ -4,6 +4,7 @@
  */
 package restaurante_gratitude.demp.Repositorys.Contratos;
 
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import restaurante_gratitude.demp.Entidades.Contratos.TipoContrato;
 
@@ -11,6 +12,7 @@ import restaurante_gratitude.demp.Entidades.Contratos.TipoContrato;
  *
  * @author User
  */
-public interface TipoContratoRepository extends JpaRepository<TipoContrato, Integer>{
-    
+public interface TipoContratoRepository extends JpaRepository<TipoContrato, Integer> {
+
+    public Optional<TipoContrato> findByNombre(String nombre);
 }

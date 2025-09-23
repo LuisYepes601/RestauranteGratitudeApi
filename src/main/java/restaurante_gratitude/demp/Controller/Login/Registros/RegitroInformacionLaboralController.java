@@ -21,7 +21,7 @@ import restaurante_gratitude.demp.Service.ServiceImplement.Login.Registros.Regis
  * @author User
  */
 @RestController
-@RequestMapping("/registro/informacion/laboral")
+@RequestMapping("/registro/informacion")
 public class RegitroInformacionLaboralController {
 
     @Autowired
@@ -42,7 +42,7 @@ public class RegitroInformacionLaboralController {
         this.informacionLaboralService = informacionLaboralService;
     }
 
-    @GetMapping("/")
+    @GetMapping("/laboral")
     public ResponseEntity<?> registrarInformacionLaboral(@Valid @RequestBody InformacionLaboralDto informacionLaboralDto) {
 
         InformacionLaboralDto laboralDto = informacionLaboralService.registrarInformacionLaboral(informacionLaboralDto);
