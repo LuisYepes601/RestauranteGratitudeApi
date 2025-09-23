@@ -6,36 +6,92 @@ package restaurante_gratitude.demp.DTOS.Request.Estudios;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
 import java.util.Date;
 
 /**
  *
- * @author Usuario
+ * @author User
  */
 public class EstudioDto {
 
-    @NotBlank(message = "Nivel de estudio no puede estar vacio, "
-            + "lo invitamos a rellenarlo para seguir con su regitro de informacion educativa")
+    @NotBlank(message = "El campo nombre del estudio no puede quedar vacio, lo invitamos a "
+            + "rellenarlo por ejemplo: Nombre: Ingenieria de sotfware")
+    private String nombre;
+
+    @NotBlank(message = "El campo nivel de estudio no puede quedar vacio, lo invitamos a seleccionar una opcion, por ejemplo Nivel de estudio: Pregrado")
     private String nivelEstudio;
 
-    @NotBlank(message = "El campo institucion debe estar relleno, lo invitamos a rellenar el campo, "
-            + "por ejemplo: Nombre: Universidad de los Andes")
+    @NotBlank(message = "El campo nombre de institución no puede quedar vacio, lo invitamos a rellenarlo , "
+            + "por ejemplo; Nombre de institución: Colombo Americano")
     private String nombreInstitucion;
 
-    @NotNull(message = "La fecha de inicio no  puede estar vacia")
+    @NotNull(message = "La fecha de inicio del programa no puede que dar vacia")
     private Date fechaInicio;
 
-    @NotBlank(message = "Estado de estudio no puede quedar vacio, escoja una opcion,"
-            + " Por ejemplo: En proceso")
+    @NotBlank(message = "El campo estado de estudio no puede quedar vacio, seleccione una opcion. Por ejemplo: Estado: Certificado")
     private String estadoEstudio;
 
-    @NotBlank(message = "El campo modalidad no puede quedar vacio, "
-            + "lo invitamos a rellenar el campo, Por ejemplo: Modalidad: Presencial")
+    @NotBlank(message = "El campo modalidad no puede quedar vacio, lo invitamos ")
     private String modalidad;
 
-    @NotNull(message = "El id de empleado no puede estar vacio")
-    @Positive()
-    private int id_empleado;
+    public EstudioDto(String nombre, String nivelEstudio, String nombreInstitucion, Date fechaInicio, String estadoEstudio, String modalidad) {
+        this.nombre = nombre;
+        this.nivelEstudio = nivelEstudio;
+        this.nombreInstitucion = nombreInstitucion;
+        this.fechaInicio = fechaInicio;
+        this.estadoEstudio = estadoEstudio;
+        this.modalidad = modalidad;
+    }
+
+    public EstudioDto() {
+    }
+
+    public String getNivelEstudio() {
+        return nivelEstudio;
+    }
+
+    public void setNivelEstudio(String nivelEstudio) {
+        this.nivelEstudio = nivelEstudio;
+    }
+
+    public String getNombreInstitucion() {
+        return nombreInstitucion;
+    }
+
+    public void setNombreInstitucion(String nombreInstitucion) {
+        this.nombreInstitucion = nombreInstitucion;
+    }
+
+    public Date getFechaInicio() {
+        return fechaInicio;
+    }
+
+    public void setFechaInicio(Date fechaInicio) {
+        this.fechaInicio = fechaInicio;
+    }
+
+    public String getEstadoEstudio() {
+        return estadoEstudio;
+    }
+
+    public void setEstadoEstudio(String estadoEstudio) {
+        this.estadoEstudio = estadoEstudio;
+    }
+
+    public String getModalidad() {
+        return modalidad;
+    }
+
+    public void setModalidad(String modalidad) {
+        this.modalidad = modalidad;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
 
 }

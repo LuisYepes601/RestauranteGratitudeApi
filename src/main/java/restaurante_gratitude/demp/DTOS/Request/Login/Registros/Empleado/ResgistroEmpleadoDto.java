@@ -2,10 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package restaurante_gratitude.demp.DTOS.Request.Login.Empleado;
+package restaurante_gratitude.demp.DTOS.Request.Login.Registros.Empleado;
 
 import jakarta.validation.constraints.NotBlank;
-import restaurante_gratitude.demp.DTOS.Request.Login.RegistroUsuarioBasicoDto;
+import restaurante_gratitude.demp.DTOS.Request.Login.Registros.RegistroUsuarioBasicoDto;
 
 /**
  *

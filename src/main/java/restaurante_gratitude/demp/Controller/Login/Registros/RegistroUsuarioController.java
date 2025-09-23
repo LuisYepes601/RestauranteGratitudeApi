@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import restaurante_gratitude.demp.DTOS.Request.Login.Empleado.ResgistroEmpleadoDto;
-import restaurante_gratitude.demp.DTOS.Request.Login.RegistroUsuarioBasicoDto;
+import restaurante_gratitude.demp.DTOS.Request.Login.Registros.Empleado.ResgistroEmpleadoDto;
+import restaurante_gratitude.demp.DTOS.Request.Login.Registros.RegistroUsuarioBasicoDto;
 import restaurante_gratitude.demp.Service.ServiceImplement.Login.Registros.RegistroEmpleadoService;
 import restaurante_gratitude.demp.Service.ServiceImplement.Login.Registros.RegistroUsuarioBasico;
 

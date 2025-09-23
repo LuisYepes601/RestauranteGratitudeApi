@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import restaurante_gratitude.demp.DTOS.Request.InformacionLaboralDto.InformacionLaboralDto;
-import restaurante_gratitude.demp.Service.ServiceImplement.Login.Registros.RegistroInformacionLaboralService;
+import restaurante_gratitude.demp.Service.ServiceImplement.InformacionLaboral.RegistroInformacionLaboralService;
 
 /**
  *

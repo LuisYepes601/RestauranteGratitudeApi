@@ -7,7 +7,7 @@ package restaurante_gratitude.demp.Service.ServiceImplement.Login.Registros;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import restaurante_gratitude.demp.ControlExeptions.Execptions.CorreoEnUso;
-import restaurante_gratitude.demp.DTOS.Request.Login.RegistroUsuarioBasicoDto;
+import restaurante_gratitude.demp.DTOS.Request.Login.Registros.RegistroUsuarioBasicoDto;
 import restaurante_gratitude.demp.Entidades.DatosBasicos.Genero;
 import restaurante_gratitude.demp.Entidades.DatosBasicos.Identificaciones.Identificacion;
 import restaurante_gratitude.demp.Entidades.DatosBasicos.Identificaciones.TipoIdentificacion;

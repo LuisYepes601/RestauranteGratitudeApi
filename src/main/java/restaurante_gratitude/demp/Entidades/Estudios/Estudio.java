@@ -38,6 +38,9 @@ public class Estudio {
     @Temporal(TemporalType.DATE)
     private Date fechaInicio;
 
+    @Column(nullable = false)
+    private String nombre;
+
     @ManyToOne
     @JoinColumn(name = "id_estado_estudio")
     private EstadoEstudio estadoEstudio;
@@ -50,11 +53,12 @@ public class Estudio {
     @JoinColumn(name = "id_empleado")
     private Empleado empleado;
 
-    public Estudio(int id, NivelEstudio nivelEstudio, String nombreInstitucion, Date fechaInicio, EstadoEstudio estadoEstudio, Modalidad modalidad, Empleado empleado) {
+    public Estudio(int id, NivelEstudio nivelEstudio, String nombreInstitucion, Date fechaInicio, String nombre, EstadoEstudio estadoEstudio, Modalidad modalidad, Empleado empleado) {
         this.id = id;
         this.nivelEstudio = nivelEstudio;
         this.nombreInstitucion = nombreInstitucion;
         this.fechaInicio = fechaInicio;
+        this.nombre = nombre;
         this.estadoEstudio = estadoEstudio;
         this.modalidad = modalidad;
         this.empleado = empleado;
@@ -117,6 +121,14 @@ public class Estudio {
 
     public void setEmpleado(Empleado empleado) {
         this.empleado = empleado;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
 }

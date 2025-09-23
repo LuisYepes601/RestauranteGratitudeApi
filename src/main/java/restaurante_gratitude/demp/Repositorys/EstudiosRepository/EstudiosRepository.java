@@ -4,6 +4,7 @@
  */
 package restaurante_gratitude.demp.Repositorys.EstudiosRepository;
 
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import restaurante_gratitude.demp.Entidades.Estudios.Estudio;
@@ -13,6 +14,7 @@ import restaurante_gratitude.demp.Entidades.Estudios.Estudio;
  * @author User
  */
 @Repository
-public interface EstudiosRepository extends JpaRepository<Estudio, Integer>{
-    
+public interface EstudiosRepository extends JpaRepository<Estudio, Integer> {
+
+    public Optional<Estudio> findByNombre(String nombre);
 }

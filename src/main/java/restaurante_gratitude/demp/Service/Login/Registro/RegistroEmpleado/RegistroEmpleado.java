@@ -4,7 +4,7 @@
  */
 package restaurante_gratitude.demp.Service.Login.Registro.RegistroEmpleado;
 
-import restaurante_gratitude.demp.DTOS.Request.Login.Empleado.ResgistroEmpleadoDto;
+import restaurante_gratitude.demp.DTOS.Request.Login.Registros.Empleado.ResgistroEmpleadoDto;
 
 /**
  *
