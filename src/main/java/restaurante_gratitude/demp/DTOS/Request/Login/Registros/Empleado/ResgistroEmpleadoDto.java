@@ -4,7 +4,8 @@
  */
 package restaurante_gratitude.demp.DTOS.Request.Login.Registros.Empleado;
 
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import restaurante_gratitude.demp.DTOS.Request.Login.Registros.RegistroUsuarioBasicoDto;
 
 /**
@@ -13,15 +14,13 @@ import restaurante_gratitude.demp.DTOS.Request.Login.Registros.RegistroUsuarioBa
  */
 public class ResgistroEmpleadoDto {
 
+    @Valid
+    @NotNull(message = "El bloque usuarioBasicoDto no puede ser nulo")
     private RegistroUsuarioBasicoDto usuarioBasicoDto;
 
-    @NotBlank(message = "El código de rol es obligatorio para el registro, por ejemplo "
-            + "rol: Admin , Codigo: 1250")
-    private String codigoRol;
-
-    public ResgistroEmpleadoDto(RegistroUsuarioBasicoDto usuarioBasicoDto, String codigoRol) {
+    public ResgistroEmpleadoDto(RegistroUsuarioBasicoDto usuarioBasicoDto) {
         this.usuarioBasicoDto = usuarioBasicoDto;
-        this.codigoRol = codigoRol;
+
     }
 
     public ResgistroEmpleadoDto() {
@@ -33,14 +32,6 @@ public class ResgistroEmpleadoDto {
 
     public void setUsuarioBasicoDto(RegistroUsuarioBasicoDto usuarioBasicoDto) {
         this.usuarioBasicoDto = usuarioBasicoDto;
-    }
-
-    public String getCodigoRol() {
-        return codigoRol;
-    }
-
-    public void setCodigoRol(String codigoRol) {
-        this.codigoRol = codigoRol;
     }
 
 }

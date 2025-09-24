@@ -4,9 +4,8 @@
  */
 package restaurante_gratitude.demp.Controller.Login.Registros;
 
-import java.util.HashMap;
 import java.util.Map;
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -50,9 +49,7 @@ public class RegistroUsuarioController {
     @PostMapping("/empleado")
     public ResponseEntity<?> registrarEmpleado(@Valid @RequestBody ResgistroEmpleadoDto empleadoDto) {
 
-        ResgistroEmpleadoDto resgistroEmpleadoDto = new ResgistroEmpleadoDto();
-
-        resgistroEmpleadoDto = empleadoService.registrarEmpleado(empleadoDto);
+        ResgistroEmpleadoDto resgistroEmpleadoDto = empleadoService.registrarEmpleado(empleadoDto);
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(Map.of("Mensaje", "Usuario con rol " + resgistroEmpleadoDto.getUsuarioBasicoDto().getRol() + " ha sido registrado exitosamente"));

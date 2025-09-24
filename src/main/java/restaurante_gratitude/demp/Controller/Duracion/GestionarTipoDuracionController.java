@@ -22,21 +22,21 @@ import restaurante_gratitude.demp.Service.ServiceImplement.Duracion.TipoDuracion
  * @author Usuario
  */
 @RestController
-@RequestMapping("/tipo/duracion")
-public class TipoDuracionController {
+@RequestMapping("/tipoDeDuracion")
+public class GestionarTipoDuracionController {
 
     private TipoDuracionService tipoDuracionService;
 
     @Autowired
-    public TipoDuracionController(TipoDuracionService tipoDuracionService) {
-        this.tipoDuracionService = tipoDuracionService;
-    }
-
-    public TipoDuracionController() {
-    }
-
     public TipoDuracionService getTipoDuracionService() {
         return tipoDuracionService;
+    }
+
+    public GestionarTipoDuracionController() {
+    }
+
+    public GestionarTipoDuracionController(TipoDuracionService tipoDuracionService) {
+        this.tipoDuracionService = tipoDuracionService;
     }
 
     public void setTipoDuracionService(TipoDuracionService tipoDuracionService) {

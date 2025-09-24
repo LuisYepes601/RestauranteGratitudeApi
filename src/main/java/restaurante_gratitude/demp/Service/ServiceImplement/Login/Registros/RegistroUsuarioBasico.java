@@ -4,10 +4,8 @@
  */
 package restaurante_gratitude.demp.Service.ServiceImplement.Login.Registros;
 
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import restaurante_gratitude.demp.ControlExeptions.Execptions.CorreoEnUso;
 import restaurante_gratitude.demp.DTOS.Request.Login.Registros.RegistroUsuarioBasicoDto;
 import restaurante_gratitude.demp.Entidades.DatosBasicos.Genero;
 import restaurante_gratitude.demp.Entidades.DatosBasicos.Identificaciones.Identificacion;
@@ -32,6 +30,7 @@ import restaurante_gratitude.demp.Repositorys.Direccion.TipoDireccionRepository;
 import restaurante_gratitude.demp.Repositorys.Roles.RolRepository;
 import restaurante_gratitude.demp.Repositorys.Users.UsuarioRepository;
 import restaurante_gratitude.demp.Service.Login.Registro.RegistrarUsuariobasico;
+import restaurante_gratitude.demp.Validaciones.ValidacionesGlobales;
 
 /**
  *
@@ -68,11 +67,8 @@ public class RegistroUsuarioBasico implements RegistrarUsuariobasico {
     @Override
     public RegistroUsuarioBasicoDto registrar(RegistroUsuarioBasicoDto usuarioBasicoDto) {
 
-        Optional<Usuario> optional = ususrioRepository.findByEmail(usuarioBasicoDto.getEmail());
-
-        if (optional.isPresent()) {
-            throw new CorreoEnUso("Error: Correo asociado a una cuenta existente: Lo invitamos a colocar un correo válido ");
-        }
+        ValidacionesGlobales.validarExistencia(ususrioRepository.findByEmail(usuarioBasicoDto.getEmail()), "Error este correo ya esta asociado a una cuenta, "
+                + "lo invitamos a ingresar uno valido. ");
 
         Usuario usuario = new Usuario();
 
@@ -86,46 +82,74 @@ public class RegistroUsuarioBasico implements RegistrarUsuariobasico {
         Identificacion identificacion = new Identificacion();
         identificacion.setNumero(usuarioBasicoDto.getNumeroDeIdentificacion());
 
-        TipoIdentificacion tipoIdentificacion = new TipoIdentificacion();
-        tipoIdentificacion = tipoIdentificacionRepo.findByNombre(usuarioBasicoDto.getTipoIdentificacion()).get();
+        TipoIdentificacion tipoIdentificacion = ValidacionesGlobales.obtenerSiExiste(tipoIdentificacionRepo
+                .findByNombre(usuarioBasicoDto.getTipoIdentificacion()), "El tipo de identificación selecciona no existe en el sistema, "
+                + "lo(a) invitamos a selecionar una opcion correcta para contiunuar el registro.");
+
+        identificacion.setTipoIdentificacion(tipoIdentificacion);
 
         usuario.setIdentificacion(identificacion);
 
-        Rol rol = new Rol();
-        rol = rolRepo.findByNombre(usuarioBasicoDto.getRol().toLowerCase()).get();
+        Rol rol = ValidacionesGlobales.obtenerSiExiste(rolRepo.findByNombre(usuarioBasicoDto.getRol()),
+                "El rol: " + usuarioBasicoDto.getRol() + " no se encuentra en el sistema, lo invitamos a seleccionar una"
+                + " opcion correcta, para ccontinuar con el registro.");
+
+        ValidacionesGlobales.verificarCodigoRol(rol.getCodigoRol(),
+                usuarioBasicoDto.getCodigoRol(),
+                "Error de registro, "
+                + "el código de rol que ingreso no es valido para el rol que usted selecciono, "
+                + "lo invitamos a verificar la información ingresada.");
+
         usuario.setRol(rol);
 
         Direccion direccion = new Direccion();
         direccion.setBarrio(usuarioBasicoDto.getBarrio());
         direccion.setCalle(usuarioBasicoDto.getCalle());
 
-        Pais pais = new Pais();
-        pais = paisRepo.findByNombre(usuarioBasicoDto.getPais()).get();
+        Pais pais = ValidacionesGlobales.obtenerSiExiste(paisRepo
+                .findByNombre(usuarioBasicoDto.getPais()),
+                "El pais que ingreso no se encuentra disponible ene el sistema, le invitamos a seleccionar un pais válido");
+
         direccion.setPais(pais);
 
-        Departamento departamento = new Departamento();
-        departamento = deptoRepo.findByNombre(usuarioBasicoDto.getDepartamento()).get();
+        Departamento departamento = ValidacionesGlobales.obtenerSiExiste(deptoRepo
+                .findByNombre(usuarioBasicoDto.getDepartamento()),
+                "El departamento que ingreso no se encuentra disponible en el sistema le "
+                + "invitamos a selleccionar un válido. ");
+
         direccion.setDepartamento(departamento);
 
-        Ciudad ciudad = new Ciudad();
-        ciudad = ciudadRepo.findByNombre(usuarioBasicoDto.getCiudad()).get();
+        Ciudad ciudad = ValidacionesGlobales.obtenerSiExiste(ciudadRepo
+                .findByNombre(usuarioBasicoDto.getCiudad()),
+                "La ciudad que selecciono no se encuentra disponible en el sistema, "
+                + "le invitamos a seleccionar una ciudad que sea valida para continuar con el registro.");
+
         direccion.setCiudad(ciudad);
 
-        Municipio municipio = new Municipio();
-        municipio = municipioRepo.findByNombre(usuarioBasicoDto.getMunicipio()).get();
+        Municipio municipio = ValidacionesGlobales.obtenerSiExiste(municipioRepo
+                .findByNombre(usuarioBasicoDto.getMunicipio()),
+                "El municipio seleccionado no se encuentra disponible en el sistema, "
+                + "le invitamos a seleccionar un municipio que sea valido para continuar el registro");
+
         direccion.setMunicipio(municipio);
 
-        TipoDireccion tipoDireccion = new TipoDireccion();
-        tipoDireccion = tipoDirRepo.findByNombre(usuarioBasicoDto.getTipoDireccion()).get();
+        TipoDireccion tipoDireccion = ValidacionesGlobales.obtenerSiExiste(tipoDirRepo
+                .findByNombre(usuarioBasicoDto.getTipoDireccion()),
+                "El tipo de dirección ingresada no se encuentra disponible en el sistema, le invitamos "
+                + "a seleccionar un tipo de dirección valida, para continuar con el registro");
+
         direccion.setTipoDireccion(tipoDireccion);
         usuario.setDireccion(direccion);
 
-        Genero genero = new Genero();
-        genero = generoRepository.findByNombre(usuarioBasicoDto.getGenero()).get();
+        Genero genero = ValidacionesGlobales.obtenerSiExiste(generoRepository.findByNombre(usuarioBasicoDto.getGenero()),
+                "El tipo de genero ingresado, no se encuentra en el sistema, le invitamos a seleccionar un genero valido"
+                + "para continuar con el registro.");
+
         usuario.setGenero(genero);
 
-        Sexo sexo = new Sexo();
-        sexo = sexoRepo.findByNombre(usuarioBasicoDto.getSexo()).get();
+        Sexo sexo = ValidacionesGlobales.obtenerSiExiste(sexoRepo.findByNombre(usuarioBasicoDto.getSexo()),
+                "El tipo de sexo que ingreso no se encuentra en el sistema");
+
         usuario.setSexo(sexo);
 
         usuario.setFechaNacimiento(usuarioBasicoDto.getFechaNacimiento());
@@ -137,4 +161,7 @@ public class RegistroUsuarioBasico implements RegistrarUsuariobasico {
         return usuarioBasicoDto;
 
     }
+
 }
+
+

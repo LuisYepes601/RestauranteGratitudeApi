@@ -7,7 +7,6 @@ package restaurante_gratitude.demp.Service.ServiceImplement.Login.Registros;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import restaurante_gratitude.demp.ControlExeptions.Execptions.RolNoExisteExecption;
 import restaurante_gratitude.demp.DTOS.Request.Login.Registros.Empleado.ResgistroEmpleadoDto;
 import restaurante_gratitude.demp.DTOS.Request.Login.Registros.RegistroUsuarioBasicoDto;
 import restaurante_gratitude.demp.Entidades.Roles.Rol;
@@ -23,6 +22,7 @@ import restaurante_gratitude.demp.Repositorys.Users.EmpleadoRepository;
 import restaurante_gratitude.demp.Repositorys.Users.MeseroRepository;
 import restaurante_gratitude.demp.Repositorys.Users.UsuarioRepository;
 import restaurante_gratitude.demp.Service.Login.Registro.RegistroEmpleado.RegistroEmpleado;
+import restaurante_gratitude.demp.Validaciones.ValidacionesGlobales;
 
 /**
  *
@@ -58,48 +58,30 @@ public class RegistroEmpleadoService implements RegistroEmpleado {
     @Override
     public ResgistroEmpleadoDto registrarEmpleado(ResgistroEmpleadoDto empleadoDto) {
 
-        Optional<Rol> rol = rolRepository.findByNombre(empleadoDto.getUsuarioBasicoDto().getRol());
+        RegistroUsuarioBasicoDto usuarioBasicoDto = usuarioBasicoService.registrar(empleadoDto.getUsuarioBasicoDto());
 
-        if (rol.isPresent()) {
+        Usuario usuario = ValidacionesGlobales.obtenerSiExiste(usuarioRepository
+                .findByEmail(empleadoDto.getUsuarioBasicoDto().getEmail()),
+                "Error de registro, lo invitamos a registrar sus datos basicos en el sistema, para que se pueda regitrar con el perfil: "
+                + empleadoDto.getUsuarioBasicoDto().getRol());
 
-            Rol rolActual = new Rol();
-            rolActual = rol.get();
+        if (usuario.getRol().getNombre().equalsIgnoreCase("admin")) {
 
-            if (rolActual.getCodigoRol().equalsIgnoreCase(empleadoDto.getCodigoRol())) {
+            Admin admin = new Admin();
+            admin.setUsuario(usuario);
 
-                RegistroUsuarioBasicoDto usuarioBasicoDto = new RegistroUsuarioBasicoDto();
-                usuarioBasicoDto = usuarioBasicoService.registrar(empleadoDto.getUsuarioBasicoDto());
+        } else if (usuario.getRol().getNombre().equalsIgnoreCase("cocinero")) {
 
-                Usuario usuario = new Usuario();
+            Cocinero cocinero = new Cocinero();
+            cocinero.setUsuario(usuario);
+            cocineroRepository.save(cocinero);
 
-                Optional<Usuario> usuarioEncontrado = usuarioRepository.findByEmail(empleadoDto.getUsuarioBasicoDto().getEmail());
-                usuario = usuarioEncontrado.get();
+        } else if (usuario.getRol().getNombre().equalsIgnoreCase("mesero")) {
 
-                if (usuario.getRol().getNombre().equalsIgnoreCase("admin")) {
+            Mesero mesero = new Mesero();
 
-                    Admin admin = new Admin();
-                    admin.setUsuario(usuario);
-
-                } else if (usuario.getRol().getNombre().equalsIgnoreCase("cocinero")) {
-
-                    Cocinero cocinero = new Cocinero();
-                    cocinero.setUsuario(usuario);
-                    cocineroRepository.save(cocinero);
-
-                } else if (usuario.getRol().getNombre().equalsIgnoreCase("mesero")) {
-
-                    Mesero mesero = new Mesero();
-
-                    mesero.setUsuario(usuario);
-                    meseroRepository.save(mesero);
-                }
-
-            } else {
-                throw new RolNoExisteExecption("El codigo del rol que proporciono no esta asociado al rol que selecciono");
-            }
-
-        } else {
-            throw new RolNoExisteExecption("El rol seleccionado no existe en el sistema");
+            mesero.setUsuario(usuario);
+            meseroRepository.save(mesero);
         }
 
         return empleadoDto;

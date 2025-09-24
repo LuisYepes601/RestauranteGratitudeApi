@@ -46,6 +46,8 @@ public class RegistroUsuarioBasicoDto {
     @NotBlank(message = "El campo rol no puede quedar vacio. Por ejemplo Rol: usuario")
     private String rol;
 
+    private String codigoRol;
+
     @NotBlank(message = "Selecciona un pais, el campo pais no puede quedar vacio")
     private String pais;
 
@@ -84,7 +86,12 @@ public class RegistroUsuarioBasicoDto {
     private Date fechaRegistro;
 
     @Autowired
-    public RegistroUsuarioBasicoDto(String primerNombre, String segundoNombre, String primerApellido, String segundoApellido, String telefono, String email, String tipoIdentificacion, String numeroDeIdentificacion, String rol, String pais, String barrio, String departamento, String ciudad, String municipio, String calle, String tipoDireccion, Date fechaNacimiento, String contraseña, String genero, String sexo, Date fechaRegistro) {
+
+    public RegistroUsuarioBasicoDto() {
+    }
+
+    @Autowired
+    public RegistroUsuarioBasicoDto(String primerNombre, String segundoNombre, String primerApellido, String segundoApellido, String telefono, String email, String tipoIdentificacion, String numeroDeIdentificacion, String rol, String codigoRol, String pais, String barrio, String departamento, String ciudad, String municipio, String calle, String tipoDireccion, Date fechaNacimiento, String contraseña, String genero, String sexo, Date fechaRegistro) {
         this.primerNombre = primerNombre;
         this.segundoNombre = segundoNombre;
         this.primerApellido = primerApellido;
@@ -94,6 +101,7 @@ public class RegistroUsuarioBasicoDto {
         this.tipoIdentificacion = tipoIdentificacion;
         this.numeroDeIdentificacion = numeroDeIdentificacion;
         this.rol = rol;
+        this.codigoRol = codigoRol;
         this.pais = pais;
         this.barrio = barrio;
         this.departamento = departamento;
@@ -105,10 +113,7 @@ public class RegistroUsuarioBasicoDto {
         this.contraseña = contraseña;
         this.genero = genero;
         this.sexo = sexo;
-        this.fechaRegistro = new Date();
-    }
-
-    public RegistroUsuarioBasicoDto() {
+        this.fechaRegistro = fechaRegistro;
     }
 
     public String getPrimerNombre() {
@@ -277,6 +282,14 @@ public class RegistroUsuarioBasicoDto {
 
     public void setFechaRegistro(Date fechaRegistro) {
         this.fechaRegistro = fechaRegistro;
+    }
+
+    public String getCodigoRol() {
+        return codigoRol;
+    }
+
+    public void setCodigoRol(String codigoRol) {
+        this.codigoRol = codigoRol;
     }
 
 }

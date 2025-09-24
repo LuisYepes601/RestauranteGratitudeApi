@@ -12,6 +12,7 @@ import restaurante_gratitude.demp.DTOS.Request.Genero.GeneroDto;
 import restaurante_gratitude.demp.Entidades.DatosBasicos.Genero;
 import restaurante_gratitude.demp.Repositorys.DatosBasicos.GeneroRepository;
 import restaurante_gratitude.demp.Service.Genero.GestionarGeneros;
+import restaurante_gratitude.demp.Validaciones.ValidacionesGlobales;
 
 /**
  *
@@ -34,19 +35,14 @@ public class GestionarGeneroService implements GestionarGeneros {
     public void setGeneroRepo(GeneroRepository generoRepo) {
         this.generoRepo = generoRepo;
     }
-    
-    
 
     @Override
     public GeneroDto crearGenero(GeneroDto generoDto) {
 
-        Optional<Genero> optional = generoRepo.findByNombre(generoDto.getNombre());
-
-        if (optional.isPresent()) {
-            throw new DatoYaExistenteException("El genero: " + generoDto.getNombre()
-                    + " no se pudo agregar, por que ya existe en "
-                    + "el sistems, lo invitamos a agregar un genero que no este creado ya.");
-        }
+        ValidacionesGlobales.validarExistencia(generoRepo.findByNombre(generoDto.getNombre()),
+                "El genero: " + generoDto.getNombre()
+                + " no se pudo agregar, por que ya existe en "
+                + "el sistema, lo invitamos a agregar un genero que no este creado ya.");
 
         Genero genero = new Genero();
         genero.setNombre(generoDto.getNombre());

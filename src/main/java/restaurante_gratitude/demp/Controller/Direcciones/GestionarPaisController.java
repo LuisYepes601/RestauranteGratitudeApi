@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import restaurante_gratitude.demp.DTOS.Request.Direccion.PaisDto;
-import restaurante_gratitude.demp.Service.ServiceImplement.Direcciones.CrearPaisService;
+import restaurante_gratitude.demp.Service.ServiceImplement.Direcciones.GestionarPaisService;
 
 /**
  *
@@ -22,16 +22,18 @@ import restaurante_gratitude.demp.Service.ServiceImplement.Direcciones.CrearPais
  */
 @RestController
 @RequestMapping("/pais")
-public class AgregarPais {
+public class GestionarPaisController {
 
-    private CrearPaisService paisService;
+    private GestionarPaisService paisService;
 
     @Autowired
-    public AgregarPais(CrearPaisService paisService) {
-        this.paisService = paisService;
+
+    public GestionarPaisController() {
     }
 
-    public AgregarPais() {
+    @Autowired
+    public GestionarPaisController(GestionarPaisService paisService) {
+        this.paisService = paisService;
     }
 
     @PostMapping("/crear")
@@ -43,5 +45,4 @@ public class AgregarPais {
                 .body(Map.of("Mensaje", "Pais " + paisDto.getNombre().toUpperCase() + " ha sido creado con éxito"));
 
     }
-
 }

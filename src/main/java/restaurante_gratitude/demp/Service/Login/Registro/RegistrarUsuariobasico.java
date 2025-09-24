@@ -13,4 +13,5 @@ import restaurante_gratitude.demp.DTOS.Request.Login.Registros.RegistroUsuarioBa
 public interface RegistrarUsuariobasico {
 
     public RegistroUsuarioBasicoDto registrar(RegistroUsuarioBasicoDto usuarioBasicoDto);
+
 }

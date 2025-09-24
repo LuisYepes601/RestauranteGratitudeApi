@@ -4,14 +4,13 @@
  */
 package restaurante_gratitude.demp.Service.ServiceImplement.Identificacion;
 
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import restaurante_gratitude.demp.ControlExeptions.Execptions.DatoYaExistenteException;
 import restaurante_gratitude.demp.DTOS.Request.Identificacion.TipoIdentificacionDto;
 import restaurante_gratitude.demp.Entidades.DatosBasicos.Identificaciones.TipoIdentificacion;
 import restaurante_gratitude.demp.Repositorys.DatosBasicos.Identificaciones.TipoIdentificacionRepository;
 import restaurante_gratitude.demp.Service.Identificacion.GestionarTipoIdentificacion;
+import restaurante_gratitude.demp.Validaciones.ValidacionesGlobales;
 
 /**
  *
@@ -41,14 +40,10 @@ public class GestionarTipoIdentificacionService implements GestionarTipoIdentifi
     @Override
     public TipoIdentificacionDto agregarTipoIdentificacion(TipoIdentificacionDto tipoIdentificacionDto) {
 
-        Optional<TipoIdentificacion> optional = tipoIdentificacionRepo.findByNombre(tipoIdentificacionDto.getNombre());
-
-        if (optional.isPresent()) {
-
-            throw new DatoYaExistenteException("El tipo de identificación: " + tipoIdentificacionDto.getNombre() + " no se "
-                    + "pudo agregar por que ya existe en el sistema."
-                    + " Lo(a) invitamos a ingresar un tipo de indentificación que no exista");
-        }
+        ValidacionesGlobales.validarExistencia(tipoIdentificacionRepo.findByNombre(tipoIdentificacionDto.getNombre()),
+                "El tipo de identificación: " + tipoIdentificacionDto.getNombre() + " no se "
+                + "pudo agregar por que ya existe en el sistema."
+                + " Lo(a) invitamos a ingresar un tipo de indentificación que no exista");
 
         TipoIdentificacion tipoIdentificacion = new TipoIdentificacion();
 

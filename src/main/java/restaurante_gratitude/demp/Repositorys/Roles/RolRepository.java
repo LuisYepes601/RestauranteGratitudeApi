@@ -18,4 +18,6 @@ public interface RolRepository extends JpaRepository<Rol, Integer> {
 
     Optional<Rol> findByNombre(String nombre);
 
+    Optional<Rol> findBycodigoRol(String codigoRol);
+
 }

@@ -11,15 +11,15 @@ import restaurante_gratitude.demp.ControlExeptions.Execptions.DatoYaExistenteExc
 import restaurante_gratitude.demp.DTOS.Request.Duracion.TipoDuracionDto;
 import restaurante_gratitude.demp.Entidades.TipoDuracion;
 import restaurante_gratitude.demp.Repositorys.TipoDuracionRepository;
-
-import restaurante_gratitude.demp.Service.Duracion.TipoDuracionInterface;
+import restaurante_gratitude.demp.Service.Duracion.GestionarTipoDuracionInterface;
+import restaurante_gratitude.demp.Validaciones.ValidacionesGlobales;
 
 /**
  *
  * @author Usuario
  */
 @Service
-public class TipoDuracionService implements TipoDuracionInterface {
+public class TipoDuracionService implements GestionarTipoDuracionInterface {
 
     private TipoDuracionRepository tipoDuracionRepository;
 
@@ -42,14 +42,9 @@ public class TipoDuracionService implements TipoDuracionInterface {
     @Override
     public TipoDuracionDto agregarTipoDuracion(TipoDuracionDto tipoDuracionDto) {
 
-        Optional<TipoDuracion> optional = tipoDuracionRepository.findByNombre(tipoDuracionDto.getNombre());
-
-        if (optional.isPresent()) {
-
-            throw new DatoYaExistenteException("Error agregacion cancelada. "
-                    + "El tipo de duracion que quiere agregar ya se encuentra en el sistema.");
-
-        }
+        ValidacionesGlobales.validarExistencia(tipoDuracionRepository
+                .findByNombre(tipoDuracionDto.getNombre()), "Agregacion cancelada. "
+                + "El tipo de duracion que quiere agregar ya se encuentra en el sistema.");
 
         TipoDuracion tipoDuracion = new TipoDuracion();
 

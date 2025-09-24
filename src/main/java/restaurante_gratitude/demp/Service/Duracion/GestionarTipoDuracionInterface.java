@@ -10,7 +10,7 @@ import restaurante_gratitude.demp.DTOS.Request.Duracion.TipoDuracionDto;
  *
  * @author Usuario
  */
-public interface TipoDuracionInterface {
+public interface GestionarTipoDuracionInterface {
 
     public TipoDuracionDto agregarTipoDuracion(TipoDuracionDto tipoDuracionDto);
 }
