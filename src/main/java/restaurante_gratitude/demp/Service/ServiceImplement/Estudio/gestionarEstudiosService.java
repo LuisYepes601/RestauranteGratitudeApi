@@ -13,6 +13,7 @@ import restaurante_gratitude.demp.ControlExeptions.Execptions.DatoNoExistenteEcx
 import restaurante_gratitude.demp.ControlExeptions.Execptions.UsuarioNoEncontradoException;
 import restaurante_gratitude.demp.DTOS.Request.Estudios.EstudioDto;
 import restaurante_gratitude.demp.DTOS.Request.Estudios.RegistroInformacionEducativaDto;
+import restaurante_gratitude.demp.DTOS.Response.RegistroInformacionEducativaResposeDto;
 import restaurante_gratitude.demp.Entidades.Estudios.EstadoEstudio;
 import restaurante_gratitude.demp.Entidades.Estudios.Estudio;
 import restaurante_gratitude.demp.Entidades.Estudios.Modalidad;
@@ -92,7 +93,7 @@ public class gestionarEstudiosService implements agregarEstudios {
     }
 
     @Override
-    public RegistroInformacionEducativaDto agregarEstudios(RegistroInformacionEducativaDto informacionEducativaDto) {
+    public RegistroInformacionEducativaResposeDto agregarEstudios(RegistroInformacionEducativaDto informacionEducativaDto) {
 
         Optional<Usuario> usuario = usuarioRepo.findByEmail(informacionEducativaDto.getEmailEmpleado());
 
@@ -154,8 +155,10 @@ public class gestionarEstudiosService implements agregarEstudios {
         }
 
         estudioRepo.saveAll(estudios);
+        RegistroInformacionEducativaResposeDto informacionEducativaResposeDto = new RegistroInformacionEducativaResposeDto();
+        informacionEducativaResposeDto.setMensaje("Informacion educativa rgeistrada con exito.");
 
-        return informacionEducativaDto;
+        return informacionEducativaResposeDto;
     }
 
 }

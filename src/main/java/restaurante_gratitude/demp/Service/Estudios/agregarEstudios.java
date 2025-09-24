@@ -4,9 +4,8 @@
  */
 package restaurante_gratitude.demp.Service.Estudios;
 
-import java.util.List;
-import restaurante_gratitude.demp.DTOS.Request.Estudios.EstudioDto;
 import restaurante_gratitude.demp.DTOS.Request.Estudios.RegistroInformacionEducativaDto;
+import restaurante_gratitude.demp.DTOS.Response.RegistroInformacionEducativaResposeDto;
 
 /**
  *
@@ -14,5 +13,5 @@ import restaurante_gratitude.demp.DTOS.Request.Estudios.RegistroInformacionEduca
  */
 public interface agregarEstudios {
 
-    public RegistroInformacionEducativaDto agregarEstudios(RegistroInformacionEducativaDto informacionEducativaDto);
+    public RegistroInformacionEducativaResposeDto agregarEstudios(RegistroInformacionEducativaDto informacionEducativaDto);
 }

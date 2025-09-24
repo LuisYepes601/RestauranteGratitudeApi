@@ -20,7 +20,7 @@ import restaurante_gratitude.demp.Entidades.Usuarios.Usuario;
 import restaurante_gratitude.demp.Repositorys.InformacionLaboral.ExperienciaRepository;
 import restaurante_gratitude.demp.Repositorys.InformacionLaboral.InformacionLaboralRepository;
 import restaurante_gratitude.demp.Repositorys.Users.UsuarioRepository;
-import restaurante_gratitude.demp.Service.Login.Registro.RegistroEmpleado.RegistroInformacionLaboral;
+import restaurante_gratitude.demp.Service.InformacionLaboral.RegistroInformacionLaboral;
 
 /**
  *

@@ -4,6 +4,7 @@
  */
 package restaurante_gratitude.demp.Service.ServiceImplement.Login.Registros;
 
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import restaurante_gratitude.demp.ControlExeptions.Execptions.CorreoEnUso;
@@ -67,13 +68,13 @@ public class RegistroUsuarioBasico implements RegistrarUsuariobasico {
     @Override
     public RegistroUsuarioBasicoDto registrar(RegistroUsuarioBasicoDto usuarioBasicoDto) {
 
-        Usuario usuario = new Usuario();
+        Optional<Usuario> optional = ususrioRepository.findByEmail(usuarioBasicoDto.getEmail());
 
-        usuario = ususrioRepository.findByEmail(usuarioBasicoDto.getEmail()).get();
-
-        if (usuario != null) {
+        if (optional.isPresent()) {
             throw new CorreoEnUso("Error: Correo asociado a una cuenta existente: Lo invitamos a colocar un correo válido ");
         }
+
+        Usuario usuario = new Usuario();
 
         usuario.setPrimerNombre(usuarioBasicoDto.getPrimerNombre());
         usuario.setSegundoNombre(usuarioBasicoDto.getSegundoNombre());

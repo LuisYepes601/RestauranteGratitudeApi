@@ -9,12 +9,12 @@ package restaurante_gratitude.demp.DTOS.Request.Identificacion;
  * @author User
  */
 public class IngresarIdentificacionDto {
-    
-    private String numero;
-    
-    private IngresarTipoIdentificacionDto tipoIdentificacionDto;
 
-    public IngresarIdentificacionDto(String numero, IngresarTipoIdentificacionDto tipoIdentificacionDto) {
+    private String numero;
+
+    private TipoIdentificacionDto tipoIdentificacionDto;
+
+    public IngresarIdentificacionDto(String numero, TipoIdentificacionDto tipoIdentificacionDto) {
         this.numero = numero;
         this.tipoIdentificacionDto = tipoIdentificacionDto;
     }
@@ -30,11 +30,11 @@ public class IngresarIdentificacionDto {
         this.numero = numero;
     }
 
-    public IngresarTipoIdentificacionDto getTipoIdentificacionDto() {
+    public TipoIdentificacionDto getTipoIdentificacionDto() {
         return tipoIdentificacionDto;
     }
 
-    public void setTipoIdentificacionDto(IngresarTipoIdentificacionDto tipoIdentificacionDto) {
+    public void setTipoIdentificacionDto(TipoIdentificacionDto tipoIdentificacionDto) {
         this.tipoIdentificacionDto = tipoIdentificacionDto;
     }
 

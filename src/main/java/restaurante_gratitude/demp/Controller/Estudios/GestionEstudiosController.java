@@ -4,7 +4,6 @@
  */
 package restaurante_gratitude.demp.Controller.Estudios;
 
-import java.util.Map;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import restaurante_gratitude.demp.ControlExeptions.Execptions.NoDatosQueMostrarExecption;
 import restaurante_gratitude.demp.DTOS.Request.Estudios.RegistroInformacionEducativaDto;
+import restaurante_gratitude.demp.DTOS.Response.RegistroInformacionEducativaResposeDto;
 import restaurante_gratitude.demp.Service.ServiceImplement.Estudio.gestionarEstudiosService;
 
 /**
@@ -51,10 +51,10 @@ public class GestionEstudiosController {
             throw new NoDatosQueMostrarExecption("Error no ha enviado datos");
         }
 
-        RegistroInformacionEducativaDto registroInformacionEducativaDto = estudiosService.agregarEstudios(informacionEducativaDto);
+        RegistroInformacionEducativaResposeDto registroInformacionEducativaDto = estudiosService.agregarEstudios(informacionEducativaDto);
 
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(Map.of("Mensaje", "Estudios agregados al sistema con exito"));
+                .body(registroInformacionEducativaDto);
 
     }
 
