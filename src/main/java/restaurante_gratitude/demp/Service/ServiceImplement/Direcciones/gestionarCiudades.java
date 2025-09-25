@@ -21,16 +21,16 @@ import restaurante_gratitude.demp.Service.Direcciones.AgregarCiudades;
  * @author User
  */
 @Service
-public class AgregarCiudadesService implements AgregarCiudades {
+public class gestionarCiudades implements AgregarCiudades {
 
     private CiudadRepository ciudadRepo;
 
     @Autowired
-    public AgregarCiudadesService(CiudadRepository ciudadRepo) {
+    public gestionarCiudades(CiudadRepository ciudadRepo) {
         this.ciudadRepo = ciudadRepo;
     }
 
-    public AgregarCiudadesService() {
+    public gestionarCiudades() {
     }
 
     public CiudadRepository getCiudadRepo() {

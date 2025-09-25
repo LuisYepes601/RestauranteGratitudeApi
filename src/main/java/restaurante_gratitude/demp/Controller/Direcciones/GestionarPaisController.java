@@ -26,7 +26,7 @@ public class GestionarPaisController {
 
     private GestionarPaisService paisService;
 
-    @Autowired
+
 
     public GestionarPaisController() {
     }
