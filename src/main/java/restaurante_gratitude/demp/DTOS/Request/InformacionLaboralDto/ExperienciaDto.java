@@ -43,6 +43,7 @@ public class ExperienciaDto {
     @Email(message = "Correo inválido")
     private String correo;
 
+    @NotBlank(message = "El campo ceertficado, no puede quedar vacio.")
     private String url_certificado;
 
     public ExperienciaDto(String cargo, String jefeInmediato, String tipoDuracion, String duracion, String institucion, String telefono, String correo, String url_certificado) {
@@ -122,7 +123,5 @@ public class ExperienciaDto {
     public void setUrl_certificado(String url_certificado) {
         this.url_certificado = url_certificado;
     }
-    
-    
 
 }

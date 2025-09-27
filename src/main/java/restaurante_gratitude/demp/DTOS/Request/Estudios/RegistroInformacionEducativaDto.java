@@ -6,6 +6,7 @@ package restaurante_gratitude.demp.DTOS.Request.Estudios;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import java.util.List;
 
 /**
@@ -15,6 +16,8 @@ import java.util.List;
 public class RegistroInformacionEducativaDto {
 
     @Valid
+    @NotNull(message = "La información de estudios no puede quedar vacia."
+            + "Le invitamos a rellenarla.")
     private List<EstudioDto> estudios;
 
     @NotBlank(message = "El campo email del empleado debe estar relleno")

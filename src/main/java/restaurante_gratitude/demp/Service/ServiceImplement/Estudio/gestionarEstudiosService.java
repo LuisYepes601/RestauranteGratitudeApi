@@ -10,6 +10,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import restaurante_gratitude.demp.ControlExeptions.Execptions.DatoNoExistenteEcxeption;
+import restaurante_gratitude.demp.ControlExeptions.Execptions.NoDatosQueMostrarExecption;
 import restaurante_gratitude.demp.ControlExeptions.Execptions.UsuarioNoEncontradoException;
 import restaurante_gratitude.demp.DTOS.Request.Estudios.EstudioDto;
 import restaurante_gratitude.demp.DTOS.Request.Estudios.RegistroInformacionEducativaDto;
@@ -26,6 +27,7 @@ import restaurante_gratitude.demp.Repositorys.EstudiosRepository.ModalidadEstudi
 import restaurante_gratitude.demp.Repositorys.EstudiosRepository.NivelEstudioRepository;
 import restaurante_gratitude.demp.Repositorys.Users.UsuarioRepository;
 import restaurante_gratitude.demp.Service.Estudios.agregarEstudios;
+import restaurante_gratitude.demp.Validaciones.ValidacionesGlobales;
 
 /**
  *
@@ -94,58 +96,48 @@ public class gestionarEstudiosService implements agregarEstudios {
 
     @Override
     public RegistroInformacionEducativaResposeDto agregarEstudios(RegistroInformacionEducativaDto informacionEducativaDto) {
+//VERIFICAMOS QUE HAYA UN USUARIO ASOCIOADO AL EMAIL INGRESADO
+        Usuario usuario = ValidacionesGlobales.obtenerSiExiste(
+                usuarioRepo.findByEmail(informacionEducativaDto.getEmailEmpleado()),
+                "No se pede agregar estudios al usuario ascoiado, por que no existe "
+                + "en el sistema. Le invitamos que ingres un usuario valido");
 
-        Optional<Usuario> usuario = usuarioRepo.findByEmail(informacionEducativaDto.getEmailEmpleado());
-
-        if (usuario.isEmpty()) {
-            throw new UsuarioNoEncontradoException("Usted no se ha registrado, para poder guardar la informacion  en "
-                    + "el sistema primero debe "
-                    + " registrar sus datos basicos");
+        if (informacionEducativaDto.getEstudios().isEmpty()) {
+            throw new NoDatosQueMostrarExecption("No hay estudios que agregar, "
+                    + "le invitamos a agregar estudios a su perfil.");
         }
 
         List<Estudio> estudios = new ArrayList<>();
 
-        Usuario u = usuario.get();
-
-        Empleado empleado = u.getEmpleado();
+        Empleado empleado = usuario.getEmpleado();
 
         for (EstudioDto estudioActaul : informacionEducativaDto.getEstudios()) {
 
             Estudio estudio = new Estudio();
             estudio.setEmpleado(empleado);
 
-            Optional<EstadoEstudio> estado = estadoEstudioRepo.findByNombre(estudioActaul.getEstadoEstudio());
-            if (estado.isEmpty()) {
-                throw new DatoNoExistenteEcxeption("Error: " + estudioActaul.getEstadoEstudio() + " no existe en el sistema. " + " El tipo de estado ingresado no se encuentra en el "
-                        + "sistema intentelo nuevamente");
-            }
-            EstadoEstudio estadoEstudio = new EstadoEstudio();
-            estadoEstudio = estado.get();
+            EstadoEstudio estadoEstudio
+                    = ValidacionesGlobales.obtenerSiExiste(
+                            estadoEstudioRepo.findByNombre(estudioActaul.getEstadoEstudio()),
+                            "Error: " + estudioActaul.getEstadoEstudio() + " no existe en el sistema. "
+                            + " El tipo de estado ingresado no se encuentra en el "
+                            + "sistema intentelo nuevamente");
 
             estudio.setNombre(estudioActaul.getNombre());
             estudio.setFechaInicio(estudioActaul.getFechaInicio());
             estudio.setEstadoEstudio(estadoEstudio);
 
-            Optional<Modalidad> modalidadValid = modalidadRepo.findByNombre(estudioActaul.getModalidad());
-
-            if (modalidadValid.isEmpty()) {
-                throw new DatoNoExistenteEcxeption("No se pudo guardar la información laboral. La modalidad: " + estudioActaul.getModalidad() + " no se encuentra registrada en el sistema");
-            }
-
-            Modalidad modalidad = new Modalidad();
-            modalidad = modalidadValid.get();
+            Modalidad modalidad = ValidacionesGlobales.obtenerSiExiste(
+                    modalidadRepo.findByNombre(estudioActaul.getModalidad()),
+                    "Error: La modalidad: " + estudioActaul.getModalidad() + " no existe e el sistema, "
+                    + "le invitamos a ingresar un valor valido.");
 
             estudio.setModalidad(modalidad);
 
-            Optional<NivelEstudio> nivelOptional = nivelEstudioRepo.findByNombre(estudioActaul.getNivelEstudio());
-
-            if (nivelOptional.isEmpty()) {
-                throw new DatoNoExistenteEcxeption("No se pudo guardar la información laboral. El nivel de estudio: "
-                        + estudioActaul.getNivelEstudio() + " no se encuentra registrado en el sistema");
-
-            }
-            NivelEstudio nivelEstudio = new NivelEstudio();
-            nivelEstudio = nivelOptional.get();
+            NivelEstudio nivelEstudio = ValidacionesGlobales.obtenerSiExiste(
+                    nivelEstudioRepo.findByNombre(estudioActaul.getNivelEstudio()),
+                    "No se pudo guardar la información laboral. El nivel de estudio: "
+                    + estudioActaul.getNivelEstudio() + " no se encuentra registrado en el sistema");
 
             estudio.setNivelEstudio(nivelEstudio);
 
@@ -155,6 +147,7 @@ public class gestionarEstudiosService implements agregarEstudios {
         }
 
         estudioRepo.saveAll(estudios);
+
         RegistroInformacionEducativaResposeDto informacionEducativaResposeDto = new RegistroInformacionEducativaResposeDto();
         informacionEducativaResposeDto.setMensaje("Informacion educativa rgeistrada con exito.");
 

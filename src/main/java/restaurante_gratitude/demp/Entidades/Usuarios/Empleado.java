@@ -4,6 +4,7 @@
  */
 package restaurante_gratitude.demp.Entidades.Usuarios;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -29,18 +30,20 @@ public class Empleado {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "id_usuario")
     private Usuario Usuario;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "id_informacion_laboral")
     private InformacionLaboral informacionLaboral;
 
     @OneToMany(mappedBy = "empleado")
     private List<Estudio> estudios;
 
-    public Empleado(InformacionLaboral informacionLaboral, List<Estudio> estudios) {
+    public Empleado(Usuario Usuario, InformacionLaboral informacionLaboral, List<Estudio> estudios) {
+
+        this.Usuario = Usuario;
         this.informacionLaboral = informacionLaboral;
         this.estudios = estudios;
     }

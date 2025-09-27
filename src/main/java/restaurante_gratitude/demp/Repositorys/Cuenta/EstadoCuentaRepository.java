@@ -4,6 +4,7 @@
  */
 package restaurante_gratitude.demp.Repositorys.Cuenta;
 
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import restaurante_gratitude.demp.Entidades.Cuenta.Estado_cuenta;
@@ -13,6 +14,8 @@ import restaurante_gratitude.demp.Entidades.Cuenta.Estado_cuenta;
  * @author User
  */
 @Repository
-public interface EstadoCuentaRepository extends JpaRepository<Estado_cuenta, Integer>{
+public interface EstadoCuentaRepository extends JpaRepository<Estado_cuenta, Integer> {
+
+    public Optional<Estado_cuenta> findByNombre(String nombre);
 
 }

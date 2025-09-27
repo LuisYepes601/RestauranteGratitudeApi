@@ -62,13 +62,15 @@ public class RegistroEmpleadoService implements RegistroEmpleado {
 
         Usuario usuario = ValidacionesGlobales.obtenerSiExiste(usuarioRepository
                 .findByEmail(empleadoDto.getUsuarioBasicoDto().getEmail()),
-                "Error de registro, lo invitamos a registrar sus datos basicos en el sistema, para que se pueda regitrar con el perfil: "
+                "Error de registro, lo invitamos a registrar sus datos basicos en el sistema,"
+                + " para que se pueda regitrar con el perfil: "
                 + empleadoDto.getUsuarioBasicoDto().getRol());
 
-        if (usuario.getRol().getNombre().equalsIgnoreCase("admin")) {
+        if (usuario.getRol().getNombre().equalsIgnoreCase("administrador")) {
 
             Admin admin = new Admin();
             admin.setUsuario(usuario);
+            adminRepository.save(admin);
 
         } else if (usuario.getRol().getNombre().equalsIgnoreCase("cocinero")) {
 

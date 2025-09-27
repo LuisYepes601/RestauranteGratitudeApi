@@ -17,6 +17,7 @@ import restaurante_gratitude.demp.ControlExeptions.Execptions.DatoYaExistenteExc
 import restaurante_gratitude.demp.ControlExeptions.Execptions.NoDatosQueMostrarExecption;
 import restaurante_gratitude.demp.ControlExeptions.Execptions.PaisYaCreado;
 import restaurante_gratitude.demp.ControlExeptions.Execptions.RolNoExisteExecption;
+import restaurante_gratitude.demp.ControlExeptions.Execptions.RolNoValidoException;
 import restaurante_gratitude.demp.ControlExeptions.Execptions.UsuarioNoEncontradoException;
 
 /**
@@ -114,5 +115,16 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(error);
 
+    }
+
+    @ExceptionHandler(RolNoValidoException.class)
+    public ResponseEntity<?> handlerRolNoValidoException(RolNoValidoException ex) {
+
+        Map<String, String> error = new HashMap<>();
+
+        error.put("Error", ex.getMessage());
+
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(error);
     }
 }

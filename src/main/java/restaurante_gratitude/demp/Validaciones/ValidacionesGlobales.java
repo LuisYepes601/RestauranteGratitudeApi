@@ -7,6 +7,7 @@ package restaurante_gratitude.demp.Validaciones;
 import java.util.Optional;
 import restaurante_gratitude.demp.ControlExeptions.Execptions.DatoNoExistenteEcxeption;
 import restaurante_gratitude.demp.ControlExeptions.Execptions.DatoYaExistenteException;
+import restaurante_gratitude.demp.ControlExeptions.Execptions.RolNoValidoException;
 
 /**
  *
@@ -30,6 +31,12 @@ public class ValidacionesGlobales {
     public static void verificarCodigoRol(String codigoEsperado, String codigoIngresado, String mensajeError) {
         if (!codigoEsperado.equalsIgnoreCase(codigoIngresado)) {
             throw new DatoNoExistenteEcxeption(mensajeError);
+        }
+    }
+
+    public static void esEmpleado(String rol, String mensaje) {
+        if (rol.toLowerCase().equalsIgnoreCase("usuario")) {
+            throw new RolNoValidoException(mensaje);
         }
     }
 }

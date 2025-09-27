@@ -4,6 +4,7 @@
  */
 package restaurante_gratitude.demp.DTOS.Request.Estudios;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.util.Date;
@@ -24,7 +25,7 @@ public class EstudioDto {
     @NotBlank(message = "El campo nombre de institución no puede quedar vacio, lo invitamos a rellenarlo , "
             + "por ejemplo; Nombre de institución: Colombo Americano")
     private String nombreInstitucion;
-
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     @NotNull(message = "La fecha de inicio del programa no puede que dar vacia")
     private Date fechaInicio;
 

@@ -4,6 +4,7 @@
  */
 package restaurante_gratitude.demp.DTOS.Request.Login.Registros;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -29,7 +30,7 @@ public class RegistroUsuarioBasicoDto {
     @NotBlank(message = "El segundo apellido es obligatorio")
     private String segundoApellido;
 
-    @Pattern(regexp = "^\\+?57?\\s?(\\d{1,4}[-\\s]?){2,3}\\d{3,4}$",
+    @Pattern(regexp = "^3\\d{9}$",
             message = "Teléfono inválido. Ingresa un número válido, ejemplo: 3101234567")
     @NotBlank(message = "Rellene el campo Telefono, por ejemplo, Telefono: 3008998311")
     private String telefono;
@@ -69,11 +70,12 @@ public class RegistroUsuarioBasicoDto {
     @NotBlank(message = "Rellena el campo Tipo de dirección, por ejemplo, Tipo de dirección: Casa")
     private String tipoDireccion;
 
+    @JsonFormat(pattern = "dd/MM/yyyy")
     @NotNull(message = "Rellena el campo Fecha de nacimiento, por ejemplo, Fecha de nacimiento: 17/03/2004")
     private Date fechaNacimiento;
 
     @NotBlank(message = "Rellena el campo de Contraseña, por ejemplo, Contraseña: Juan123@")
-    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\\\d)(?=.*[@$!%*?&])[A-Za-z\\\\d@$!%*?&]{8,}$",
+    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$",
             message = "La contraseña debe tener mínimo 8 caracteres, una mayúscula, una minúscula, un número y un carácter especial")
     private String contraseña;
 
@@ -83,9 +85,7 @@ public class RegistroUsuarioBasicoDto {
     @NotBlank(message = "Escoge una opcion de sexo, Por ejemplo Sexo: Masculino")
     private String sexo;
 
-    private Date fechaRegistro;
-
-    @Autowired
+    private Date fechaRegistro = new Date();
 
     public RegistroUsuarioBasicoDto() {
     }

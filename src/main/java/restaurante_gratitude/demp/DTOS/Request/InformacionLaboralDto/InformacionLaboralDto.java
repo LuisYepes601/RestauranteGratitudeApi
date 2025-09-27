@@ -4,7 +4,10 @@
  */
 package restaurante_gratitude.demp.DTOS.Request.InformacionLaboralDto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import java.util.List;
+import javax.validation.Valid;
 
 /**
  *
@@ -12,8 +15,12 @@ import java.util.List;
  */
 public class InformacionLaboralDto {
 
+    @Valid
+    @NotNull(message = "El campo experiencias no puede quedar vacio")
     private List<ExperienciaDto> experiencias;
     private int id;
+    @NotBlank(message = "El campo correo de uusario no puede quedar vacio. Ingrese el correo del "
+            + "uusario para asociarlo a la informacion laboral.")
     private String email;
 
     public InformacionLaboralDto(List<ExperienciaDto> experiencias, int id, String email) {
@@ -21,9 +28,6 @@ public class InformacionLaboralDto {
         this.id = id;
         this.email = email;
     }
-
-   
-    
 
     public InformacionLaboralDto(List<ExperienciaDto> experiencias) {
         this.experiencias = experiencias;
@@ -51,6 +55,5 @@ public class InformacionLaboralDto {
     public String getEmail() {
         return email;
     }
-    
-    
+
 }

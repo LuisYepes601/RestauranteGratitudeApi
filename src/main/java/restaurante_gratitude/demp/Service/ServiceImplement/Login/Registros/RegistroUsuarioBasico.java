@@ -7,6 +7,7 @@ package restaurante_gratitude.demp.Service.ServiceImplement.Login.Registros;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import restaurante_gratitude.demp.DTOS.Request.Login.Registros.RegistroUsuarioBasicoDto;
+import restaurante_gratitude.demp.Entidades.Cuenta.Estado_cuenta;
 import restaurante_gratitude.demp.Entidades.DatosBasicos.Genero;
 import restaurante_gratitude.demp.Entidades.DatosBasicos.Identificaciones.Identificacion;
 import restaurante_gratitude.demp.Entidades.DatosBasicos.Identificaciones.TipoIdentificacion;
@@ -19,17 +20,21 @@ import restaurante_gratitude.demp.Entidades.Direccion.Pais;
 import restaurante_gratitude.demp.Entidades.Direccion.TipoDireccion;
 import restaurante_gratitude.demp.Entidades.Roles.Rol;
 import restaurante_gratitude.demp.Entidades.Usuarios.Usuario;
+import restaurante_gratitude.demp.Repositorys.Cuenta.EstadoCuentaRepository;
 import restaurante_gratitude.demp.Repositorys.DatosBasicos.GeneroRepository;
+import restaurante_gratitude.demp.Repositorys.DatosBasicos.Identificaciones.IdentificacionRepository;
 import restaurante_gratitude.demp.Repositorys.DatosBasicos.Identificaciones.TipoIdentificacionRepository;
 import restaurante_gratitude.demp.Repositorys.DatosBasicos.SexoRepository;
 import restaurante_gratitude.demp.Repositorys.Direccion.CiudadRepository;
 import restaurante_gratitude.demp.Repositorys.Direccion.DepartamentoRepository;
+import restaurante_gratitude.demp.Repositorys.Direccion.DireccionRepository;
 import restaurante_gratitude.demp.Repositorys.Direccion.MunicipioRepository;
 import restaurante_gratitude.demp.Repositorys.Direccion.PaisRepository;
 import restaurante_gratitude.demp.Repositorys.Direccion.TipoDireccionRepository;
 import restaurante_gratitude.demp.Repositorys.Roles.RolRepository;
 import restaurante_gratitude.demp.Repositorys.Users.UsuarioRepository;
 import restaurante_gratitude.demp.Service.Login.Registro.RegistrarUsuariobasico;
+import restaurante_gratitude.demp.Service.ServiceImplement.Config.GestionarEncripatmientoContraseñasService;
 import restaurante_gratitude.demp.Validaciones.ValidacionesGlobales;
 
 /**
@@ -49,9 +54,20 @@ public class RegistroUsuarioBasico implements RegistrarUsuariobasico {
     private GeneroRepository generoRepository;
     private SexoRepository sexoRepo;
     private TipoIdentificacionRepository tipoIdentificacionRepo;
+    private GestionarEncripatmientoContraseñasService encriptarContraseñas;
+    private DireccionRepository direccionRepo;
+    private IdentificacionRepository identificacionRepo;
+    private EstadoCuentaRepository estadoCuentaRepo;
 
     @Autowired
-    public RegistroUsuarioBasico(UsuarioRepository ususrioRepository, RolRepository rolRepo, PaisRepository paisRepo, DepartamentoRepository deptoRepo, CiudadRepository ciudadRepo, MunicipioRepository municipioRepo, TipoDireccionRepository tipoDirRepo, GeneroRepository generoRepository, SexoRepository sexoRepo, TipoIdentificacionRepository tipoIdentificacionRepo) {
+    public RegistroUsuarioBasico(UsuarioRepository ususrioRepository, RolRepository rolRepo,
+            PaisRepository paisRepo, DepartamentoRepository deptoRepo,
+            CiudadRepository ciudadRepo, MunicipioRepository municipioRepo,
+            TipoDireccionRepository tipoDirRepo, GeneroRepository generoRepository,
+            SexoRepository sexoRepo, TipoIdentificacionRepository tipoIdentificacionRepo,
+            GestionarEncripatmientoContraseñasService encriptarContraseñas,
+            DireccionRepository direccionRepo, IdentificacionRepository identificacionRepo,
+            EstadoCuentaRepository estadoCuentaRepo) {
         this.ususrioRepository = ususrioRepository;
         this.rolRepo = rolRepo;
         this.paisRepo = paisRepo;
@@ -62,6 +78,10 @@ public class RegistroUsuarioBasico implements RegistrarUsuariobasico {
         this.generoRepository = generoRepository;
         this.sexoRepo = sexoRepo;
         this.tipoIdentificacionRepo = tipoIdentificacionRepo;
+        this.encriptarContraseñas = encriptarContraseñas;
+        this.direccionRepo = direccionRepo;
+        this.identificacionRepo = identificacionRepo;
+        this.estadoCuentaRepo = estadoCuentaRepo;
     }
 
     @Override
@@ -88,17 +108,21 @@ public class RegistroUsuarioBasico implements RegistrarUsuariobasico {
 
         identificacion.setTipoIdentificacion(tipoIdentificacion);
 
+        identificacionRepo.save(identificacion);
+
         usuario.setIdentificacion(identificacion);
 
         Rol rol = ValidacionesGlobales.obtenerSiExiste(rolRepo.findByNombre(usuarioBasicoDto.getRol()),
                 "El rol: " + usuarioBasicoDto.getRol() + " no se encuentra en el sistema, lo invitamos a seleccionar una"
                 + " opcion correcta, para ccontinuar con el registro.");
 
-        ValidacionesGlobales.verificarCodigoRol(rol.getCodigoRol(),
-                usuarioBasicoDto.getCodigoRol(),
-                "Error de registro, "
-                + "el código de rol que ingreso no es valido para el rol que usted selecciono, "
-                + "lo invitamos a verificar la información ingresada.");
+        if (!usuarioBasicoDto.getRol().toLowerCase().equalsIgnoreCase("usuario")) {
+            ValidacionesGlobales.verificarCodigoRol(rol.getCodigoRol(),
+                    usuarioBasicoDto.getCodigoRol(),
+                    "Error de registro, "
+                    + "el código de rol que ingreso no es valido para el rol que usted selecciono, "
+                    + "lo invitamos a verificar la información ingresada.");
+        }
 
         usuario.setRol(rol);
 
@@ -139,6 +163,8 @@ public class RegistroUsuarioBasico implements RegistrarUsuariobasico {
                 + "a seleccionar un tipo de dirección valida, para continuar con el registro");
 
         direccion.setTipoDireccion(tipoDireccion);
+        direccionRepo.save(direccion);
+
         usuario.setDireccion(direccion);
 
         Genero genero = ValidacionesGlobales.obtenerSiExiste(generoRepository.findByNombre(usuarioBasicoDto.getGenero()),
@@ -154,7 +180,18 @@ public class RegistroUsuarioBasico implements RegistrarUsuariobasico {
 
         usuario.setFechaNacimiento(usuarioBasicoDto.getFechaNacimiento());
         usuario.setFechaRegistro(usuarioBasicoDto.getFechaRegistro());
-        usuario.setContraseña(usuarioBasicoDto.getContraseña());
+
+        usuario.setContraseña(encriptarContraseñas
+                .encriptarContraseñas(usuarioBasicoDto.getContraseña()));
+
+        String estado_cuenta = "Activa";
+
+        Estado_cuenta estado_cuenta1 = ValidacionesGlobales.obtenerSiExiste(estadoCuentaRepo
+                .findByNombre(estado_cuenta),
+                "El estado de cuenta: " + estado_cuenta
+                + " no existe en el sistema, le einvitamos a ingresar o valor valido.");
+
+        usuario.setEstado_cuenta(estado_cuenta1);
 
         ususrioRepository.save(usuario);
 
@@ -163,5 +200,3 @@ public class RegistroUsuarioBasico implements RegistrarUsuariobasico {
     }
 
 }
-
-
