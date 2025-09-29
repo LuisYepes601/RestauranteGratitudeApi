@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import restaurante_gratitude.demp.ControlExeptions.Execptions.ContraseñaIncorrectaExecption;
 import restaurante_gratitude.demp.ControlExeptions.Execptions.CorreoEnUso;
 import restaurante_gratitude.demp.ControlExeptions.Execptions.DatoNoExistenteEcxeption;
 import restaurante_gratitude.demp.ControlExeptions.Execptions.DatoYaExistenteException;
@@ -126,5 +127,17 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.status(HttpStatus.CONFLICT)
                 .body(error);
+    }
+
+    @ExceptionHandler(ContraseñaIncorrectaExecption.class)
+    public ResponseEntity<?> handlerContraseñaIncorrectaExecption(ContraseñaIncorrectaExecption ex) {
+
+        Map<String, String> error = new HashMap<>();
+
+        error.put("Error", ex.getMessage());
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(error);
+
     }
 }

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import restaurante_gratitude.demp.DTOS.Request.Cuenta.EstadoCuentaDto;
-import restaurante_gratitude.demp.Service.ServiceImplement.Cuenta.GestionarEstadoDeCuentaService;
+import restaurante_gratitude.demp.Service.ServiceImplement.Cuenta.Contraseña.GestionarEstadoDeCuentaService;
 
 /**
  *

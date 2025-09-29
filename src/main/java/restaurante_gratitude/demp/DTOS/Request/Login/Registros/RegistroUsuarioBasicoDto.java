@@ -75,8 +75,9 @@ public class RegistroUsuarioBasicoDto {
     private Date fechaNacimiento;
 
     @NotBlank(message = "Rellena el campo de Contraseña, por ejemplo, Contraseña: Juan123@")
-    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$",
-            message = "La contraseña debe tener mínimo 8 caracteres, una mayúscula, una minúscula, un número y un carácter especial")
+    @Pattern(regexp = "^(?=\\S)^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$",
+            message = "La contraseña debe tener mínimo 8 caracteres, una mayúscula, una minúscula, un número "
+            + "y un carácter especial")
     private String contraseña;
 
     @NotBlank(message = "Escoge una opcion de genero, Por ejemplo Genero: Heterosexual")

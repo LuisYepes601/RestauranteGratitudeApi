@@ -39,4 +39,5 @@ public class ValidacionesGlobales {
             throw new RolNoValidoException(mensaje);
         }
     }
+
 }

@@ -35,6 +35,7 @@ import restaurante_gratitude.demp.Repositorys.Roles.RolRepository;
 import restaurante_gratitude.demp.Repositorys.Users.UsuarioRepository;
 import restaurante_gratitude.demp.Service.Login.Registro.RegistrarUsuariobasico;
 import restaurante_gratitude.demp.Service.ServiceImplement.Config.GestionarEncripatmientoContraseñasService;
+import restaurante_gratitude.demp.Service.ServiceImplement.Cuenta.Contraseña.ValidarContraseñasService;
 import restaurante_gratitude.demp.Validaciones.ValidacionesGlobales;
 
 /**
@@ -180,6 +181,10 @@ public class RegistroUsuarioBasico implements RegistrarUsuariobasico {
 
         usuario.setFechaNacimiento(usuarioBasicoDto.getFechaNacimiento());
         usuario.setFechaRegistro(usuarioBasicoDto.getFechaRegistro());
+
+        ValidarContraseñasService validarContraseñasService = new ValidarContraseñasService();
+
+        validarContraseñasService.validarContraseña(usuarioBasicoDto.getContraseña());
 
         usuario.setContraseña(encriptarContraseñas
                 .encriptarContraseñas(usuarioBasicoDto.getContraseña()));

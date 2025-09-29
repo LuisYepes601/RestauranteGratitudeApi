@@ -42,13 +42,55 @@ public class HistorialSesiones {
     @Column(nullable = false)
     private String direcionIp;
 
-    public HistorialSesiones(int id, Usuario usuario, Date fechaInicio, Date fechaFin, String direcionIp) {
+    @Column(nullable = false)
+    private String userArgent;
+
+    @Column(nullable = false)
+    private String metodo;
+
+    @Column(nullable = false)
+    private String endpoint;
+
+    @Column(nullable = false)
+    private String protocolo;
+
+    @Column(nullable = false)
+    private String host;
+
+    @Column(nullable = false)
+    private int port;
+
+    @Column(nullable = false)
+    private String pais;
+
+    @Column(nullable = false)
+    private String departamento;
+
+    @Column(nullable = false)
+    private String ciudad;
+
+    @Column(nullable = false)
+    private String timeZone;
+
+    public HistorialSesiones(int id, Usuario usuario, Date fechaInicio, Date fechaFin, String direcionIp, String userArgent, String metodo, String endpoint, String protocolo, String host, int port, String pais, String departamento, String ciudad, String timeZone) {
         this.id = id;
         this.usuario = usuario;
         this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;
         this.direcionIp = direcionIp;
+        this.userArgent = userArgent;
+        this.metodo = metodo;
+        this.endpoint = endpoint;
+        this.protocolo = protocolo;
+        this.host = host;
+        this.port = port;
+        this.pais = pais;
+        this.departamento = departamento;
+        this.ciudad = ciudad;
+        this.timeZone = timeZone;
     }
+
+    
 
     public HistorialSesiones() {
     }
@@ -92,6 +134,87 @@ public class HistorialSesiones {
     public void setDirecionIp(String direcionIp) {
         this.direcionIp = direcionIp;
     }
-    
-    
+
+    public String getUserArgent() {
+        return userArgent;
+    }
+
+    public void setUserArgent(String userArgent) {
+        this.userArgent = userArgent;
+    }
+
+    public String getMetodo() {
+        return metodo;
+    }
+
+    public void setMetodo(String metodo) {
+        this.metodo = metodo;
+    }
+
+    public String getEndpoint() {
+        return endpoint;
+    }
+
+    public void setEndpoint(String endpoint) {
+        this.endpoint = endpoint;
+    }
+
+    public String getProtocolo() {
+        return protocolo;
+    }
+
+    public void setProtocolo(String protocolo) {
+        this.protocolo = protocolo;
+    }
+
+    public String getHost() {
+        return host;
+    }
+
+    public void setHost(String host) {
+        this.host = host;
+    }
+
+    public int getPort() {
+        return port;
+    }
+
+    public void setPort(int port) {
+        this.port = port;
+    }
+
+   
+
+    public String getPais() {
+        return pais;
+    }
+
+    public void setPais(String pais) {
+        this.pais = pais;
+    }
+
+    public String getDepartamento() {
+        return departamento;
+    }
+
+    public void setDepartamento(String departamento) {
+        this.departamento = departamento;
+    }
+
+    public String getCiudad() {
+        return ciudad;
+    }
+
+    public void setCiudad(String ciudad) {
+        this.ciudad = ciudad;
+    }
+
+    public String getTimeZone() {
+        return timeZone;
+    }
+
+    public void setTimeZone(String timeZone) {
+        this.timeZone = timeZone;
+    }
+
 }
