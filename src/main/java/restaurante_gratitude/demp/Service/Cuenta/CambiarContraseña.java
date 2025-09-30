@@ -4,13 +4,13 @@
  */
 package restaurante_gratitude.demp.Service.Cuenta;
 
+import restaurante_gratitude.demp.DTOS.Request.Cuenta.CambiarContraseñaDto;
+
 /**
  *
- * @author Usuario
+ * @author User
  */
-public interface ValidarPoliticasDeContraseñas {
-
-    public boolean validarFormatoContraseña(String password);
+public interface CambiarContraseña {
     
-    public boolean  validarIgualdadContraseñasEcriptadas(String contraseñaOriginal, String contraseñaEncriptada);
+    public void cambiarContraseña(CambiarContraseñaDto cambiarContraseñaDto);
 }

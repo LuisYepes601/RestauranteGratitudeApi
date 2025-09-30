@@ -27,42 +27,42 @@ import restaurante_gratitude.demp.Service.GestionPdfs.GestionarReportesPdf;
  */
 @Service
 public class GestionarReportesPdfservice implements GestionarReportesPdf {
-    
+
     private UsuarioRepository usuarioRepo;
-    
+
     @Override
     public byte[] usuariosRegistrados() {
-        
+
         List<Usuario> usuarios = usuarioRepo.findAll();
-        
+
         if (usuarios.isEmpty()) {
             throw new NoDatosQueMostrarExecption(
                     "Error lista vacia,  no hay usuarios registrados aun.");
         }
-        
+
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        
+
         PdfWriter pdfWriter = new PdfWriter(baos);
-        
+
         PdfDocument pdfDocument = new PdfDocument(pdfWriter);
-        
+
         Document document = new Document(pdfDocument, PageSize.LEGAL.rotate());
-        
+
         Table table = new Table(6);
-        
+
         table.addCell(new Cell().add(new Paragraph("Nombre")
                 .setFontSize(13)))
                 .setBold()
                 .setTextAlignment(TextAlignment.JUSTIFIED);
-        
+
         table.addCell(new Cell().add(new Paragraph("Primer Apellido")));
         table.addCell(new Cell().add(new Paragraph("Correo")));
         table.addCell(new Cell().add(new Paragraph("Estado de cuenta")));
         table.addCell(new Cell().add(new Paragraph("Rol")));
         table.addCell(new Cell().add(new Paragraph("Fecha de registro")));
-        
+
         for (Usuario usuario : usuarios) {
-            
+
             table.addCell(new Cell().add(new Paragraph(usuario.getPrimerNombre())));
             table.addCell(new Cell().add(new Paragraph(usuario.getPrimerApellido())));
             table.addCell(new Cell().add(new Paragraph(usuario.getEmail())));
@@ -70,12 +70,12 @@ public class GestionarReportesPdfservice implements GestionarReportesPdf {
             table.addCell(new Cell().add(new Paragraph(usuario.getRol().getNombre())));
             table.addCell(new Cell().add(new Paragraph(usuario.getFechaRegistro().toString())));
         }
-        
+
         document.add(table);
-        
+
         document.close();
-        
+
         return baos.toByteArray();
     }
-    
+
 }

@@ -5,6 +5,7 @@
 package restaurante_gratitude.demp.Service.ServiceImplement.Login.InicioDeSesionService;
 
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import restaurante_gratitude.demp.ControlExeptions.Execptions.ContraseñaIncorrectaExecption;
@@ -15,6 +16,7 @@ import restaurante_gratitude.demp.Entidades.Usuarios.Usuario;
 import restaurante_gratitude.demp.Repositorys.HistorialSesiones.HistorialSesionesReepository;
 import restaurante_gratitude.demp.Repositorys.Users.UsuarioRepository;
 import restaurante_gratitude.demp.Service.Login.InicioDeSesion.InicicioDeSesion;
+import restaurante_gratitude.demp.Service.ServiceImplement.Cuenta.Contraseña.ValidarContraseñasService;
 import restaurante_gratitude.demp.Service.ServiceImplement.Sesiones.GestionarSesionesSevice;
 import restaurante_gratitude.demp.Validaciones.ValidacionesGlobales;
 
@@ -30,6 +32,49 @@ public class InicioDeSesionService implements InicicioDeSesion {
     private HistorialSesionesReepository historialSesionRepo;
     private GestionarSesionesSevice sesionesService;
 
+    @Autowired
+    public InicioDeSesionService(UsuarioRepository usuarioRepo, BCryptPasswordEncoder passwordEncoder, HistorialSesionesReepository historialSesionRepo, GestionarSesionesSevice sesionesService) {
+        this.usuarioRepo = usuarioRepo;
+        this.passwordEncoder = passwordEncoder;
+        this.historialSesionRepo = historialSesionRepo;
+        this.sesionesService = sesionesService;
+    }
+
+    public InicioDeSesionService() {
+    }
+
+    public UsuarioRepository getUsuarioRepo() {
+        return usuarioRepo;
+    }
+
+    public void setUsuarioRepo(UsuarioRepository usuarioRepo) {
+        this.usuarioRepo = usuarioRepo;
+    }
+
+    public BCryptPasswordEncoder getPasswordEncoder() {
+        return passwordEncoder;
+    }
+
+    public void setPasswordEncoder(BCryptPasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    public HistorialSesionesReepository getHistorialSesionRepo() {
+        return historialSesionRepo;
+    }
+
+    public void setHistorialSesionRepo(HistorialSesionesReepository historialSesionRepo) {
+        this.historialSesionRepo = historialSesionRepo;
+    }
+
+    public GestionarSesionesSevice getSesionesService() {
+        return sesionesService;
+    }
+
+    public void setSesionesService(GestionarSesionesSevice sesionesService) {
+        this.sesionesService = sesionesService;
+    }
+
     @Override
     public LoginResponseDto iniciarSesion(InicioSesionDto inicioSesionDto, HttpServletRequest httpServletRequest) {
 //VALIDAR EXISTENCIA DE USUARIO SEGN CREDENCIA INGRESADA
@@ -40,15 +85,11 @@ public class InicioDeSesionService implements InicicioDeSesion {
                 + "Le invitamos a ingresar un usuario valido.");
 
         //VALIDAR QUE EL USUARIO SI ESTE ASOCIADO A LA CONTRASEÑA DADA
-        boolean validacion = passwordEncoder.matches(inicioSesionDto.getContrasenia(),
+        ValidarContraseñasService validarContraseñasService = new ValidarContraseñasService();
+
+        validarContraseñasService.validarIgualdadContraseñasEcriptadas(
+                inicioSesionDto.getContrasenia(),
                 usuario.getContraseña());
-
-        if (!validacion) {
-
-            throw new ContraseñaIncorrectaExecption(
-                    "Error no se puede iniciar sesion porque la contraseña ingresada no es correcta."
-                    + "Le invitamos a ingresar la contrraseña valida a a la cuenta");
-        }
 
         HistorialSesiones historialSesiones = sesionesService.agregarRegistroSesion(
                 httpServletRequest,

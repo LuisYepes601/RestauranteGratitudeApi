@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <title>Cambio de Contraseña</title>
+    </head>
+    <body style="font-family: Arial, sans-serif; background-color: #f4f4f7; padding: 20px;">
+        <div style="max-width: 600px; margin: auto; background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+            <div style="background-color: #4CAF50; padding: 20px; text-align: center; color: white;">
+                <h1 style="margin: 0;">Cambio de contraseña exitoso</h1>
+            </div>
+            <div style="padding: 20px; color: #333;">
+                <p>Hola <b th:text="${nombreUsuario}">Usuario</b>,</p>
+                <p>Queremos informarte que tu contraseña ha sido cambiada correctamente. ✅</p>
+                <p>Si <b>no realizaste</b> este cambio, por favor contacta a nuestro equipo de soporte inmediatamente.</p>
+                <div style="text-align: center; margin: 30px 0;">
+                    <a th:href="@{https://tusitio.com/soporte}"
+                       style="background-color: #4CAF50; color: white; padding: 12px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;">
+                        Contactar soporte
+                    </a>
+                </div>
+                <p style="font-size: 12px; color: #888; text-align: center;">
+                    Este correo es generado automáticamente, por favor no respondas directamente.
+                </p>
+            </div>
+        </div>
+    </body>
+</html>

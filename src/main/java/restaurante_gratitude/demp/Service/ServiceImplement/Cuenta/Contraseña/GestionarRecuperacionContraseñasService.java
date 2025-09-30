@@ -56,7 +56,7 @@ public class GestionarRecuperacionContraseñasService implements GestionarRecupe
     public RecuperarContraseñaByGmailDto recuperarContraseñaPorEmail(RecuperarContraseñaByGmailDto contraseñaByGmailDto) {
 
         Usuario usuario = ValidacionesGlobales.obtenerSiExiste(usuarioRepo
-                .findByNumeroDeIdentificacion(contraseñaByGmailDto.getGmail()),
+                .findByEmail(contraseñaByGmailDto.getGmail()),
                 "El correo ingresado no esta asociado  a una cuenta, "
                 + "le invitamos a ingresar un correo valido.");
 
@@ -96,7 +96,7 @@ public class GestionarRecuperacionContraseñasService implements GestionarRecupe
 
         ValidarContraseñasService validarContraseñasService = new ValidarContraseñasService();
 
-        validarContraseñasService.validarContraseña(contraseñaNueva);
+        validarContraseñasService.validarFormatoContraseña(contraseñaNueva);
 
         String contraseñaEncriptada = encriptamientoContraseña
                 .encriptarContraseñas(contraseñaNueva);

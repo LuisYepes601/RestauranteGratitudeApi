@@ -11,6 +11,8 @@ import org.passay.PasswordData;
 import org.passay.PasswordValidator;
 import org.passay.RuleResult;
 import org.passay.WhitespaceRule;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
 import restaurante_gratitude.demp.ControlExeptions.Execptions.ContraseñaIncorrectaExecption;
 import restaurante_gratitude.demp.Service.Cuenta.ValidarPoliticasDeContraseñas;
 
@@ -18,10 +20,13 @@ import restaurante_gratitude.demp.Service.Cuenta.ValidarPoliticasDeContraseñas;
  *
  * @author Usuario
  */
+@Service
 public class ValidarContraseñasService implements ValidarPoliticasDeContraseñas {
 
+    private BCryptPasswordEncoder passwordEncoder;
+
     @Override
-    public boolean validarContraseña(String password) {
+    public boolean validarFormatoContraseña(String password) {
 
         LengthRule lonLengthRule = new LengthRule(8, 30);
 
@@ -48,6 +53,20 @@ public class ValidarContraseñasService implements ValidarPoliticasDeContraseña
                     + " requisitos solicitados, le invitamos a ingresar una contraseña valida.");
         }
         return true;
+    }
+
+    @Override
+    public boolean validarIgualdadContraseñasEcriptadas(String contraseñaOriginal, String contraseñaEncriptada) {
+
+        boolean isValid = passwordEncoder.matches(contraseñaOriginal, contraseñaEncriptada);
+
+        if (!isValid) {
+            throw new ContraseñaIncorrectaExecption("Error, no se pudo cambiar la contraseña, "
+                    + "la contraseña actual, no es correcta.");
+        }
+
+        return true;
+
     }
 
 }

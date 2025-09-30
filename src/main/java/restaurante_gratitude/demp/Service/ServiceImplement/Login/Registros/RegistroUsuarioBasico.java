@@ -184,7 +184,7 @@ public class RegistroUsuarioBasico implements RegistrarUsuariobasico {
 
         ValidarContraseñasService validarContraseñasService = new ValidarContraseñasService();
 
-        validarContraseñasService.validarContraseña(usuarioBasicoDto.getContraseña());
+        validarContraseñasService.validarFormatoContraseña( usuarioBasicoDto.getContraseña());
 
         usuario.setContraseña(encriptarContraseñas
                 .encriptarContraseñas(usuarioBasicoDto.getContraseña()));

@@ -4,9 +4,16 @@
  */
 package restaurante_gratitude.demp.Service.ServiceImplement.GestionarCorreos;
 
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import restaurante_gratitude.demp.Service.CorreosGestion.GestionarCorreos;
 
@@ -16,48 +23,109 @@ import restaurante_gratitude.demp.Service.CorreosGestion.GestionarCorreos;
  */
 @Service
 public class GestionarCorreosService implements GestionarCorreos {
-
+    
     private JavaMailSender mailSender;
-
+    
+    @Autowired
+    public GestionarCorreosService(JavaMailSender mailSender) {
+        this.mailSender = mailSender;
+    }
+    
+    public GestionarCorreosService() {
+    }
+    
+    public JavaMailSender getMailSender() {
+        return mailSender;
+    }
+    
+    public void setMailSender(JavaMailSender mailSender) {
+        this.mailSender = mailSender;
+    }
+    
     @Override
     public String enviarCorreoSimple(String para, String remitente, String asunto, String body) {
-
+        
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
-
+        
         simpleMailMessage.setFrom(remitente);
         simpleMailMessage.setTo(para);
         simpleMailMessage.setSubject(asunto);
         simpleMailMessage.setText(body);
         simpleMailMessage.setReplyTo(remitente);
-
+        
         mailSender.send(simpleMailMessage);
-
+        
         String mensaje = "El correo ha sido enviado con exito a la siguiente dirección: " + para;
-
+        
         return mensaje;
     }
-
+    
     @Override
     public String enviarCorreoSimpleManyDestinatarios(List<String> destinatarios, String remitente, String asunto, String body) {
-
+        
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
-
+        
         simpleMailMessage.setBcc(destinatarios.toArray(new String[0]));
         simpleMailMessage.setFrom(remitente);
         simpleMailMessage.setSubject(asunto);
         simpleMailMessage.setText(body);
         simpleMailMessage.setReplyTo(remitente);
-
+        
         mailSender.send(simpleMailMessage);
-
+        
         String mensaje = "Los correos han sido enviado con exito.";
-
+        
         return mensaje;
     }
-
+    
     @Override
-    public String enviarCorreoConFormatoRobusto(String para, String asunto, String body, String remitente) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public String enviarCorreoConFormatoRobusto(
+            String para, String asunto, String body, String remitente, ByteArrayResource arrayResource) {
+        
+        MimeMessage message = mailSender.createMimeMessage();
+        
+        try {
+            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(message, true, "UTF-8");
+            
+            mimeMessageHelper.setTo(para);
+            mimeMessageHelper.setFrom(remitente);
+            mimeMessageHelper.setSubject(asunto);
+            mimeMessageHelper.setText(body, true);
+            
+            mimeMessageHelper.setReplyTo(remitente);
+            
+            mimeMessageHelper.addAttachment(
+                    "Reporte usuarios registrados.pdf",
+                    arrayResource);
+            
+            mailSender.send(message);
+            
+        } catch (MessagingException ex) {
+            Logger.getLogger(GestionarCorreosService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return "Correo enviado con exito";
     }
-
+    
+    @Override
+    public void enviarCorreoConFormatoHtml(String para, String asunto, String body, String remitente) {
+        
+        MimeMessage mimeMessage = mailSender.createMimeMessage();
+        
+        try {
+            MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage, "UTF-8");
+            messageHelper.setTo(para);
+            messageHelper.setFrom(remitente);
+            messageHelper.setReplyTo(remitente);
+            messageHelper.setSubject(asunto);
+            messageHelper.setText(body, true);
+            
+            mailSender.send(mimeMessage);
+            
+        } catch (MessagingException ex) {
+            Logger.getLogger(GestionarCorreosService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
+    
 }

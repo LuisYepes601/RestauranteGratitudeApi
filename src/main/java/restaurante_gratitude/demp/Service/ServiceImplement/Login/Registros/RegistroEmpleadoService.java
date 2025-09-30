@@ -4,12 +4,10 @@
  */
 package restaurante_gratitude.demp.Service.ServiceImplement.Login.Registros;
 
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import restaurante_gratitude.demp.DTOS.Request.Login.Registros.Empleado.ResgistroEmpleadoDto;
 import restaurante_gratitude.demp.DTOS.Request.Login.Registros.RegistroUsuarioBasicoDto;
-import restaurante_gratitude.demp.Entidades.Roles.Rol;
 import restaurante_gratitude.demp.Entidades.Usuarios.Admin;
 import restaurante_gratitude.demp.Entidades.Usuarios.Cocinero;
 import restaurante_gratitude.demp.Entidades.Usuarios.Mesero;
