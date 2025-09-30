@@ -4,11 +4,14 @@
  */
 package restaurante_gratitude.demp.Service.GestionPdfs;
 
+import java.util.List;
+import restaurante_gratitude.demp.Entidades.Usuarios.Usuario;
+
 /**
  *
  * @author User
  */
-public interface GestionarPdfs {
+public interface GestionarReportesPdf {
 
-    public byte[] crearPdf();
+    public byte[] usuariosRegistrados();
 }
