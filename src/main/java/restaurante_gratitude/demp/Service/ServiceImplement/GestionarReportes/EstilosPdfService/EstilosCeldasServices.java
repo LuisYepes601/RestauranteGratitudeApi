@@ -10,7 +10,7 @@ import com.itextpdf.layout.properties.TextAlignment;
 import java.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import restaurante_gratitude.demp.Service.ServiceImplement.GestionarFuentes.FontsService;
+import restaurante_gratitude.demp.Service.ServiceImplement.GestionarFuentes.FontsServicePdf.FontServicePdf;
 
 /**
  *
@@ -19,11 +19,19 @@ import restaurante_gratitude.demp.Service.ServiceImplement.GestionarFuentes.Font
 @Service
 public class EstilosCeldasServices {
 
-    private FontsService fontsService;
+    FontServicePdf fontServicePdf;
 
     @Autowired
-    public EstilosCeldasServices(FontsService fontsService) {
-        this.fontsService = fontsService;
+    public EstilosCeldasServices(FontServicePdf fontServicePdf) {
+        this.fontServicePdf = fontServicePdf;
+    }
+
+    public FontServicePdf getFontServicePdf() {
+        return fontServicePdf;
+    }
+
+    public void setFontServicePdf(FontServicePdf fontServicePdf) {
+        this.fontServicePdf = fontServicePdf;
     }
 
     public EstilosCeldasServices() {
@@ -37,7 +45,26 @@ public class EstilosCeldasServices {
                 .setTextAlignment(TextAlignment.CENTER)
                 .setBackgroundColor(new DeviceRgb(212, 212, 212))
                 .setFontColor(new DeviceRgb(0, 0, 0))
-                .setFont(fontsService.Roboto());
+                .setFont(fontServicePdf.Roboto());
+
+    }
+
+    public Cell titularesGaramnod() {
+
+        return new Cell()
+                .setFont(fontServicePdf.Garamond())
+                .setFontSize(14)
+                .setBold()
+                .setTextAlignment(TextAlignment.CENTER)
+                .setFontColor(new DeviceRgb(0, 0, 0))
+                .setBackgroundColor(new DeviceRgb(212, 212, 212));
+
+    }
+    
+    public Cell celdasBasicas(){
+        return new Cell()
+                .setFont(fontServicePdf.robotoRegular())
+                .setFontSize(12);
 
     }
 }

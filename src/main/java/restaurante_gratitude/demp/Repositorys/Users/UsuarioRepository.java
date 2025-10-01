@@ -18,6 +18,6 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
 
     public Optional<Usuario> findByEmail(String email);
 
-    public Optional<Usuario> findByNumeroDeIdentificacion(String numero);
+    Optional<Usuario> findByIdentificacion_Numero(String numero);
 
 }

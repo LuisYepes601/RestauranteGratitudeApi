@@ -4,11 +4,6 @@
  */
 package restaurante_gratitude.demp.Service.ServiceImplement.GestionarFuentes;
 
-import com.itextpdf.io.font.FontProgram;
-import com.itextpdf.io.font.FontProgramFactory;
-import com.itextpdf.io.font.PdfEncodings;
-import com.itextpdf.kernel.font.PdfFont;
-import com.itextpdf.kernel.font.PdfFontFactory;
 import java.io.IOException;
 import java.io.InputStream;
 import org.springframework.stereotype.Service;
@@ -24,21 +19,58 @@ public class FontsService {
     public FontsService() {
     }
 
-    public PdfFont Roboto() throws IOException {
+    public byte[] Roboto() {
+
         InputStream inputStream = getClass().getResourceAsStream(
-                "src\\main\\resources\\Fonts\\Roboto\\Roboto-VariableFont_wdth,wght.ttf");
+                "Fonts\\Roboto\\Roboto-VariableFont_wdth,wght.ttf");
 
         if (inputStream == null) {
-            throw new DatoNoExistenteEcxeption("Error al cargar fuente, "
-                    + "la fuente no se encuentra disponible en estos momentos, "
-                    + "lo invitamos a intentarlo nuevamente");
+            throw new DatoNoExistenteEcxeption("El tipo de fuente no se encuentra disponible en "
+                    + "este momento lo invitamos a intentarlo nuevamente.");
+        }
+        byte[] fuente;
+
+        try {
+            fuente = inputStream.readAllBytes();
+        } catch (IOException ex) {
+            throw new DatoNoExistenteEcxeption("El tipo de fuente no se encuentra disponible en "
+                    + "este momento lo invitamos a intentarlo nuevamente.");
         }
 
-        FontProgram fontProgram = FontProgramFactory.createFont(inputStream.readAllBytes());
+        return fuente;
+    }
 
-        PdfFont roboto = PdfFontFactory.createFont(fontProgram, PdfEncodings.WINANSI);
+    public byte[] robotoRegular() {
+        InputStream inputStream = getClass().getResourceAsStream("Fonts\\Roboto\\static\\Roboto-Regular.ttf");
 
-        return roboto;
+        try {
+            byte[] fuente = inputStream.readAllBytes();
+            return fuente;
 
+        } catch (IOException ex) {
+            throw new DatoNoExistenteEcxeption("El tipo de fuente no se encuentra disponible en "
+                    + "este momento lo invitamos a intentarlo nuevamente.");
+        }
+    }
+
+    public byte[] Garamond() {
+
+        InputStream inputStream = getClass().getResourceAsStream("Fonts\\EB_Garamond\\EBGaramond-VariableFont_wght.ttf");
+
+        if (inputStream == null) {
+            throw new DatoNoExistenteEcxeption("El tipo de fuente no se encuentra disponible en "
+                    + "este momento lo invitamos a intentarlo nuevamente.");
+        }
+
+        byte[] fuente;
+
+        try {
+            fuente = inputStream.readAllBytes();
+        } catch (IOException ex) {
+            throw new DatoNoExistenteEcxeption("El tipo de fuente no se encuentra disponible en "
+                    + "este momento lo invitamos a intentarlo nuevamente.");
+        }
+
+        return fuente;
     }
 }

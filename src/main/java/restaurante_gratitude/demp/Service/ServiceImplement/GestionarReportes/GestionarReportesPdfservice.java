@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import restaurante_gratitude.demp.ControlExeptions.Execptions.NoDatosQueMostrarExecption;
 import restaurante_gratitude.demp.Entidades.Usuarios.Usuario;
@@ -31,6 +32,16 @@ import restaurante_gratitude.demp.Service.ServiceImplement.GestionarReportes.Est
 public class GestionarReportesPdfservice implements GestionarReportesPdf {
 
     private UsuarioRepository usuarioRepo;
+    private EstilosCeldasServices estiloCeldas;
+
+    @Autowired
+    public GestionarReportesPdfservice(UsuarioRepository usuarioRepo, EstilosCeldasServices estiloCeldas) {
+        this.usuarioRepo = usuarioRepo;
+        this.estiloCeldas = estiloCeldas;
+    }
+
+    public GestionarReportesPdfservice() {
+    }
 
     @Override
     public byte[] usuariosRegistrados() {
@@ -41,8 +52,6 @@ public class GestionarReportesPdfservice implements GestionarReportesPdf {
             throw new NoDatosQueMostrarExecption(
                     "Error lista vacia,  no hay usuarios registrados aun.");
         }
-
-        EstilosCeldasServices estilosCeldasServices = new EstilosCeldasServices();
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
@@ -55,17 +64,17 @@ public class GestionarReportesPdfservice implements GestionarReportesPdf {
         Table table = new Table(6);
 
         try {
-            table.addCell(estilosCeldasServices.celdasTitularesBasico()
+            table.addCell(estiloCeldas.celdasTitularesBasico()
                     .add(new Paragraph("Primer nombre")));
-            table.addCell(estilosCeldasServices.celdasTitularesBasico()
+            table.addCell(estiloCeldas.celdasTitularesBasico()
                     .add(new Paragraph("Primer Apellido")));
-            table.addCell(estilosCeldasServices.celdasTitularesBasico()
+            table.addCell(estiloCeldas.celdasTitularesBasico()
                     .add(new Paragraph("Correo")));
-            table.addCell(estilosCeldasServices.celdasTitularesBasico()
+            table.addCell(estiloCeldas.celdasTitularesBasico()
                     .add(new Paragraph("Estado de cuenta")));
-            table.addCell(estilosCeldasServices.celdasTitularesBasico()
+            table.addCell(estiloCeldas.celdasTitularesBasico()
                     .add(new Paragraph("Rol")));
-            table.addCell(estilosCeldasServices.celdasTitularesBasico()
+            table.addCell(estiloCeldas.celdasTitularesBasico()
                     .add(new Paragraph("Fecha de registro")));
 
         } catch (IOException ex) {
@@ -74,12 +83,18 @@ public class GestionarReportesPdfservice implements GestionarReportesPdf {
 
         for (Usuario usuario : usuarios) {
 
-            table.addCell(new Cell().add(new Paragraph(usuario.getPrimerNombre())));
-            table.addCell(new Cell().add(new Paragraph(usuario.getPrimerApellido())));
-            table.addCell(new Cell().add(new Paragraph(usuario.getEmail())));
-            table.addCell(new Cell().add(new Paragraph(usuario.getEstado_cuenta().getNombre())));
-            table.addCell(new Cell().add(new Paragraph(usuario.getRol().getNombre())));
-            table.addCell(new Cell().add(new Paragraph(usuario.getFechaRegistro().toString())));
+            table.addCell(estiloCeldas.celdasBasicas()
+                    .add(new Paragraph(usuario.getPrimerNombre())));
+            table.addCell(estiloCeldas.celdasBasicas()
+                    .add(new Paragraph(usuario.getPrimerApellido())));
+            table.addCell(estiloCeldas.celdasBasicas()
+                    .add(new Paragraph(usuario.getEmail())));
+            table.addCell(estiloCeldas.celdasBasicas()
+                    .add(new Paragraph(usuario.getEstado_cuenta().getNombre())));
+            table.addCell(estiloCeldas.celdasBasicas()
+                    .add(new Paragraph(usuario.getRol().getNombre())));
+            table.addCell(estiloCeldas.celdasBasicas()
+                    .add(new Paragraph(usuario.getFechaRegistro().toString())));
         }
 
         document.add(table);

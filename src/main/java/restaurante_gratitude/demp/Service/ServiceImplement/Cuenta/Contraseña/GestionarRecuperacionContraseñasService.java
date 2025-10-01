@@ -70,7 +70,7 @@ public class GestionarRecuperacionContraseñasService implements GestionarRecupe
     public RecuperarContraseñaByIdentificacionDto recuperarContraseñaPorIdentificacion(
             RecuperarContraseñaByIdentificacionDto contraseñaByIdentificacionDto) {
         Usuario usuario = ValidacionesGlobales.obtenerSiExiste(usuarioRepo
-                .findByNumeroDeIdentificacion(
+                .findByIdentificacion_Numero(
                         contraseñaByIdentificacionDto.getIdentificacion()),
                 "El número de identificacion  ingresado no esta asociado  a una cuenta, "
                 + "le invitamos a ingresar un número valido.");
