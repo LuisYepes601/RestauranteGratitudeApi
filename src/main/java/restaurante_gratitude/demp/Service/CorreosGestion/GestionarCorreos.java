@@ -13,12 +13,12 @@ import org.springframework.core.io.ByteArrayResource;
  */
 public interface GestionarCorreos {
 
-    public String enviarCorreoSimple(String para, String remitente, String asunto, String body);
+    public String enviarCorreoSimple(String para, String remitente, String asunto, String body, String mensaje);
 
-    public String enviarCorreoSimpleManyDestinatarios(List<String> destinatarios, String remitente, String asunto, String body);
+    public String enviarCorreoSimpleManyDestinatarios(List<String> destinatarios, String remitente, String asunto, String body, String mensaje);
 
     public String enviarCorreoConFormatoRobusto(
-            String para, String asunto, String body, String remitente, ByteArrayResource byteArrayResource);
+            String para, String asunto, String body, String remitente, ByteArrayResource byteArrayResource, String mensaje);
 
     public void enviarCorreoConFormatoHtml(String para, String asunto, String body, String remitente);
 
