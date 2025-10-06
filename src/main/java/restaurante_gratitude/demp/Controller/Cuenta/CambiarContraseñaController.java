@@ -40,6 +40,6 @@ public class CambiarContraseñaController {
         cambiarContraseñaService.cambiarContraseña(cambiarContraseñaDto);
 
         return ResponseEntity.status(HttpStatus.OK)
-                .body(Map.of("Error", "La contraseña ha sida cambiada con exito "));
+                .body(Map.of("mensaje", "La contraseña ha sida cambiada con exito "));
     }
 }

@@ -22,7 +22,7 @@ public class FontsService {
     public byte[] Roboto() {
 
         InputStream inputStream = getClass().getResourceAsStream(
-                "Fonts\\Roboto\\Roboto-VariableFont_wdth,wght.ttf");
+                "/fonts/Roboto/Roboto-VariableFont_wdth,wght.ttf");
 
         if (inputStream == null) {
             throw new DatoNoExistenteEcxeption("El tipo de fuente no se encuentra disponible en "
@@ -41,7 +41,8 @@ public class FontsService {
     }
 
     public byte[] robotoRegular() {
-        InputStream inputStream = getClass().getResourceAsStream("Fonts\\Roboto\\static\\Roboto-Regular.ttf");
+        InputStream inputStream = getClass()
+                .getResourceAsStream( "/fonts/Roboto/static/Roboto-Regular.ttf");
 
         try {
             byte[] fuente = inputStream.readAllBytes();
@@ -55,7 +56,8 @@ public class FontsService {
 
     public byte[] Garamond() {
 
-        InputStream inputStream = getClass().getResourceAsStream("Fonts\\EB_Garamond\\EBGaramond-VariableFont_wght.ttf");
+        InputStream inputStream = getClass()
+                .getResourceAsStream("/fonts/EB_Garamond/EBGaramond-VariableFont_wght.ttf");
 
         if (inputStream == null) {
             throw new DatoNoExistenteEcxeption("El tipo de fuente no se encuentra disponible en "

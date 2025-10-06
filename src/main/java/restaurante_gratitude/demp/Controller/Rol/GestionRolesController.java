@@ -37,6 +37,7 @@ public class GestionRolesController {
     public GestionRolesService getGestionRolesService() {
         return gestionRolesService;
     }
+    
 
     public void setGestionRolesService(GestionRolesService gestionRolesService) {
         this.gestionRolesService = gestionRolesService;

@@ -5,6 +5,7 @@
 package restaurante_gratitude.demp.Controller.Login.InicioSesionController;
 
 import jakarta.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.Map;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,10 +52,14 @@ public class InicioSesionController {
         LoginResponseDto response = inicioDeSesionService
                 .iniciarSesion(inicioSesionDto, httpServletRequest);
 
+        Map<String, Object> respuesta = new HashMap<>();
+
+        respuesta.put("Mensaje", "El usuario: " + response.getNombre()
+                + " con rol: " + response.getRol() + " ha iniciado sesion correctamente.");
+        respuesta.put("credenciales", response);
+
         return ResponseEntity.status(HttpStatus.OK)
-                .body(Map.of("Mensaje", "El usuario: " + response.getNombre()
-                        + " , con rol: " + response.getRol())
-                        + " ha inciciado sesión correctamente.");
+                .body(respuesta);
     }
 
 }

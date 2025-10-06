@@ -29,12 +29,12 @@ public class Contenido {
 
     @ManyToOne
     @JoinColumn(name = "id_tipo_contenido")
-    private Tipo tipo;
+    private TipoContenidoProducto tipo;
 
     @OneToOne(mappedBy = "contenido")
     private Producto producto;
 
-    public Contenido(int id, String valor, Tipo tipo, Producto producto) {
+    public Contenido(int id, String valor, TipoContenidoProducto tipo, Producto producto) {
         this.id = id;
         this.valor = valor;
         this.tipo = tipo;
@@ -60,14 +60,6 @@ public class Contenido {
         this.valor = valor;
     }
 
-    public Tipo getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(Tipo tipo) {
-        this.tipo = tipo;
-    }
-
     public Producto getProducto() {
         return producto;
     }
@@ -75,7 +67,13 @@ public class Contenido {
     public void setProducto(Producto producto) {
         this.producto = producto;
     }
-    
-    
-    
+
+    public TipoContenidoProducto getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(TipoContenidoProducto tipo) {
+        this.tipo = tipo;
+    }
+
 }

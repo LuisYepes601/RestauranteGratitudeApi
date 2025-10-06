@@ -29,13 +29,16 @@ public class Pais {
     @OneToMany(mappedBy = "pais")
     private List<Direccion> direcciones;
 
-    public Pais(int id, String nombre, List<Direccion> direcciones) {
+    @OneToMany(mappedBy = "pais")
+    private List<Departamento> departamentos;
+
+    public Pais(int id, String nombre, List<Direccion> direcciones, List<Departamento> departamentos) {
         this.id = id;
         this.nombre = nombre;
         this.direcciones = direcciones;
+        this.departamentos = departamentos;
     }
 
-   
     public Pais() {
     }
 
@@ -61,6 +64,14 @@ public class Pais {
 
     public void setDirecciones(List<Direccion> direcciones) {
         this.direcciones = direcciones;
+    }
+
+    public List<Departamento> getDepartamentos() {
+        return departamentos;
+    }
+
+    public void setDepartamentos(List<Departamento> departamentos) {
+        this.departamentos = departamentos;
     }
 
 }

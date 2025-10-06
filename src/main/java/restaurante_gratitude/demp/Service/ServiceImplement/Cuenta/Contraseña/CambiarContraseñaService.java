@@ -28,16 +28,20 @@ public class CambiarContraseñaService implements CambiarContraseña {
     private GestionarEncripatmientoContraseñasService encripatmientoContraseñasService;
     private BCryptPasswordEncoder passwordEncoder;
     private SpringTemplateEngine springTemplateEngine;
-
-    public CambiarContraseñaService() {
-    }
+    private ValidarContraseñasService validarContraseñasService;
+    private GestionarCorreosService correosService;
 
     @Autowired
-    public CambiarContraseñaService(UsuarioRepository usuarioRepo, GestionarEncripatmientoContraseñasService encripatmientoContraseñasService, BCryptPasswordEncoder passwordEncoder, SpringTemplateEngine springTemplateEngine) {
+    public CambiarContraseñaService(UsuarioRepository usuarioRepo, GestionarEncripatmientoContraseñasService encripatmientoContraseñasService, BCryptPasswordEncoder passwordEncoder, SpringTemplateEngine springTemplateEngine, ValidarContraseñasService validarContraseñasService, GestionarCorreosService correosService) {
         this.usuarioRepo = usuarioRepo;
         this.encripatmientoContraseñasService = encripatmientoContraseñasService;
         this.passwordEncoder = passwordEncoder;
         this.springTemplateEngine = springTemplateEngine;
+        this.validarContraseñasService = validarContraseñasService;
+        this.correosService = correosService;
+    }
+
+    public CambiarContraseñaService() {
     }
 
     public UsuarioRepository getUsuarioRepo() {
@@ -79,13 +83,12 @@ public class CambiarContraseñaService implements CambiarContraseña {
                 usuarioRepo.findByEmail(cambiarContraseñaDto.getEmail()),
                 "No se encuentra una cuenta asociada a ese correo: " + cambiarContraseñaDto.getEmail());
 
-        ValidarContraseñasService validarContraseñasService = new ValidarContraseñasService();
-
         validarContraseñasService.validarIgualdadContraseñasEcriptadas(
                 cambiarContraseñaDto.getContraseaActual(),
                 usuario.getContraseña());
 
-        validarContraseñasService.validarFormatoContraseña(cambiarContraseñaDto.getContraseñaNueva());
+        validarContraseñasService.validarFormatoContraseña(
+                cambiarContraseñaDto.getContraseñaNueva());
 
         String contraseñaEncripatada = encripatmientoContraseñasService.encriptarContraseñas(
                 cambiarContraseñaDto.getContraseaActual());
@@ -102,8 +105,6 @@ public class CambiarContraseñaService implements CambiarContraseña {
         String html = springTemplateEngine.process(
                 "CambioDeContraseña",
                 context);
-
-        GestionarCorreosService correosService = new GestionarCorreosService();
 
         correosService.enviarCorreoConFormatoHtml(
                 usuario.getEmail(),

@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import restaurante_gratitude.demp.DTOS.Request.Direccion.DepartamentoDto;
 import restaurante_gratitude.demp.Entidades.Direccion.Departamento;
+import restaurante_gratitude.demp.Entidades.Direccion.Pais;
 import restaurante_gratitude.demp.Repositorys.Direccion.DepartamentoRepository;
+import restaurante_gratitude.demp.Repositorys.Direccion.PaisRepository;
 import restaurante_gratitude.demp.Service.Direcciones.GestionarDepartamentos;
 import restaurante_gratitude.demp.Validaciones.ValidacionesGlobales;
 
@@ -20,10 +22,12 @@ import restaurante_gratitude.demp.Validaciones.ValidacionesGlobales;
 public class GestionarDepartamentosService implements GestionarDepartamentos {
 
     private DepartamentoRepository depRepo;
+    private PaisRepository paisRepo;
 
     @Autowired
-    public GestionarDepartamentosService(DepartamentoRepository depRepo) {
+    public GestionarDepartamentosService(DepartamentoRepository depRepo, PaisRepository paisRepo) {
         this.depRepo = depRepo;
+        this.paisRepo = paisRepo;
     }
 
     public GestionarDepartamentosService() {
@@ -48,6 +52,14 @@ public class GestionarDepartamentosService implements GestionarDepartamentos {
 
         Departamento departamento = new Departamento();
         departamento.setNombre(departamentoDto.getNombre());
+
+        Pais pais = ValidacionesGlobales.obtenerSiExiste(paisRepo
+                .findByNombre(departamentoDto.getPais()),
+                "Error de regristrar un nuevo departamento. "
+                + "El pais ingresado no se encuentra en el sistema"
+                + ", le einvitamos a ingresar un pais valido.");
+
+        departamento.setPais(pais);
         depRepo.save(departamento);
 
         return departamentoDto;

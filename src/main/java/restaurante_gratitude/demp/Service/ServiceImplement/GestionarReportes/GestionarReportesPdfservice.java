@@ -8,7 +8,6 @@ import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
-import com.itextpdf.layout.element.Cell;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
 import java.io.ByteArrayOutputStream;
@@ -61,7 +60,7 @@ public class GestionarReportesPdfservice implements GestionarReportesPdf {
 
         Document document = new Document(pdfDocument, PageSize.LEGAL.rotate());
 
-        Table table = new Table(6);
+        Table table = new Table(7);
 
         try {
             table.addCell(estiloCeldas.celdasTitularesBasico()
@@ -70,6 +69,8 @@ public class GestionarReportesPdfservice implements GestionarReportesPdf {
                     .add(new Paragraph("Primer Apellido")));
             table.addCell(estiloCeldas.celdasTitularesBasico()
                     .add(new Paragraph("Correo")));
+            table.addCell(estiloCeldas.celdasTitularesBasico()
+                    .add(new Paragraph("Numero de identificación")));
             table.addCell(estiloCeldas.celdasTitularesBasico()
                     .add(new Paragraph("Estado de cuenta")));
             table.addCell(estiloCeldas.celdasTitularesBasico()
@@ -89,6 +90,8 @@ public class GestionarReportesPdfservice implements GestionarReportesPdf {
                     .add(new Paragraph(usuario.getPrimerApellido())));
             table.addCell(estiloCeldas.celdasBasicas()
                     .add(new Paragraph(usuario.getEmail())));
+            table.addCell(estiloCeldas.celdasBasicas()
+                    .add(new Paragraph(usuario.getIdentificacion().getNumero())));
             table.addCell(estiloCeldas.celdasBasicas()
                     .add(new Paragraph(usuario.getEstado_cuenta().getNombre())));
             table.addCell(estiloCeldas.celdasBasicas()

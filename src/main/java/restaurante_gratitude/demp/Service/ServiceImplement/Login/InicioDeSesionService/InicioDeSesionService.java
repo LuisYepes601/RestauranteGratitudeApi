@@ -8,7 +8,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import restaurante_gratitude.demp.ControlExeptions.Execptions.ContraseñaIncorrectaExecption;
 import restaurante_gratitude.demp.DTOS.Request.Login.InicioDeSesion.InicioSesionDto;
 import restaurante_gratitude.demp.DTOS.Response.Login.LoginResponseDto;
 import restaurante_gratitude.demp.Entidades.HistorialSesiones.HistorialSesiones;
@@ -31,16 +30,18 @@ public class InicioDeSesionService implements InicicioDeSesion {
     private BCryptPasswordEncoder passwordEncoder;
     private HistorialSesionesReepository historialSesionRepo;
     private GestionarSesionesSevice sesionesService;
+    private ValidarContraseñasService validarContraseñaService;
+
+    public InicioDeSesionService() {
+    }
 
     @Autowired
-    public InicioDeSesionService(UsuarioRepository usuarioRepo, BCryptPasswordEncoder passwordEncoder, HistorialSesionesReepository historialSesionRepo, GestionarSesionesSevice sesionesService) {
+    public InicioDeSesionService(UsuarioRepository usuarioRepo, BCryptPasswordEncoder passwordEncoder, HistorialSesionesReepository historialSesionRepo, GestionarSesionesSevice sesionesService, ValidarContraseñasService validarContraseñaService) {
         this.usuarioRepo = usuarioRepo;
         this.passwordEncoder = passwordEncoder;
         this.historialSesionRepo = historialSesionRepo;
         this.sesionesService = sesionesService;
-    }
-
-    public InicioDeSesionService() {
+        this.validarContraseñaService = validarContraseñaService;
     }
 
     public UsuarioRepository getUsuarioRepo() {
@@ -85,9 +86,7 @@ public class InicioDeSesionService implements InicicioDeSesion {
                 + "Le invitamos a ingresar un usuario valido.");
 
         //VALIDAR QUE EL USUARIO SI ESTE ASOCIADO A LA CONTRASEÑA DADA
-        ValidarContraseñasService validarContraseñasService = new ValidarContraseñasService();
-
-        validarContraseñasService.validarIgualdadContraseñasEcriptadas(
+        validarContraseñaService.validarIgualdadContraseñasEcriptadas(
                 inicioSesionDto.getContrasenia(),
                 usuario.getContraseña());
 

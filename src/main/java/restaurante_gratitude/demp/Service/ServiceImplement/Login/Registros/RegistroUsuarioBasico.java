@@ -36,6 +36,8 @@ import restaurante_gratitude.demp.Repositorys.Users.UsuarioRepository;
 import restaurante_gratitude.demp.Service.Login.Registro.RegistrarUsuariobasico;
 import restaurante_gratitude.demp.Service.ServiceImplement.Config.GestionarEncripatmientoContraseñasService;
 import restaurante_gratitude.demp.Service.ServiceImplement.Cuenta.Contraseña.ValidarContraseñasService;
+import restaurante_gratitude.demp.Service.ServiceImplement.GestionarCorreos.GestionarCorreosService;
+import restaurante_gratitude.demp.Service.ServiceImplement.GestionarPlantillas.RegistroExitoTemplate;
 import restaurante_gratitude.demp.Validaciones.ValidacionesGlobales;
 
 /**
@@ -59,16 +61,12 @@ public class RegistroUsuarioBasico implements RegistrarUsuariobasico {
     private DireccionRepository direccionRepo;
     private IdentificacionRepository identificacionRepo;
     private EstadoCuentaRepository estadoCuentaRepo;
+    private ValidarContraseñasService validarContraseñasService;
+    RegistroExitoTemplate exitoTemplate;
+    private GestionarCorreosService correosService;
 
     @Autowired
-    public RegistroUsuarioBasico(UsuarioRepository ususrioRepository, RolRepository rolRepo,
-            PaisRepository paisRepo, DepartamentoRepository deptoRepo,
-            CiudadRepository ciudadRepo, MunicipioRepository municipioRepo,
-            TipoDireccionRepository tipoDirRepo, GeneroRepository generoRepository,
-            SexoRepository sexoRepo, TipoIdentificacionRepository tipoIdentificacionRepo,
-            GestionarEncripatmientoContraseñasService encriptarContraseñas,
-            DireccionRepository direccionRepo, IdentificacionRepository identificacionRepo,
-            EstadoCuentaRepository estadoCuentaRepo) {
+    public RegistroUsuarioBasico(UsuarioRepository ususrioRepository, RolRepository rolRepo, PaisRepository paisRepo, DepartamentoRepository deptoRepo, CiudadRepository ciudadRepo, MunicipioRepository municipioRepo, TipoDireccionRepository tipoDirRepo, GeneroRepository generoRepository, SexoRepository sexoRepo, TipoIdentificacionRepository tipoIdentificacionRepo, GestionarEncripatmientoContraseñasService encriptarContraseñas, DireccionRepository direccionRepo, IdentificacionRepository identificacionRepo, EstadoCuentaRepository estadoCuentaRepo, ValidarContraseñasService validarContraseñasService, RegistroExitoTemplate exitoTemplate, GestionarCorreosService correosService) {
         this.ususrioRepository = ususrioRepository;
         this.rolRepo = rolRepo;
         this.paisRepo = paisRepo;
@@ -83,6 +81,9 @@ public class RegistroUsuarioBasico implements RegistrarUsuariobasico {
         this.direccionRepo = direccionRepo;
         this.identificacionRepo = identificacionRepo;
         this.estadoCuentaRepo = estadoCuentaRepo;
+        this.validarContraseñasService = validarContraseñasService;
+        this.exitoTemplate = exitoTemplate;
+        this.correosService = correosService;
     }
 
     @Override
@@ -182,9 +183,7 @@ public class RegistroUsuarioBasico implements RegistrarUsuariobasico {
         usuario.setFechaNacimiento(usuarioBasicoDto.getFechaNacimiento());
         usuario.setFechaRegistro(usuarioBasicoDto.getFechaRegistro());
 
-        ValidarContraseñasService validarContraseñasService = new ValidarContraseñasService();
-
-        validarContraseñasService.validarFormatoContraseña( usuarioBasicoDto.getContraseña());
+        validarContraseñasService.validarFormatoContraseña(usuarioBasicoDto.getContraseña());
 
         usuario.setContraseña(encriptarContraseñas
                 .encriptarContraseñas(usuarioBasicoDto.getContraseña()));
@@ -199,6 +198,11 @@ public class RegistroUsuarioBasico implements RegistrarUsuariobasico {
         usuario.setEstado_cuenta(estado_cuenta1);
 
         ususrioRepository.save(usuario);
+
+        correosService.enviarCorreoConFormatoHtml(usuario.getEmail(),
+                "Regitro de usuario.",
+                exitoTemplate.registroExitoso(usuario),
+                "yepesluis006@gmail.com");
 
         return usuarioBasicoDto;
 

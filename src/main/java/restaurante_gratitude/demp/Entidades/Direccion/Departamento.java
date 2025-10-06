@@ -9,6 +9,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import java.util.List;
 
@@ -29,10 +31,19 @@ public class Departamento {
     @OneToMany(mappedBy = "departamento")
     private List<Direccion> direcciones;
 
-    public Departamento(int id, String nombre, List<Direccion> direcciones) {
+    @ManyToOne
+    @JoinColumn(name = "id_pais")
+    private Pais pais;
+
+    @OneToMany(mappedBy = "departamento")
+    private List<Ciudad> ciudades;
+
+    public Departamento(int id, String nombre, List<Direccion> direcciones, Pais pais, List<Ciudad> ciudades) {
         this.id = id;
         this.nombre = nombre;
         this.direcciones = direcciones;
+        this.pais = pais;
+        this.ciudades = ciudades;
     }
 
     public Departamento() {
@@ -52,6 +63,22 @@ public class Departamento {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public List<Direccion> getDirecciones() {
+        return direcciones;
+    }
+
+    public void setDirecciones(List<Direccion> direcciones) {
+        this.direcciones = direcciones;
+    }
+
+    public Pais getPais() {
+        return pais;
+    }
+
+    public void setPais(Pais pais) {
+        this.pais = pais;
     }
 
 }

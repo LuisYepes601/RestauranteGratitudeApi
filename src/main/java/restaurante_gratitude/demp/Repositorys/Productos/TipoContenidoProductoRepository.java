@@ -4,15 +4,17 @@
  */
 package restaurante_gratitude.demp.Repositorys.Productos;
 
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import restaurante_gratitude.demp.Entidades.Productos.Tipo;
+import restaurante_gratitude.demp.Entidades.Productos.TipoContenidoProducto;
 
 /**
  *
  * @author Usuario
  */
 @Repository
-public interface TipoContenidoRepository extends JpaRepository<Tipo, Integer>{
-    
+public interface TipoContenidoProductoRepository extends JpaRepository<TipoContenidoProducto, Integer> {
+
+    public Optional<TipoContenidoProducto>findByNombre(String nombre);
 }

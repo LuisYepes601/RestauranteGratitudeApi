@@ -33,6 +33,4 @@ public class RecuperarContraseñaByIdentificacionDto {
         this.identificacion = identificacion;
     }
 
-   
-
 }

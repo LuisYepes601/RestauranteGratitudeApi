@@ -4,10 +4,8 @@
  */
 package restaurante_gratitude.demp.Service.ServiceImplement.Direcciones;
 
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import restaurante_gratitude.demp.ControlExeptions.Execptions.PaisYaCreado;
 import restaurante_gratitude.demp.DTOS.Request.Direccion.PaisDto;
 import restaurante_gratitude.demp.Entidades.Direccion.Pais;
 import restaurante_gratitude.demp.Repositorys.Direccion.PaisRepository;
@@ -23,20 +21,21 @@ public class GestionarPaisService implements AgregarPais {
 
     private PaisRepository paisRepo;
 
-    @Autowired
-    public PaisRepository getPaisRepo() {
-        return paisRepo;
-    }
+ 
 
     public GestionarPaisService() {
     }
 
+    @Autowired
     public GestionarPaisService(PaisRepository paisRepo) {
         this.paisRepo = paisRepo;
     }
 
     public void setPaisRepo(PaisRepository paisRepo) {
         this.paisRepo = paisRepo;
+    }
+       public PaisRepository getPaisRepo() {
+        return paisRepo;
     }
 
     @Override

@@ -4,6 +4,7 @@
  */
 package restaurante_gratitude.demp.Repositorys.Productos;
 
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import restaurante_gratitude.demp.Entidades.Productos.Categoria;
@@ -15,5 +16,6 @@ import restaurante_gratitude.demp.Entidades.Productos.Categoria;
 @Repository
 public interface CategoriaProductoRepository extends JpaRepository<Categoria, Integer>{
     
+    public Optional<Categoria> findBynobre (String nobre);
     
 }

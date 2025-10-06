@@ -9,6 +9,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import java.util.List;
 
@@ -29,13 +31,16 @@ public class Municipio {
     @OneToMany(mappedBy = "municipio")
     private List<Direccion> direccions;
 
-    public Municipio(int id, String nombre, List<Direccion> direccions) {
+    @ManyToOne
+    @JoinColumn(name = "id_ciudad")
+    private Ciudad ciudad;
+
+    public Municipio(int id, String nombre, List<Direccion> direccions, Ciudad ciudad) {
         this.id = id;
         this.nombre = nombre;
         this.direccions = direccions;
+        this.ciudad = ciudad;
     }
-
-    
 
     public Municipio() {
     }
@@ -63,7 +68,5 @@ public class Municipio {
     public void setDireccions(List<Direccion> direccions) {
         this.direccions = direccions;
     }
-
-   
 
 }

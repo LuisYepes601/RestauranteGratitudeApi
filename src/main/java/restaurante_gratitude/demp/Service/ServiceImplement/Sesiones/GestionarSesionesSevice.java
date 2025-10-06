@@ -6,9 +6,12 @@ package restaurante_gratitude.demp.Service.ServiceImplement.Sesiones;
 
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.Date;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import restaurante_gratitude.demp.DTOS.Response.IpApi.IpApiDto;
 import restaurante_gratitude.demp.Entidades.HistorialSesiones.HistorialSesiones;
 import restaurante_gratitude.demp.Entidades.Usuarios.Usuario;
+import restaurante_gratitude.demp.Service.ServiceImplement.ConcumoDeApis.IpApiService.IpApiService;
 import restaurante_gratitude.demp.Service.Sesiones.GestionarSesiones;
 
 /**
@@ -18,8 +21,17 @@ import restaurante_gratitude.demp.Service.Sesiones.GestionarSesiones;
 @Service
 public class GestionarSesionesSevice implements GestionarSesiones {
 
+    private IpApiService apiservice;
+
+    @Autowired
+    public GestionarSesionesSevice(IpApiService apiservice) {
+        this.apiservice = apiservice;
+    }
+
     @Override
-    public HistorialSesiones agregarRegistroSesion(HttpServletRequest httpServletRequest, Usuario usuario) {
+    public HistorialSesiones agregarRegistroSesion(
+            HttpServletRequest httpServletRequest,
+            Usuario usuario) {
 
         HistorialSesiones historialSesiones = new HistorialSesiones();
 
@@ -32,10 +44,13 @@ public class GestionarSesionesSevice implements GestionarSesiones {
         historialSesiones.setProtocolo(httpServletRequest.getProtocol());
         historialSesiones.setHost(httpServletRequest.getRemoteHost());
         historialSesiones.setPort(httpServletRequest.getRemotePort());
-        historialSesiones.setPais("");
-        historialSesiones.setDepartamento("");
-        historialSesiones.setCiudad("");
-        historialSesiones.setTimeZone("");
+
+        IpApiDto respuesta =  apiservice.getDatos(httpServletRequest.getRemoteAddr());
+
+        historialSesiones.setPais(respuesta.getCountry_name());
+        historialSesiones.setDepartamento(respuesta.getRegion());
+        historialSesiones.setCiudad(respuesta.getCity());
+        historialSesiones.setTimeZone(respuesta.getTimezone());
 
         return historialSesiones;
 

@@ -21,6 +21,9 @@ public class EstilosCeldasServices {
 
     FontServicePdf fontServicePdf;
 
+    public EstilosCeldasServices() {
+    }
+
     @Autowired
     public EstilosCeldasServices(FontServicePdf fontServicePdf) {
         this.fontServicePdf = fontServicePdf;
@@ -34,9 +37,6 @@ public class EstilosCeldasServices {
         this.fontServicePdf = fontServicePdf;
     }
 
-    public EstilosCeldasServices() {
-    }
-
     public Cell celdasTitularesBasico() throws IOException {
 
         return new Cell()
@@ -45,7 +45,8 @@ public class EstilosCeldasServices {
                 .setTextAlignment(TextAlignment.CENTER)
                 .setBackgroundColor(new DeviceRgb(212, 212, 212))
                 .setFontColor(new DeviceRgb(0, 0, 0))
-                .setFont(fontServicePdf.Roboto());
+                .setFont(fontServicePdf.Roboto())
+                .setPadding(10);
 
     }
 
@@ -57,11 +58,13 @@ public class EstilosCeldasServices {
                 .setBold()
                 .setTextAlignment(TextAlignment.CENTER)
                 .setFontColor(new DeviceRgb(0, 0, 0))
-                .setBackgroundColor(new DeviceRgb(212, 212, 212));
+                .setBackgroundColor(new DeviceRgb(212, 212, 212))
+                .setPadding(5);
+        
 
     }
-    
-    public Cell celdasBasicas(){
+
+    public Cell celdasBasicas() {
         return new Cell()
                 .setFont(fontServicePdf.robotoRegular())
                 .setFontSize(12);

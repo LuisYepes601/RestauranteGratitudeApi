@@ -15,6 +15,8 @@ import restaurante_gratitude.demp.Entidades.Usuarios.Usuario;
 import restaurante_gratitude.demp.Repositorys.Users.UsuarioRepository;
 import restaurante_gratitude.demp.Service.Cuenta.GestionarRecuperacionDeContraseña;
 import restaurante_gratitude.demp.Service.ServiceImplement.Config.GestionarEncripatmientoContraseñasService;
+import restaurante_gratitude.demp.Service.ServiceImplement.GestionarCorreos.GestionarCorreosService;
+import restaurante_gratitude.demp.Service.ServiceImplement.GestionarPlantillas.RecuperacionCotraseña;
 import restaurante_gratitude.demp.Validaciones.ValidacionesGlobales;
 
 /**
@@ -26,14 +28,20 @@ public class GestionarRecuperacionContraseñasService implements GestionarRecupe
 
     private UsuarioRepository usuarioRepo;
     private GestionarEncripatmientoContraseñasService encriptamientoContraseña;
-
-    @Autowired
-    public GestionarRecuperacionContraseñasService(UsuarioRepository usuarioRepo, GestionarEncripatmientoContraseñasService encriptamientoContraseña) {
-        this.usuarioRepo = usuarioRepo;
-        this.encriptamientoContraseña = encriptamientoContraseña;
-    }
+    private ValidarContraseñasService validarContraseñasService;
+    private GestionarCorreosService correosService;
+    private RecuperacionCotraseña recuperacionContraseñaTemplate;
 
     public GestionarRecuperacionContraseñasService() {
+    }
+
+    @Autowired
+    public GestionarRecuperacionContraseñasService(UsuarioRepository usuarioRepo, GestionarEncripatmientoContraseñasService encriptamientoContraseña, ValidarContraseñasService validarContraseñasService, GestionarCorreosService correosService, RecuperacionCotraseña recuperacionContraseñaTemplate) {
+        this.usuarioRepo = usuarioRepo;
+        this.encriptamientoContraseña = encriptamientoContraseña;
+        this.validarContraseñasService = validarContraseñasService;
+        this.correosService = correosService;
+        this.recuperacionContraseñaTemplate = recuperacionContraseñaTemplate;
     }
 
     public UsuarioRepository getUsuarioRepo() {
@@ -60,8 +68,20 @@ public class GestionarRecuperacionContraseñasService implements GestionarRecupe
                 "El correo ingresado no esta asociado  a una cuenta, "
                 + "le invitamos a ingresar un correo valido.");
 
-        usuario.setContraseña(generarContraseña());
+        String contraseña = generarContraseña();
+
+        String contraseñaEncriptada = encriptamientoContraseña
+                .encriptarContraseñas(contraseña);
+
+        usuario.setContraseña(contraseñaEncriptada);
+
         usuarioRepo.save(usuario);
+
+        correosService.enviarCorreoConFormatoHtml(
+                usuario.getEmail(),
+                "Recuperación de contraseña",
+                recuperacionContraseñaTemplate.recuperacionContraseñTemplate(usuario, contraseña),
+                "yepesluis006@gmail.com");
 
         return contraseñaByGmailDto;
     }
@@ -69,14 +89,27 @@ public class GestionarRecuperacionContraseñasService implements GestionarRecupe
     @Override
     public RecuperarContraseñaByIdentificacionDto recuperarContraseñaPorIdentificacion(
             RecuperarContraseñaByIdentificacionDto contraseñaByIdentificacionDto) {
+
         Usuario usuario = ValidacionesGlobales.obtenerSiExiste(usuarioRepo
                 .findByIdentificacion_Numero(
                         contraseñaByIdentificacionDto.getIdentificacion()),
                 "El número de identificacion  ingresado no esta asociado  a una cuenta, "
                 + "le invitamos a ingresar un número valido.");
 
-        usuario.setContraseña(generarContraseña());
+        String contraseña = generarContraseña();
+
+        String contraseñaEncriptada = encriptamientoContraseña
+                .encriptarContraseñas(contraseña);
+
+        usuario.setContraseña(contraseñaEncriptada);
+
         usuarioRepo.save(usuario);
+
+        correosService.enviarCorreoConFormatoHtml(
+                usuario.getEmail(),
+                "Recuperación de contraseña",
+                recuperacionContraseñaTemplate.recuperacionContraseñTemplate(usuario, contraseña),
+                "yepesluis006@gmail.com");
 
         return contraseñaByIdentificacionDto;
 
@@ -86,7 +119,7 @@ public class GestionarRecuperacionContraseñasService implements GestionarRecupe
         PasswordGenerator passwordGenerator = new PasswordGenerator();
 
         CharacterRule mayusculas = new CharacterRule(EnglishCharacterData.UpperCase, 1);
-        CharacterRule digitos = new CharacterRule(EnglishCharacterData.Digit, 8);
+        CharacterRule digitos = new CharacterRule(EnglishCharacterData.Digit, 1);
         CharacterRule minuscula = new CharacterRule(EnglishCharacterData.LowerCase, 1);
         CharacterRule caracterEspecial = new CharacterRule(EnglishCharacterData.Special, 1);
 
@@ -94,14 +127,9 @@ public class GestionarRecuperacionContraseñasService implements GestionarRecupe
                 8,
                 mayusculas, digitos, minuscula, caracterEspecial);
 
-        ValidarContraseñasService validarContraseñasService = new ValidarContraseñasService();
-
         validarContraseñasService.validarFormatoContraseña(contraseñaNueva);
 
-        String contraseñaEncriptada = encriptamientoContraseña
-                .encriptarContraseñas(contraseñaNueva);
-
-        return contraseñaEncriptada;
+        return contraseñaNueva;
     }
 
 }

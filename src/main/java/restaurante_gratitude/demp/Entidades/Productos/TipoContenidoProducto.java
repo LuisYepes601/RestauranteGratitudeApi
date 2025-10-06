@@ -15,21 +15,21 @@ import jakarta.persistence.Id;
  * @author Usuario
  */
 @Entity
-public class Tipo {
-    
+public class TipoContenidoProducto {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    
+
     @Column(nullable = false)
     private String nombre;
 
-    public Tipo(int id, String nombre) {
+    public TipoContenidoProducto(int id, String nombre) {
         this.id = id;
         this.nombre = nombre;
     }
 
-    public Tipo() {
+    public TipoContenidoProducto() {
     }
 
     public int getId() {
@@ -47,6 +47,5 @@ public class Tipo {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-    
-    
+
 }

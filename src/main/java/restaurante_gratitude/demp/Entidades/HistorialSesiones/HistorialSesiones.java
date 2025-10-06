@@ -36,7 +36,6 @@ public class HistorialSesiones {
     private Date fechaInicio;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(nullable = false)
     private Date fechaFin;
 
     @Column(nullable = false)

@@ -16,8 +16,11 @@ public class DepartamentoDto {
             + "le invitamos a rellenarlo para continuar el proceso, por ejemplo nombre: Amazonas")
     private String nombre;
 
-    public DepartamentoDto(String nombre) {
+    private String pais;
+
+    public DepartamentoDto(String nombre, String pais) {
         this.nombre = nombre;
+        this.pais = pais;
     }
 
     public DepartamentoDto() {
@@ -29,6 +32,14 @@ public class DepartamentoDto {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public String getPais() {
+        return pais;
+    }
+
+    public void setPais(String pais) {
+        this.pais = pais;
     }
 
 }

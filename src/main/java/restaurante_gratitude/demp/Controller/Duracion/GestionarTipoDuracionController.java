@@ -27,20 +27,20 @@ public class GestionarTipoDuracionController {
 
     private TipoDuracionService tipoDuracionService;
 
-    @Autowired
-    public TipoDuracionService getTipoDuracionService() {
-        return tipoDuracionService;
-    }
-
     public GestionarTipoDuracionController() {
     }
 
+    @Autowired
     public GestionarTipoDuracionController(TipoDuracionService tipoDuracionService) {
         this.tipoDuracionService = tipoDuracionService;
     }
 
     public void setTipoDuracionService(TipoDuracionService tipoDuracionService) {
         this.tipoDuracionService = tipoDuracionService;
+    }
+
+    public TipoDuracionService getTipoDuracionService() {
+        return tipoDuracionService;
     }
 
     @PostMapping("/agregar")

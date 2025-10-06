@@ -18,7 +18,6 @@ import restaurante_gratitude.demp.Entidades.InventarioStockProducto.StockProduct
 import restaurante_gratitude.demp.Entidades.OfertsCupons.Promociones.Promocion;
 import restaurante_gratitude.demp.Entidades.Pedidos.DetallePedido;
 import restaurante_gratitude.demp.Entidades.RangoCalificacion.CalficacionProducto;
-import restaurante_gratitude.demp.Entidades.RangoCalificacion.CalificacionProductoId;
 
 /**
  *

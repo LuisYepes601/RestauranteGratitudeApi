@@ -6,11 +6,13 @@ package restaurante_gratitude.demp.Service.ServiceImplement.GestionarCorreos;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
+import java.io.File;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -29,9 +31,6 @@ public class GestionarCorreosService implements GestionarCorreos {
     @Autowired
     public GestionarCorreosService(JavaMailSender mailSender) {
         this.mailSender = mailSender;
-    }
-
-    public GestionarCorreosService() {
     }
 
     public JavaMailSender getMailSender() {
@@ -111,12 +110,18 @@ public class GestionarCorreosService implements GestionarCorreos {
         MimeMessage mimeMessage = mailSender.createMimeMessage();
 
         try {
-            MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage, "UTF-8");
+            MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
             messageHelper.setTo(para);
             messageHelper.setFrom(remitente);
             messageHelper.setReplyTo(remitente);
             messageHelper.setSubject(asunto);
             messageHelper.setText(body, true);
+
+            FileSystemResource logo = new FileSystemResource(
+                    new File("src\\main\\resources\\static\\images\\logoRestaurante.png")
+            );
+
+            messageHelper.addInline("logo", logo);
 
             mailSender.send(mimeMessage);
 
