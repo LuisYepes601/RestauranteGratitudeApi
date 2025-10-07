@@ -11,6 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import restaurante_gratitude.demp.DTOS.Request.Productos.CrearProductoDto;
 import restaurante_gratitude.demp.Entidades.InventarioStockProducto.StockProducto;
@@ -24,7 +25,7 @@ import restaurante_gratitude.demp.Repositorys.Productos.ContenidoProducto;
 import restaurante_gratitude.demp.Repositorys.Productos.ProductoRepository;
 import restaurante_gratitude.demp.Repositorys.Productos.TipoContenidoProductoRepository;
 import restaurante_gratitude.demp.Service.Productos.CrearProductos;
-import restaurante_gratitude.demp.Service.ServiceImplement.CloudinaryService.CargarImagenesService;
+import restaurante_gratitude.demp.Service.ServiceImplement.GestionDeArchivos.CargarImagenesService;
 import restaurante_gratitude.demp.Validaciones.ValidacionesGlobales;
 
 /**
@@ -55,6 +56,7 @@ public class CrearProductoService implements CrearProductos {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Map<String, String> crearProducto(CrearProductoDto crearProductoDto, MultipartFile file) {
 
         ValidacionesGlobales.validarExistencia(
@@ -77,9 +79,6 @@ public class CrearProductoService implements CrearProductos {
         producto.setCategoria(categoria);
 
         Contenido contenidoProducto = new Contenido();
-        
-        System.out.println("-----------------------\nValorcontenido recibido: " + crearProductoDto.getValorcontenido());
-
 
         contenidoProducto.setValor(crearProductoDto.getValorcontenido());
 
@@ -99,6 +98,7 @@ public class CrearProductoService implements CrearProductos {
         try {
             imagen = caragarImagenesService.cargarImagenProducto(file, producto);
             producto.setImagen(imagen);
+
         } catch (IOException ex) {
             Logger.getLogger(CrearProductoService.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -140,6 +140,5 @@ public class CrearProductoDto {
     public void setCantidadMin(int cantidadMin) {
         this.cantidadMin = cantidadMin;
     }
-    
-    
+
 }

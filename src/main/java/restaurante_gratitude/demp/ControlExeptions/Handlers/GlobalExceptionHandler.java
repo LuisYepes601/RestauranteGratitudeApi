@@ -15,6 +15,7 @@ import restaurante_gratitude.demp.ControlExeptions.Execptions.ContraseñaIncorre
 import restaurante_gratitude.demp.ControlExeptions.Execptions.CorreoEnUso;
 import restaurante_gratitude.demp.ControlExeptions.Execptions.DatoNoExistenteEcxeption;
 import restaurante_gratitude.demp.ControlExeptions.Execptions.DatoYaExistenteException;
+import restaurante_gratitude.demp.ControlExeptions.Execptions.ErrorAlSubirArchivoException;
 import restaurante_gratitude.demp.ControlExeptions.Execptions.NoDatosQueMostrarExecption;
 import restaurante_gratitude.demp.ControlExeptions.Execptions.PaisYaCreado;
 import restaurante_gratitude.demp.ControlExeptions.Execptions.RolNoExisteExecption;
@@ -139,5 +140,16 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(error);
 
+    }
+
+    @ExceptionHandler(ErrorAlSubirArchivoException.class)
+    public ResponseEntity<?> handlerErrorAlSubirArchivoException(ErrorAlSubirArchivoException ex) {
+
+        Map<String, String> error = new HashMap<>();
+
+        error.put("Error", ex.getMessage());
+
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(error);
     }
 }
