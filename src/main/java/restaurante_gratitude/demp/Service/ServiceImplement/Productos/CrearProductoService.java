@@ -70,13 +70,16 @@ public class CrearProductoService implements CrearProductos {
         producto.setPrecio(crearProductoDto.getPrecio());
 
         Categoria categoria = ValidacionesGlobales.obtenerSiExiste(
-                categoriaProductoRepository.findBynobre(crearProductoDto.getNombre()),
+                categoriaProductoRepository.findBynobre(crearProductoDto.getCategoria()),
                 "La categoria: " + crearProductoDto.getCategoria() + " no se encuentra disponible en el sistema."
                 + " Le invitamos a ingresar una categoria valida. ");
 
         producto.setCategoria(categoria);
 
         Contenido contenidoProducto = new Contenido();
+        
+        System.out.println("-----------------------\nValorcontenido recibido: " + crearProductoDto.getValorcontenido());
+
 
         contenidoProducto.setValor(crearProductoDto.getValorcontenido());
 
