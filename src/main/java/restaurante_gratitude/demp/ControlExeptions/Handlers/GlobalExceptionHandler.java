@@ -15,6 +15,7 @@ import restaurante_gratitude.demp.ControlExeptions.Execptions.ContraseñaIncorre
 import restaurante_gratitude.demp.ControlExeptions.Execptions.CorreoEnUso;
 import restaurante_gratitude.demp.ControlExeptions.Execptions.DatoNoExistenteEcxeption;
 import restaurante_gratitude.demp.ControlExeptions.Execptions.DatoYaExistenteException;
+import restaurante_gratitude.demp.ControlExeptions.Execptions.EliminarArchivoException;
 import restaurante_gratitude.demp.ControlExeptions.Execptions.ErrorAlSubirArchivoException;
 import restaurante_gratitude.demp.ControlExeptions.Execptions.NoDatosQueMostrarExecption;
 import restaurante_gratitude.demp.ControlExeptions.Execptions.PaisYaCreado;
@@ -151,5 +152,16 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.status(HttpStatus.CONFLICT)
                 .body(error);
+    }
+
+    @ExceptionHandler(EliminarArchivoException.class)
+    public ResponseEntity<?> handlerEliminarArchivoException(EliminarArchivoException ex) {
+
+        Map<String, String> errores = new HashMap<>();
+
+        errores.put("Error", ex.getMessage());
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(errores);
     }
 }
