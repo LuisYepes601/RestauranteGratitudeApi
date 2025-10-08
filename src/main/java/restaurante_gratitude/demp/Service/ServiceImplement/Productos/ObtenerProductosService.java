@@ -22,27 +22,27 @@ import restaurante_gratitude.demp.Service.Productos.ObtenerProductos;
  */
 @Service
 public class ObtenerProductosService implements ObtenerProductos {
-    
+
     private ProductoRepository productoRepository;
-    
+
     @Autowired
     public ObtenerProductosService(ProductoRepository productoRepository) {
         this.productoRepository = productoRepository;
     }
-    
+
     @Override
     public List<ObtnerProductoDto> productosDatosBasicos() {
-        
+
         List<Producto> productos = productoRepository.findAll();
-        
+
         if (productos.isEmpty()) {
             throw new DatoNoExistenteEcxeption("Error, no hay productos disponibles en el sistema actualmente.");
         }
-        
+
         List<ObtnerProductoDto> productoDtos = new ArrayList<>();
-        
+
         for (Producto producto : productos) {
-            
+
             ObtnerProductoDto productoDto = new ObtnerProductoDto();
 
             //DATOS BASICOS PRODUCTO
@@ -61,36 +61,37 @@ public class ObtenerProductosService implements ObtenerProductos {
             productoDto.setIdTipoContenido(producto.getContenido().getTipo().getId());
 
             //DATOS DE PROMOCION
-            productoDto.setIdtipoPromocion(producto.getPromocion().getTipoPromocion().getId());
-            productoDto.setTipoPromocion(producto.getPromocion().getTipoPromocion().getName());
-            productoDto.setValorPromocion(producto.getPromocion().getValor());
-            productoDto.setDescripcionPromocion(producto.getPromocion().getDescripcion());
-            productoDto.setFechaFin(producto.getPromocion().getFechaFin());
-            
+            if (producto.getPromocion() != null) {
+                productoDto.setIdtipoPromocion(producto.getPromocion().getTipoPromocion().getId());
+                productoDto.setTipoPromocion(producto.getPromocion().getTipoPromocion().getName());
+                productoDto.setValorPromocion(producto.getPromocion().getValor());
+                productoDto.setDescripcionPromocion(producto.getPromocion().getDescripcion());
+                productoDto.setFechaFin(producto.getPromocion().getFechaFin());
+
+            }
             List<ObtenerCalificacionesDto> calificacionesDtos = new ArrayList<>();
-            
             for (CalficacionProducto calficacionProducto : producto.getCalficacionProductos()) {
-                
+
                 ObtenerCalificacionesDto calificacionesDto = new ObtenerCalificacionesDto();
-                
+
                 calificacionesDto.setIdRango(calficacionProducto.getRangoCalificacion().getId());
                 calificacionesDto.setNombreRango(calficacionProducto.getRangoCalificacion().getNombre());
-                
+
                 calificacionesDto.setDescripcion(calficacionProducto.getDescripcion());
                 calificacionesDto.setEvidencia(calficacionProducto.getEvidencia());
                 calificacionesDto.setIdRango(calficacionProducto.getUsuario().getId());
                 calificacionesDto.setNombreUsario(calficacionProducto.getUsuario().getPrimerNombre());
-                
+
                 calificacionesDtos.add(calificacionesDto);
-                
+
             }
             productoDto.setCalificacionesDtos(calificacionesDtos);
-            
+
             productoDtos.add(productoDto);
         }
-        
+
         return productoDtos;
-        
+
     }
-    
+
 }

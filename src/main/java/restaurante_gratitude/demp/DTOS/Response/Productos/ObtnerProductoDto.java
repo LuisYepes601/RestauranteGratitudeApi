@@ -16,7 +16,7 @@ public class ObtnerProductoDto {
 
     private String nombre;
 
-    private double precio;
+    private Double precio;
 
     private String descripcion;
 
@@ -24,17 +24,17 @@ public class ObtnerProductoDto {
 
     private String categoria;
 
-    private int id_categoria;
+    private Integer id_categoria;
 
     private String valorContenido;
 
     private String tipoContenido;
 
-    private int idTipoContenido;
+    private Integer idTipoContenido;
 
     private String tipoPromocion;
 
-    private int idtipoPromocion;
+    private Integer idtipoPromocion;
 
     private double valorPromocion;
 
@@ -52,11 +52,11 @@ public class ObtnerProductoDto {
         this.nombre = nombre;
     }
 
-    public double getPrecio() {
+    public Double getPrecio() {
         return precio;
     }
 
-    public void setPrecio(double precio) {
+    public void setPrecio(Double precio) {
         this.precio = precio;
     }
 
@@ -84,11 +84,11 @@ public class ObtnerProductoDto {
         this.categoria = categoria;
     }
 
-    public int getId_categoria() {
+    public Integer getId_categoria() {
         return id_categoria;
     }
 
-    public void setId_categoria(int id_categoria) {
+    public void setId_categoria(Integer id_categoria) {
         this.id_categoria = id_categoria;
     }
 
@@ -108,11 +108,11 @@ public class ObtnerProductoDto {
         this.tipoContenido = tipoContenido;
     }
 
-    public int getIdTipoContenido() {
+    public Integer getIdTipoContenido() {
         return idTipoContenido;
     }
 
-    public void setIdTipoContenido(int idTipoContenido) {
+    public void setIdTipoContenido(Integer idTipoContenido) {
         this.idTipoContenido = idTipoContenido;
     }
 
@@ -124,11 +124,11 @@ public class ObtnerProductoDto {
         this.tipoPromocion = tipoPromocion;
     }
 
-    public int getIdtipoPromocion() {
+    public Integer getIdtipoPromocion() {
         return idtipoPromocion;
     }
 
-    public void setIdtipoPromocion(int idtipoPromocion) {
+    public void setIdtipoPromocion(Integer idtipoPromocion) {
         this.idtipoPromocion = idtipoPromocion;
     }
 
@@ -164,4 +164,5 @@ public class ObtnerProductoDto {
         this.calificacionesDtos = calificacionesDtos;
     }
 
+  
 }
