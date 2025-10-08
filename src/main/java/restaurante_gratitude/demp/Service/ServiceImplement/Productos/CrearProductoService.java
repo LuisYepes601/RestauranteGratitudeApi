@@ -95,13 +95,9 @@ public class CrearProductoService implements CrearProductos {
         producto.setContenido(contenidoProducto);
 
         String imagen;
-        try {
-            imagen = caragarImagenesService.cargarImagenProducto(file, producto);
-            producto.setImagen(imagen);
 
-        } catch (IOException ex) {
-            Logger.getLogger(CrearProductoService.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        imagen = caragarImagenesService.agregarFotoDeProdcuto(file, producto);
+        producto.setImagen(imagen);
 
         productoRepo.save(producto);
 

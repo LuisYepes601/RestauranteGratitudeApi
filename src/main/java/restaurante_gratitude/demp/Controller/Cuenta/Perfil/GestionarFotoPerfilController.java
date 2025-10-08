@@ -4,8 +4,11 @@
  */
 package restaurante_gratitude.demp.Controller.Cuenta.Perfil;
 
+import java.util.HashMap;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,10 +37,22 @@ public class GestionarFotoPerfilController {
             @RequestParam("imagen") MultipartFile imagen,
             @PathVariable int id_user) {
 
-        gestionarFotoDePerfilService.agregarFotoDePerfil(imagen, id_user);
+        gestionarFotoDePerfilService.subirFotoDePerfil(imagen, id_user);
+
+        Map<String, String> mensaje = new HashMap<>();
+
+        mensaje.put("mensaje", "Foto de perfil agregada con exito");
 
         return ResponseEntity.ok()
-                .build();
+                .body(this);
+    }
+
+    @DeleteMapping(value = "eliminar/{id}")
+    public ResponseEntity<?> eliminarFotoDePerfil(@PathVariable int id) {
+
+        gestionarFotoDePerfilService.getEliminarImagenesService().eliminarFotoDePerfil(id);
+        return ResponseEntity.ok().build();
+
     }
 
 }

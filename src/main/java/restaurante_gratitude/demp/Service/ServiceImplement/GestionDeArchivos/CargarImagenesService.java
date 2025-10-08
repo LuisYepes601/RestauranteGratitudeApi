@@ -9,8 +9,6 @@ import com.cloudinary.Transformation;
 import com.cloudinary.utils.ObjectUtils;
 import java.io.IOException;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,13 +16,14 @@ import restaurante_gratitude.demp.ControlExeptions.Execptions.ErrorAlSubirArchiv
 import restaurante_gratitude.demp.ControlExeptions.Execptions.NoDatosQueMostrarExecption;
 import restaurante_gratitude.demp.Entidades.Productos.Producto;
 import restaurante_gratitude.demp.Entidades.Usuarios.Usuario;
+import restaurante_gratitude.demp.Service.GestionDeDocumentos.Imagenes.cargarFotos;
 
 /**
  *
  * @author User
  */
 @Service
-public class CargarImagenesService {
+public class CargarImagenesService implements cargarFotos {
 
     private Cloudinary cloudinary;
 
@@ -33,15 +32,15 @@ public class CargarImagenesService {
         this.cloudinary = cloudinary;
     }
 
-    public String cargarImagenPerfil(MultipartFile file, Usuario usuario) {
-
-        if (file.isEmpty()) {
+    @Override
+    public String agregarFotoDePerfil(MultipartFile imagen, Usuario usuario) {
+        if (imagen.isEmpty()) {
             throw new ErrorAlSubirArchivoException("Error, no se puedo cargar la imagen, no hay imagen que cargar.");
         }
 
         Map resultadoCarga = null;
         try {
-            resultadoCarga = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.asMap(
+            resultadoCarga = cloudinary.uploader().upload(imagen.getBytes(), ObjectUtils.asMap(
                     "public_id", "usuarios/perfil_ " + usuario.getPrimerNombre(),
                     "transformation", new Transformation<>()
                             .quality("auto")
@@ -58,23 +57,36 @@ public class CargarImagenesService {
         return resultadoCarga.get("secure_url").toString();
     }
 
-    public String cargarImagenProducto(MultipartFile file, Producto producto) throws IOException {
+    @Override
+    public String agregarFotoDeProdcuto(MultipartFile imagen, Producto producto) {
 
-        if (file.isEmpty()) {
+        if (imagen.isEmpty()) {
             throw new NoDatosQueMostrarExecption("Error, no se puedo cargar la imagen, no hay imagen que cargar.");
         }
 
-        Map resultadoCarga = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.asMap(
-                "public_id", "productos/" + producto.getNombre(),
-                "transformation", new Transformation<>()
-                        .quality("auto")
-                        .fetchFormat("auto")
-                        .width(300)
-                        .height(300)
-                        .crop("limit")
-        ));
+        Map resultadoCarga = null;
+        try {
+            resultadoCarga = cloudinary.uploader().upload(imagen.getBytes(), ObjectUtils.asMap(
+                    "public_id", "productos/" + producto.getNombre(),
+                    "transformation", new Transformation<>()
+                            .quality("auto")
+                            .fetchFormat("auto")
+                            .width(300)
+                            .height(300)
+                            .crop("limit")
+            ));
+
+        } catch (IOException ex) {
+            throw new ErrorAlSubirArchivoException("Error, no se puedo cargar la imagen, no hay imagen que cargar.");
+        }
 
         return resultadoCarga.get("secure_url").toString();
+
+    }
+
+    @Override
+    public String agregarFotoBasica(MultipartFile imagen) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
 }
