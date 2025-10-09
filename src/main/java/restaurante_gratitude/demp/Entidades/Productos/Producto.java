@@ -14,6 +14,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import java.util.List;
+import org.hibernate.annotations.ColumnDefault;
 import restaurante_gratitude.demp.Entidades.InventarioStockProducto.StockProducto;
 import restaurante_gratitude.demp.Entidades.OfertsCupons.Promociones.Promocion;
 import restaurante_gratitude.demp.Entidades.Pedidos.DetallePedido;
@@ -66,7 +67,11 @@ public class Producto {
     @OneToMany(mappedBy = "producto")
     private List<ProductosFavoritos> productosFavoritos;
 
-    public Producto(int id, String nombre, double precio, String descripcion, String imagen, Categoria categoria, Contenido contenido, Promocion promocion, StockProducto stockProducto, List<CalficacionProducto> calficacionProductos, List<DetallePedido> detallePedidos, List<ProductosFavoritos> productosFavoritos) {
+    @Column(nullable = false)
+    @ColumnDefault("0")
+    private boolean isDelete = false;
+
+    public Producto(int id, String nombre, double precio, String descripcion, String imagen, Categoria categoria, Contenido contenido, Promocion promocion, StockProducto stockProducto, List<CalficacionProducto> calficacionProductos, List<DetallePedido> detallePedidos, List<ProductosFavoritos> productosFavoritos, boolean isDelete) {
         this.id = id;
         this.nombre = nombre;
         this.precio = precio;
@@ -79,6 +84,7 @@ public class Producto {
         this.calficacionProductos = calficacionProductos;
         this.detallePedidos = detallePedidos;
         this.productosFavoritos = productosFavoritos;
+        this.isDelete = isDelete;
     }
 
     public Producto() {
@@ -178,6 +184,14 @@ public class Producto {
 
     public void setProductosFavoritos(List<ProductosFavoritos> productosFavoritos) {
         this.productosFavoritos = productosFavoritos;
+    }
+
+    public boolean isIsDelete() {
+        return isDelete;
+    }
+
+    public void setIsDelete(boolean isDelete) {
+        this.isDelete = isDelete;
     }
 
 }

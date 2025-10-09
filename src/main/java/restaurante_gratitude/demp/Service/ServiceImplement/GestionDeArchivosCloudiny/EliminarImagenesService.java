@@ -10,8 +10,11 @@ import java.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import restaurante_gratitude.demp.ControlExeptions.Execptions.EliminarArchivoException;
+import restaurante_gratitude.demp.Entidades.Productos.Producto;
 import restaurante_gratitude.demp.Entidades.Usuarios.Usuario;
+import restaurante_gratitude.demp.Repositorys.Productos.ProductoRepository;
 import restaurante_gratitude.demp.Repositorys.Users.UsuarioRepository;
 import restaurante_gratitude.demp.Service.GestionDeDocumentos.Imagenes.eliminarFotos;
 import restaurante_gratitude.demp.Validaciones.ValidacionesGlobales;
@@ -25,6 +28,7 @@ public class EliminarImagenesService implements eliminarFotos {
 
     private Cloudinary cloudinary;
     private UsuarioRepository usuarioRepo;
+    private ProductoRepository productoRepo;
 
     @Autowired
     public EliminarImagenesService(Cloudinary cloudinary, UsuarioRepository usuarioRepo) {
@@ -53,5 +57,16 @@ public class EliminarImagenesService implements eliminarFotos {
 
         usuarioRepo.save(usuario);
     }
+
+    @Override
+    public void eliminarFotoProducto(Integer id) {
+
+        Producto producto =  ValidacionesGlobales.obtenerSiExiste(
+                productoRepo.findById(id), 
+                "El producto ingresado no tiene");
+
+    }
+    
+   
 
 }

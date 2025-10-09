@@ -15,12 +15,16 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import restaurante_gratitude.demp.DTOS.Request.Cuenta.EditarDatosBasicosDto.EditarDatosBasicosDto;
 import restaurante_gratitude.demp.DTOS.Request.Productos.CrearProductoDto;
+import restaurante_gratitude.demp.DTOS.Request.Productos.EditarDatosBasicProductDto;
 import restaurante_gratitude.demp.Service.ServiceImplement.Productos.CrearProductoService;
+import restaurante_gratitude.demp.Service.ServiceImplement.Productos.EditarProductosService;
 import restaurante_gratitude.demp.Service.ServiceImplement.Productos.EliminarProductoService;
 import restaurante_gratitude.demp.Service.ServiceImplement.Productos.ObtenerProductosService;
 
@@ -35,12 +39,14 @@ public class GestionarProductosController {
     private CrearProductoService crearProductoService;
     private ObtenerProductosService obtenerProdcutosService;
     private EliminarProductoService eliminarProductsoServive;
+    private EditarProductosService editarProductosService;
 
     @Autowired
-    public GestionarProductosController(CrearProductoService crearProductoService, ObtenerProductosService obtenerProdcutosService, EliminarProductoService eliminarProductsoServive) {
+    public GestionarProductosController(CrearProductoService crearProductoService, ObtenerProductosService obtenerProdcutosService, EliminarProductoService eliminarProductsoServive, EditarProductosService editarProductosService) {
         this.crearProductoService = crearProductoService;
         this.obtenerProdcutosService = obtenerProdcutosService;
         this.eliminarProductsoServive = eliminarProductsoServive;
+        this.editarProductosService = editarProductosService;
     }
 
     @PostMapping(value = "crear", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -72,4 +78,13 @@ public class GestionarProductosController {
         return ResponseEntity.ok(respuesta);
     }
 
+    @PostMapping(value = "editar")
+    public ResponseEntity<?> editarDatosBasicosProductos(
+            @RequestBody EditarDatosBasicProductDto datosBasicProductDto) {
+
+        String respuesta = editarProductosService.editarProductoByid(datosBasicProductDto);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(respuesta);
+    }
 }

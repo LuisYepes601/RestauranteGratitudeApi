@@ -18,25 +18,27 @@ import restaurante_gratitude.demp.Validaciones.ValidacionesGlobales;
  */
 @Service
 public class EliminarProductoService implements EliminarProductos {
-
+    
     private ProductoRepository productoRepo;
-
+    
     @Autowired
     public EliminarProductoService(ProductoRepository productoRepo) {
         this.productoRepo = productoRepo;
     }
-
+    
     @Transactional
     @Override
     public void eliminarProductoById(Integer id) {
-
+        
         Producto producto = ValidacionesGlobales.obtenerSiExiste(
                 productoRepo.findById(id),
                 "Error el producto que ingreso no existe en el sistema."
                 + " Le invitamos a ingresar un producto existente.");
-
-        productoRepo.delete(producto);
-
+        
+        producto.setIsDelete(true);
+        
+        productoRepo.save(producto);
+        
     }
-
+    
 }

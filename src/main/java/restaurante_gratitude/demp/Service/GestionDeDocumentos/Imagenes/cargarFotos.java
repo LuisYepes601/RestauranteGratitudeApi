@@ -17,6 +17,6 @@ public interface cargarFotos {
     public String agregarFotoDePerfil(MultipartFile imagen, Usuario usuario);
 
     public String agregarFotoDeProdcuto(MultipartFile imagen, Producto producto);
-    
+
     public String agregarFotoBasica(MultipartFile imagen);
 }
