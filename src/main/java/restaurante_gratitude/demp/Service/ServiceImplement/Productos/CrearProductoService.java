@@ -25,7 +25,7 @@ import restaurante_gratitude.demp.Repositorys.Productos.ContenidoProducto;
 import restaurante_gratitude.demp.Repositorys.Productos.ProductoRepository;
 import restaurante_gratitude.demp.Repositorys.Productos.TipoContenidoProductoRepository;
 import restaurante_gratitude.demp.Service.Productos.CrearProductos;
-import restaurante_gratitude.demp.Service.ServiceImplement.GestionDeArchivos.CargarImagenesService;
+import restaurante_gratitude.demp.Service.ServiceImplement.GestionDeArchivosCloudiny.CargarImagenesService;
 import restaurante_gratitude.demp.Validaciones.ValidacionesGlobales;
 
 /**

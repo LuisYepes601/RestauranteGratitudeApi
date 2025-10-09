@@ -4,13 +4,16 @@
  */
 package restaurante_gratitude.demp.Controller.Productos;
 
+import java.util.HashMap;
 import java.util.Map;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import restaurante_gratitude.demp.DTOS.Request.Productos.CrearProductoDto;
 import restaurante_gratitude.demp.Service.ServiceImplement.Productos.CrearProductoService;
+import restaurante_gratitude.demp.Service.ServiceImplement.Productos.EliminarProductoService;
 import restaurante_gratitude.demp.Service.ServiceImplement.Productos.ObtenerProductosService;
 
 /**
@@ -30,11 +34,13 @@ public class GestionarProductosController {
 
     private CrearProductoService crearProductoService;
     private ObtenerProductosService obtenerProdcutosService;
+    private EliminarProductoService eliminarProductsoServive;
 
     @Autowired
-    public GestionarProductosController(CrearProductoService crearProductoService, ObtenerProductosService obtenerProdcutosService) {
+    public GestionarProductosController(CrearProductoService crearProductoService, ObtenerProductosService obtenerProdcutosService, EliminarProductoService eliminarProductsoServive) {
         this.crearProductoService = crearProductoService;
         this.obtenerProdcutosService = obtenerProdcutosService;
+        this.eliminarProductsoServive = eliminarProductsoServive;
     }
 
     @PostMapping(value = "crear", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -52,6 +58,18 @@ public class GestionarProductosController {
     public ResponseEntity<?> obtnerTodolosProductos() {
 
         return ResponseEntity.ok(obtenerProdcutosService.productosDatosBasicos());
+    }
+
+    @DeleteMapping(value = "eliminar/byId/{id}")
+    public ResponseEntity<?> eliminarProductoById(@PathVariable Integer id) {
+
+        eliminarProductsoServive.eliminarProductoById(id);
+
+        Map<String, String> respuesta = new HashMap<>();
+
+        respuesta.put("mensaje", "El producto ha sido eliminado con exito.");
+
+        return ResponseEntity.ok(respuesta);
     }
 
 }

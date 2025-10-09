@@ -10,8 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import restaurante_gratitude.demp.Entidades.Usuarios.Usuario;
 import restaurante_gratitude.demp.Repositorys.Users.UsuarioRepository;
-import restaurante_gratitude.demp.Service.ServiceImplement.GestionDeArchivos.CargarImagenesService;
-import restaurante_gratitude.demp.Service.ServiceImplement.GestionDeArchivos.EliminarImagenesService;
+import restaurante_gratitude.demp.Service.ServiceImplement.GestionDeArchivosCloudiny.CargarImagenesService;
+import restaurante_gratitude.demp.Service.ServiceImplement.GestionDeArchivosCloudiny.EliminarImagenesService;
 import restaurante_gratitude.demp.Validaciones.ValidacionesGlobales;
 
 /**

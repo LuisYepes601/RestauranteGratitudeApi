@@ -25,23 +25,21 @@ public class RecuperacionCotraseña {
     public RecuperacionCotraseña(TemplateEngine templateEngine) {
         this.templateEngine = templateEngine;
     }
-    
 
-    public String recuperacionContraseñTemplate(Usuario usuario,String contraseña) {
-        
+    public String recuperacionContraseñTemplate(Usuario usuario, String contraseña) {
+
         Context context = new Context();
-        
+
         Map<String, Object> variables = new HashMap<>();
-        
-        variables.put("name",usuario.getPrimerNombre() );
+
+        variables.put("name", usuario.getPrimerNombre());
         variables.put("newPassword", contraseña);
         variables.put("loginUrl", "https://inicio-sesion-cqye.vercel.app/");
-        
+
         context.setVariables(variables);
-        
+
         String html = templateEngine.process("RecuperarContraseña", context);
-        
-        
+
         return html;
     }
 }
