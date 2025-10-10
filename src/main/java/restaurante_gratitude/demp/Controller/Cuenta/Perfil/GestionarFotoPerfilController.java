@@ -50,7 +50,7 @@ public class GestionarFotoPerfilController {
     @DeleteMapping(value = "eliminar/{id}")
     public ResponseEntity<?> eliminarFotoDePerfil(@PathVariable int id) {
 
-        gestionarFotoDePerfilService.getEliminarImagenesService().eliminarFotoDePerfil(id);
+        gestionarFotoDePerfilService.eliminarFotoDePerfil(id);
         return ResponseEntity.ok().build();
 
     }

@@ -10,7 +10,5 @@ package restaurante_gratitude.demp.Service.GestionDeDocumentos.Imagenes;
  */
 public interface eliminarFotos {
 
-    public void eliminarFotoDePerfil(int id_user);
-    
-     public void eliminarFotoProducto(Integer id);
+    public void eliminarFoto(String url, String error);
 }

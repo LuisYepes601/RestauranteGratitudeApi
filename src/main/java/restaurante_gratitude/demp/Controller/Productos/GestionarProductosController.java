@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import restaurante_gratitude.demp.DTOS.Request.Cuenta.EditarDatosBasicosDto.EditarDatosBasicosDto;
 import restaurante_gratitude.demp.DTOS.Request.Productos.CrearProductoDto;
 import restaurante_gratitude.demp.DTOS.Request.Productos.EditarDatosBasicProductDto;
 import restaurante_gratitude.demp.Service.ServiceImplement.Productos.CrearProductoService;
@@ -85,6 +84,6 @@ public class GestionarProductosController {
         String respuesta = editarProductosService.editarProductoByid(datosBasicProductDto);
 
         return ResponseEntity.status(HttpStatus.OK)
-                .body(respuesta);
+                .body(Map.of("mensaje", respuesta));
     }
 }
