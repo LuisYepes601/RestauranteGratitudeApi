@@ -4,6 +4,8 @@
  */
 package restaurante_gratitude.demp.Service.ServiceImplement.Cuenta.Contraseña.Perfil;
 
+import com.cloudinary.Transformation;
+import com.cloudinary.utils.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -65,9 +67,19 @@ public class GestionarFotoDePerfilService implements GestionarFotoPerfil {
                 usuarioRepo.findById(id),
                 "Error el suuario no tiene una cuenta creada.");
 
-        String foto = imagenesService.agregarFotoDePerfil(
+        String foto = imagenesService.cargarFoto(
                 file,
-                usuario);
+                "La imagen no se puede cargar en estos momentos le inviatamos aintentarlo nuevamente.",
+                ObjectUtils.asMap(
+                        "public_id", "usuarios/perfil_ " + usuario.getPrimerNombre(),
+                        "transformation", new Transformation<>()
+                                .quality("auto")
+                                .fetchFormat("auto")
+                                .crop("limit")
+                                .width(400)
+                                .height(400)
+                ),
+                usuario.getPrimerNombre());
 
         usuario.setFoto_perifl(foto);
         usuarioRepo.save(usuario);
@@ -75,6 +87,7 @@ public class GestionarFotoDePerfilService implements GestionarFotoPerfil {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void eliminarFotoDePerfil(int id_user) {
 
         Usuario usuario = ValidacionesGlobales.obtenerSiExiste(

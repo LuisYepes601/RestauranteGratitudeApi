@@ -6,16 +6,19 @@ package restaurante_gratitude.demp.Service.ServiceImplement.Productos;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import restaurante_gratitude.demp.ControlExeptions.Execptions.DatoNoExistenteEcxeption;
+import restaurante_gratitude.demp.ControlExeptions.Execptions.NoDatosQueMostrarExecption;
 import restaurante_gratitude.demp.DTOS.Response.Calificaciones.ObtenerCalificacionesDto;
 import restaurante_gratitude.demp.DTOS.Response.Productos.ObtnerProductoDto;
 import restaurante_gratitude.demp.Entidades.Productos.Producto;
 import restaurante_gratitude.demp.Entidades.RangoCalificacion.CalficacionProducto;
 import restaurante_gratitude.demp.Repositorys.Productos.ProductoRepository;
 import restaurante_gratitude.demp.Service.Productos.ObtenerProductos;
+import restaurante_gratitude.demp.Validaciones.ValidacionesGlobales;
 
 /**
  *
@@ -23,33 +26,33 @@ import restaurante_gratitude.demp.Service.Productos.ObtenerProductos;
  */
 @Service
 public class ObtenerProductosService implements ObtenerProductos {
-    
+
     private ProductoRepository productoRepository;
-    
+
     @Autowired
     public ObtenerProductosService(ProductoRepository productoRepository) {
         this.productoRepository = productoRepository;
     }
-    
+
     @Override
     public List<ObtnerProductoDto> productosDatosBasicos() {
-        
+
         List<Producto> productos = productoRepository.findAll();
-        
+
         List<Producto> productosExistentes = new ArrayList<>();
-        
+
         productosExistentes = productos.stream()
                 .filter(producto -> producto.isIsDelete() != true)
                 .collect(Collectors.toList());
-        
+
         if (productosExistentes.isEmpty()) {
             throw new DatoNoExistenteEcxeption("Error, no hay productos disponibles en el sistema actualmente.");
         }
-        
+
         List<ObtnerProductoDto> productoDtos = new ArrayList<>();
-        
+
         for (Producto producto : productosExistentes) {
-            
+
             ObtnerProductoDto productoDto = new ObtnerProductoDto();
 
             //DATOS BASICOS PRODUCTO
@@ -74,31 +77,43 @@ public class ObtenerProductosService implements ObtenerProductos {
                 productoDto.setValorPromocion(producto.getPromocion().getValor());
                 productoDto.setDescripcionPromocion(producto.getPromocion().getDescripcion());
                 productoDto.setFechaFin(producto.getPromocion().getFechaFin());
-                
+
             }
             List<ObtenerCalificacionesDto> calificacionesDtos = new ArrayList<>();
             for (CalficacionProducto calficacionProducto : producto.getCalficacionProductos()) {
-                
+
                 ObtenerCalificacionesDto calificacionesDto = new ObtenerCalificacionesDto();
-                
+
                 calificacionesDto.setIdRango(calficacionProducto.getRangoCalificacion().getId());
                 calificacionesDto.setNombreRango(calficacionProducto.getRangoCalificacion().getNombre());
-                
+
                 calificacionesDto.setDescripcion(calficacionProducto.getDescripcion());
                 calificacionesDto.setEvidencia(calficacionProducto.getEvidencia());
                 calificacionesDto.setIdRango(calficacionProducto.getUsuario().getId());
                 calificacionesDto.setNombreUsario(calficacionProducto.getUsuario().getPrimerNombre());
-                
+
                 calificacionesDtos.add(calificacionesDto);
-                
+
             }
             productoDto.setCalificacionesDtos(calificacionesDtos);
-            
+
             productoDtos.add(productoDto);
         }
-        
+
         return productoDtos;
-        
+
     }
-    
+
+    @Override
+    public List<ObtnerProductoDto> productosByCategoria(String categoria) {
+
+        List<Producto> p = ValidacionesGlobales.ObtenerSiExiste(
+                productoRepository.findByCategoria_nobre(categoria),
+                "No hay prodcutso con esa categoria enel sistema.");
+
+        List<Producto> productosActivos = p.stream()
+                .filter(producto -> producto.isIsDelete() != true)
+                .collect(Collectors.toList());
+    }
+
 }

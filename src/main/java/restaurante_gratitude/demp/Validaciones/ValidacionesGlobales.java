@@ -4,9 +4,11 @@
  */
 package restaurante_gratitude.demp.Validaciones;
 
+import java.util.List;
 import java.util.Optional;
 import restaurante_gratitude.demp.ControlExeptions.Execptions.DatoNoExistenteEcxeption;
 import restaurante_gratitude.demp.ControlExeptions.Execptions.DatoYaExistenteException;
+import restaurante_gratitude.demp.ControlExeptions.Execptions.NoDatosQueMostrarExecption;
 import restaurante_gratitude.demp.ControlExeptions.Execptions.RolNoValidoException;
 
 /**
@@ -40,4 +42,19 @@ public class ValidacionesGlobales {
         }
     }
 
+    public static <T> List<T> ObtenerSiExiste(List<Optional<T>> list, String mensaje) {
+
+        if (list.isEmpty()) {
+
+            throw new NoDatosQueMostrarExecption(mensaje);
+        }
+
+        List<T> originals = list.stream()
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .toList();
+
+        return originals;
+
+    }
 }

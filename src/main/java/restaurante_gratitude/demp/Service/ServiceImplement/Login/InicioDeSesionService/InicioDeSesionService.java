@@ -25,16 +25,16 @@ import restaurante_gratitude.demp.Validaciones.ValidacionesGlobales;
  */
 @Service
 public class InicioDeSesionService implements InicicioDeSesion {
-
+    
     private UsuarioRepository usuarioRepo;
     private BCryptPasswordEncoder passwordEncoder;
     private HistorialSesionesReepository historialSesionRepo;
     private GestionarSesionesSevice sesionesService;
     private ValidarContraseñasService validarContraseñaService;
-
+    
     public InicioDeSesionService() {
     }
-
+    
     @Autowired
     public InicioDeSesionService(UsuarioRepository usuarioRepo, BCryptPasswordEncoder passwordEncoder, HistorialSesionesReepository historialSesionRepo, GestionarSesionesSevice sesionesService, ValidarContraseñasService validarContraseñaService) {
         this.usuarioRepo = usuarioRepo;
@@ -43,42 +43,42 @@ public class InicioDeSesionService implements InicicioDeSesion {
         this.sesionesService = sesionesService;
         this.validarContraseñaService = validarContraseñaService;
     }
-
+    
     public UsuarioRepository getUsuarioRepo() {
         return usuarioRepo;
     }
-
+    
     public void setUsuarioRepo(UsuarioRepository usuarioRepo) {
         this.usuarioRepo = usuarioRepo;
     }
-
+    
     public BCryptPasswordEncoder getPasswordEncoder() {
         return passwordEncoder;
     }
-
+    
     public void setPasswordEncoder(BCryptPasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
     }
-
+    
     public HistorialSesionesReepository getHistorialSesionRepo() {
         return historialSesionRepo;
     }
-
+    
     public void setHistorialSesionRepo(HistorialSesionesReepository historialSesionRepo) {
         this.historialSesionRepo = historialSesionRepo;
     }
-
+    
     public GestionarSesionesSevice getSesionesService() {
         return sesionesService;
     }
-
+    
     public void setSesionesService(GestionarSesionesSevice sesionesService) {
         this.sesionesService = sesionesService;
     }
-
+    
     @Override
     public LoginResponseDto iniciarSesion(InicioSesionDto inicioSesionDto, HttpServletRequest httpServletRequest) {
-//VALIDAR EXISTENCIA DE USUARIO SEGN CREDENCIA INGRESADA
+//VALIDAR EXISTENCIA DE USUARIO SEGUN CREDENCIAL INGRESADA
         Usuario usuario = ValidacionesGlobales.obtenerSiExiste(usuarioRepo
                 .findByEmail(inicioSesionDto.getCorreo()),
                 "Error, no se pudo iniciar sesión, "
@@ -89,16 +89,16 @@ public class InicioDeSesionService implements InicicioDeSesion {
         validarContraseñaService.validarIgualdadContraseñasEcriptadas(
                 inicioSesionDto.getContrasenia(),
                 usuario.getContraseña());
-
+        
         HistorialSesiones historialSesiones = sesionesService.agregarRegistroSesion(
                 httpServletRequest,
                 usuario);
-
+        
         historialSesionRepo.save(historialSesiones);
 
         //CAMBIAR A ESTADO ACTIVO A USUARIO
         usuario.setEstado(true);
-
+        
         usuarioRepo.save(usuario);
 
         //enviar la respuesta simulando un token para la avalidacion 
@@ -108,8 +108,9 @@ public class InicioDeSesionService implements InicicioDeSesion {
         responseDto.setCorreo(usuario.getEmail());
         responseDto.setId(usuario.getId());
         responseDto.setRol(usuario.getRol().getNombre());
-
+        responseDto.setId_sesion(historialSesiones.getId());
+        
         return responseDto;
     }
-
+    
 }

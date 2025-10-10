@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import restaurante_gratitude.demp.DTOS.Request.Login.Registros.Empleado.ResgistroEmpleadoDto;
 import restaurante_gratitude.demp.DTOS.Request.Login.Registros.RegistroUsuarioBasicoDto;
+import restaurante_gratitude.demp.Entidades.Usuarios.Abastecedor;
 import restaurante_gratitude.demp.Entidades.Usuarios.Admin;
 import restaurante_gratitude.demp.Entidades.Usuarios.Cocinero;
 import restaurante_gratitude.demp.Entidades.Usuarios.Mesero;
@@ -82,6 +83,13 @@ public class RegistroEmpleadoService implements RegistroEmpleado {
 
             mesero.setUsuario(usuario);
             meseroRepository.save(mesero);
+        } else if (usuario.getRol().getNombre().equalsIgnoreCase("abastecedor")) {
+
+            Abastecedor abastecedor = new Abastecedor();
+
+            abastecedor.setUsuario(usuario);
+            abastecedorRepository.save(abastecedor);
+
         }
 
         return empleadoDto;

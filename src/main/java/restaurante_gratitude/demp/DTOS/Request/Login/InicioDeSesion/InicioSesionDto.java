@@ -22,6 +22,7 @@ public class InicioSesionDto {
             + "Contraseña: Micontraseña123#")
     private String contrasenia;
 
+    
     public InicioSesionDto(String correo, String contrasenia) {
         this.correo = correo;
         this.contrasenia = contrasenia;

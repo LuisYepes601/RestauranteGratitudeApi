@@ -21,6 +21,7 @@ import restaurante_gratitude.demp.ControlExeptions.Execptions.NoDatosQueMostrarE
 import restaurante_gratitude.demp.ControlExeptions.Execptions.PaisYaCreado;
 import restaurante_gratitude.demp.ControlExeptions.Execptions.RolNoExisteExecption;
 import restaurante_gratitude.demp.ControlExeptions.Execptions.RolNoValidoException;
+import restaurante_gratitude.demp.ControlExeptions.Execptions.SesionExpiradaException;
 import restaurante_gratitude.demp.ControlExeptions.Execptions.UsuarioNoEncontradoException;
 
 /**
@@ -163,5 +164,17 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(errores);
+    }
+
+    @ExceptionHandler(SesionExpiradaException.class)
+    public ResponseEntity<?> handlerSesionExpiradaException(SesionExpiradaException ex) {
+
+        Map<String, String> errores = new HashMap<>();
+
+        errores.put("error", ex.getMessage());
+
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(Map.of("mensaje", ""));
+
     }
 }

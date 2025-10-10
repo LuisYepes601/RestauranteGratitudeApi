@@ -4,11 +4,10 @@
  */
 package restaurante_gratitude.demp.Service.ServiceImplement.Productos;
 
-import java.io.IOException;
+import com.cloudinary.Transformation;
+import com.cloudinary.utils.ObjectUtils;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -96,7 +95,19 @@ public class CrearProductoService implements CrearProductos {
 
         String imagen;
 
-        imagen = caragarImagenesService.agregarFotoDeProdcuto(file, producto);
+        imagen = caragarImagenesService.cargarFoto(
+                file,
+                "La imagen no se pudo cargar.",
+                ObjectUtils.asMap("public_id", "productos/" + producto.getNombre(),
+                        "transformation", new Transformation<>()
+                                .quality("auto")
+                                .fetchFormat("auto")
+                                .width(300)
+                                .height(300)
+                                .crop("limit")
+                ),
+                producto.getNombre());
+
         producto.setImagen(imagen);
 
         productoRepo.save(producto);

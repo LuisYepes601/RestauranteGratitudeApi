@@ -4,17 +4,11 @@
  */
 package restaurante_gratitude.demp.Service.Productos;
 
-import java.util.List;
-import restaurante_gratitude.demp.DTOS.Response.Productos.ObtnerProductoDto;
-
 /**
  *
  * @author User
  */
-public interface ObtenerProductos {
-
-    public List<ObtnerProductoDto> productosDatosBasicos();
-
-    public List<ObtnerProductoDto> productosByCategoria(String categoria);
-
+public interface EliminarFotoProducto {
+    
+    public void eliminarFotoProducto(Integer id);
 }

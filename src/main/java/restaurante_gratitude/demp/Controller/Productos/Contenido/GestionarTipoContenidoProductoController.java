@@ -31,8 +31,6 @@ public class GestionarTipoContenidoProductoController {
     public GestionarTipoContenidoProductoController(GestionarTipoDeContenidoService tipoDeContenidoService) {
         this.tipoDeContenidoService = tipoDeContenidoService;
     }
-    
-    
 
     @PostMapping(value = "crear")
     public ResponseEntity<Map<String, String>> crearTipoDeContenido(@Valid

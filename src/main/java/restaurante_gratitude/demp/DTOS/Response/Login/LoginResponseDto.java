@@ -14,6 +14,7 @@ public class LoginResponseDto {
     private String rol;
     private int id;
     private String nombre;
+    private int id_sesion;
 
     public LoginResponseDto(String correo, String rol, int id, String nombre) {
         this.correo = correo;
@@ -57,6 +58,14 @@ public class LoginResponseDto {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public int getId_sesion() {
+        return id_sesion;
+    }
+
+    public void setId_sesion(int id_sesion) {
+        this.id_sesion = id_sesion;
     }
 
 }
