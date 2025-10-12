@@ -1,9 +1,23 @@
 
-# Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-# Click nbfs://nbhost/SystemFileSystem/Templates/Other/Dockerfile to edit this template
+# Etapa 1: construir el proyecto con Maven
+FROM maven:3.9.6-eclipse-temurin-17 AS build
+WORKDIR /app
 
-# Imagen base con Java 17 (ajusta si usas otra versión)
-FROM openjdk:17-jdk-slim
+# Copia todo el proyecto al contenedor
+COPY . .
 
-# Argumento para el JAR
-ARG JAR_FILE=target/*.jar
+# Compila el proyecto sin ejecutar tests
+RUN mvn clean package -DskipTests
+
+# Etapa 2: imagen final con JDK
+FROM eclipse-temurin:17-jdk
+WORKDIR /app
+
+# Copia el archivo .jar generado desde la etapa anterior
+COPY --from=build /app/target/demp-0.0.1-SNAPSHOT.jar app.jar
+
+# Exponer el puerto que usará Render
+EXPOSE 8080
+
+# Comando para ejecutar la app
+ENTRYPOINT ["java", "-jar", "app.jar"]

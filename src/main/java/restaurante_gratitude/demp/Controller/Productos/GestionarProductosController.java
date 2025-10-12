@@ -65,6 +65,12 @@ public class GestionarProductosController {
         return ResponseEntity.ok(obtenerProdcutosService.productosDatosBasicos());
     }
 
+    @GetMapping(value = "by/categoria/{categoria}")
+    public ResponseEntity<?> obenerProductosByCaregorya(@PathVariable String categoria) {
+        ;
+        return ResponseEntity.ok(obtenerProdcutosService.productosByCategoria(categoria));
+    }
+
     @DeleteMapping(value = "eliminar/byId/{id}")
     public ResponseEntity<?> eliminarProductoById(@PathVariable Integer id) {
 

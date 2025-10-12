@@ -19,6 +19,6 @@ public interface ProductoRepository extends JpaRepository<Producto, Integer> {
 
     public Optional<Producto> findByNombre(String nombre);
 
-    public List<Optional<Producto>> findByCategoria_nobre(String nombre);
+    public List<Producto> findByCategoria_nobre(String nombre);
 
 }

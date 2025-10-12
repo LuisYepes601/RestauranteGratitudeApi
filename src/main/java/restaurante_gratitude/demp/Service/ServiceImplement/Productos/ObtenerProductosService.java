@@ -6,7 +6,6 @@ package restaurante_gratitude.demp.Service.ServiceImplement.Productos;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,7 +17,6 @@ import restaurante_gratitude.demp.Entidades.Productos.Producto;
 import restaurante_gratitude.demp.Entidades.RangoCalificacion.CalficacionProducto;
 import restaurante_gratitude.demp.Repositorys.Productos.ProductoRepository;
 import restaurante_gratitude.demp.Service.Productos.ObtenerProductos;
-import restaurante_gratitude.demp.Validaciones.ValidacionesGlobales;
 
 /**
  *
@@ -39,19 +37,41 @@ public class ObtenerProductosService implements ObtenerProductos {
 
         List<Producto> productos = productoRepository.findAll();
 
-        List<Producto> productosExistentes = new ArrayList<>();
+        List<ObtnerProductoDto> productoDtos = ObtenerProductosDtoDatosBasicosActivos(productos);
 
-        productosExistentes = productos.stream()
+        return productoDtos;
+
+    }
+
+    @Override
+    public List<ObtnerProductoDto> productosByCategoria(String categoria) {
+
+        List<Producto> p = productoRepository.findByCategoria_nobre(categoria);
+
+        List<ObtnerProductoDto> productoDtos = ObtenerProductosDtoDatosBasicosActivos(p);
+
+        return productoDtos;
+    }
+
+    public List<ObtnerProductoDto> ObtenerProductosDtoDatosBasicosActivos(List<Producto> productos) {
+
+        if (productos.isEmpty()) {
+            throw new NoDatosQueMostrarExecption("No hay productos que mostrar. "
+                    + "Le invitamos a ingresar productos");
+        }
+
+        productos = productos.stream()
                 .filter(producto -> producto.isIsDelete() != true)
                 .collect(Collectors.toList());
 
-        if (productosExistentes.isEmpty()) {
-            throw new DatoNoExistenteEcxeption("Error, no hay productos disponibles en el sistema actualmente.");
+        if (productos.isEmpty()) {
+            throw new DatoNoExistenteEcxeption("Error, no hay productos disponibles en el "
+                    + "sistema actualmente.");
         }
 
         List<ObtnerProductoDto> productoDtos = new ArrayList<>();
 
-        for (Producto producto : productosExistentes) {
+        for (Producto producto : productos) {
 
             ObtnerProductoDto productoDto = new ObtnerProductoDto();
 
@@ -98,22 +118,8 @@ public class ObtenerProductosService implements ObtenerProductos {
             productoDto.setCalificacionesDtos(calificacionesDtos);
 
             productoDtos.add(productoDto);
+
         }
-
         return productoDtos;
-
     }
-
-    @Override
-    public List<ObtnerProductoDto> productosByCategoria(String categoria) {
-
-        List<Producto> p = ValidacionesGlobales.ObtenerSiExiste(
-                productoRepository.findByCategoria_nobre(categoria),
-                "No hay prodcutso con esa categoria enel sistema.");
-
-        List<Producto> productosActivos = p.stream()
-                .filter(producto -> producto.isIsDelete() != true)
-                .collect(Collectors.toList());
-    }
-
 }
