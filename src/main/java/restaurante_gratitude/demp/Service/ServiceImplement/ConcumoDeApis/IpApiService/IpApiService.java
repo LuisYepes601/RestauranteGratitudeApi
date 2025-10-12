@@ -27,10 +27,9 @@ public class IpApiService {
     public IpApiDto getDatos(String ip) {
 
         IpApiDto response = restTemplate
-                .getForObject("https://ipapi.co/json/",
+                .getForObject("https://ipwho.is/" + ip,
                         IpApiDto.class);
 
-        System.out.println("------------------------------- " + response.getCity());
         return response;
 
     }

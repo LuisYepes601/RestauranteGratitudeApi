@@ -4,6 +4,10 @@
  */
 package restaurante_gratitude.demp.DTOS.Response.IpApi;
 
+import restaurante_gratitude.demp.Service.ServiceImplement.ConcumoDeApis.IpApiService.TimezoneDto;
+
+
+
 /**
  *
  * @author Usuario
@@ -12,15 +16,8 @@ public class IpApiDto {
 
     private String city;
     private String region;
-    private String country_name;
-    private String timezone;
-
-    public IpApiDto(String city, String region, String country_name, String timezone) {
-        this.city = city;
-        this.region = region;
-        this.country_name = country_name;
-        this.timezone = timezone;
-    }
+    private String country;
+    private TimezoneDto timezone;
 
     public IpApiDto() {
     }
@@ -41,19 +38,21 @@ public class IpApiDto {
         this.region = region;
     }
 
-    public String getCountry_name() {
-        return country_name;
+    public String getCountry() {
+        return country;
     }
 
-    public void setCountry_name(String country_name) {
-        this.country_name = country_name;
+    public void setCountry(String country) {
+        this.country = country;
     }
 
-    public String getTimezone() {
+    public TimezoneDto getTimezone() {
         return timezone;
     }
 
-    public void setTimezone(String timezone) {
+    public void setTimezone(TimezoneDto timezone) {
         this.timezone = timezone;
     }
+
+    
 }

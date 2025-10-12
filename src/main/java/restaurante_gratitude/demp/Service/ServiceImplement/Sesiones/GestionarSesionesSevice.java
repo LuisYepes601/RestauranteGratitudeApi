@@ -45,12 +45,19 @@ public class GestionarSesionesSevice implements GestionarSesiones {
         historialSesiones.setHost(httpServletRequest.getRemoteHost());
         historialSesiones.setPort(httpServletRequest.getRemotePort());
 
-        IpApiDto respuesta =  apiservice.getDatos(httpServletRequest.getRemoteAddr());
+        String ip = httpServletRequest.getRemoteAddr();
 
-        historialSesiones.setPais(respuesta.getCountry_name());
+        if ("0:0:0:0:0:0:0:1".equals(ip) || "127.0.0.1".equals(ip)) {
+            ip = "8.8.8.8"; // Por ejemplo, IP pública de Google para pruebas
+        }
+        IpApiDto respuesta = apiservice.getDatos(ip);
+
+        historialSesiones.setPais(respuesta.getCountry());
         historialSesiones.setDepartamento(respuesta.getRegion());
         historialSesiones.setCiudad(respuesta.getCity());
-        historialSesiones.setTimeZone(respuesta.getTimezone());
+        if (respuesta.getTimezone() != null) {
+            historialSesiones.setTimeZone(respuesta.getTimezone().getId());
+        }
 
         return historialSesiones;
 
