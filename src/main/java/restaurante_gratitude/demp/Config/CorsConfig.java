@@ -21,9 +21,13 @@ public class CorsConfig {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**") // todas las rutas
-                        .allowedOrigins("http://127.0.0.1:5500", "https://inicio-sesion-cqye.vercel.app/") 
+                registry.addMapping("/**")
+                        .allowedOrigins(
+                                "http://127.0.0.1:5500",
+                                "https://inicio-sesion-cqye.vercel.app"
+                        )
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                        .allowedHeaders("*")
                         .allowCredentials(true);
             }
         };
