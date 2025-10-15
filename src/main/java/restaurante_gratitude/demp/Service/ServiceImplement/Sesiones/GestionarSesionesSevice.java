@@ -55,6 +55,7 @@ public class GestionarSesionesSevice implements GestionarSesiones {
         historialSesiones.setPais(respuesta.getCountry());
         historialSesiones.setDepartamento(respuesta.getRegion());
         historialSesiones.setCiudad(respuesta.getCity());
+
         if (respuesta.getTimezone() != null) {
             historialSesiones.setTimeZone(respuesta.getTimezone().getId());
         }
