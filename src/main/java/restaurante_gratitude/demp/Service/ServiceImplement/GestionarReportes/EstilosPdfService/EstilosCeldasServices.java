@@ -60,7 +60,6 @@ public class EstilosCeldasServices {
                 .setFontColor(new DeviceRgb(0, 0, 0))
                 .setBackgroundColor(new DeviceRgb(212, 212, 212))
                 .setPadding(5);
-        
 
     }
 

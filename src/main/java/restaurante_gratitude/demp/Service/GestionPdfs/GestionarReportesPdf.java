@@ -14,4 +14,6 @@ import restaurante_gratitude.demp.Entidades.Usuarios.Usuario;
 public interface GestionarReportesPdf {
 
     public byte[] usuariosRegistrados();
+
+    public byte[] productosValidos();
 }

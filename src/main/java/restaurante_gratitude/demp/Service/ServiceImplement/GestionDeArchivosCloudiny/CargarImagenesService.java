@@ -38,7 +38,7 @@ public class CargarImagenesService implements cargarFotos {
         Map resultadoCarga = null;
         try {
             resultadoCarga = cloudinary.uploader().upload(imagen.getBytes(),
-                    ObjectUtils.asMap(objectUtils));
+                    objectUtils);
         } catch (IOException ex) {
             throw new ErrorAlSubirArchivoException("Error, no se puedo cargar el archivo. Le invitamos "
                     + " a intentarlo nuevamente.");

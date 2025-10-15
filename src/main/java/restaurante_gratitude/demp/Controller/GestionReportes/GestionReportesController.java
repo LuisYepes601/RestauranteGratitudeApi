@@ -54,5 +54,19 @@ public class GestionReportesController {
                 .contentType(MediaType.APPLICATION_PDF)
                 .body(resource);
     }
+    
+     @GetMapping(value = "/productosValidos")
+    public ResponseEntity<?> ProductosValidos() {
+
+        byte[] bytes = gestionarReportesPdfservice.productosValidos();
+
+        ByteArrayResource resource = new ByteArrayResource(bytes);
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=productosValidos.pdf")
+                .contentLength(resource.contentLength())
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(resource);
+    }
 
 }
