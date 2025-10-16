@@ -6,8 +6,10 @@ package restaurante_gratitude.demp.Repositorys.Productos;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+import restaurante_gratitude.demp.Entidades.Productos.Producto;
 import restaurante_gratitude.demp.Entidades.Productos.ProductosFavoritos;
 import restaurante_gratitude.demp.Entidades.Productos.ProductosFavoritosId;
+import restaurante_gratitude.demp.Entidades.Usuarios.Usuario;
 
 /**
  *
@@ -16,4 +18,5 @@ import restaurante_gratitude.demp.Entidades.Productos.ProductosFavoritosId;
 @Repository
 public interface ProductosFavoritosRepository extends JpaRepository<ProductosFavoritos, ProductosFavoritosId> {
 
+    boolean existsByUsuarioAndProducto(Usuario usuario, Producto producto);
 }

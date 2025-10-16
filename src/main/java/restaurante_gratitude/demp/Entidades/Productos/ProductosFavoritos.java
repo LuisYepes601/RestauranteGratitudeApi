@@ -4,11 +4,13 @@
  */
 package restaurante_gratitude.demp.Entidades.Productos;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
+import java.time.LocalDate;
 import restaurante_gratitude.demp.Entidades.Usuarios.Usuario;
 
 /**
@@ -17,19 +19,22 @@ import restaurante_gratitude.demp.Entidades.Usuarios.Usuario;
  */
 @Entity
 public class ProductosFavoritos {
-    
+
     @EmbeddedId
     private ProductosFavoritosId productosFavoritosId;
-    
+
     @ManyToOne
     @MapsId("id_usuario")
     @JoinColumn(name = "id_usuario")
     private Usuario usuario;
-    
+
     @ManyToOne
     @MapsId("id_producto")
     @JoinColumn(name = "id_producto")
     private Producto producto;
+
+    @JsonFormat(pattern = "dd/MM/yyyy")
+    private LocalDate fecha;
 
     public ProductosFavoritos(ProductosFavoritosId productosFavoritosId, Usuario usuario, Producto producto) {
         this.productosFavoritosId = productosFavoritosId;
@@ -63,8 +68,5 @@ public class ProductosFavoritos {
     public void setProducto(Producto producto) {
         this.producto = producto;
     }
-    
-    
-    
-    
+
 }

@@ -22,17 +22,12 @@ import com.itextpdf.layout.properties.VerticalAlignment;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import restaurante_gratitude.demp.ControlExeptions.Execptions.NoDatosQueMostrarExecption;
 import restaurante_gratitude.demp.DTOS.Response.Productos.ObtnerProductoDto;
-import restaurante_gratitude.demp.Entidades.Usuarios.Usuario;
 import restaurante_gratitude.demp.Repositorys.Productos.ProductoRepository;
-import restaurante_gratitude.demp.Repositorys.Users.UsuarioRepository;
-import restaurante_gratitude.demp.Service.GestionPdfs.GestionarReportesPdf;
+import restaurante_gratitude.demp.Service.GestionReportes.ObtenerReportesProductos;
 import restaurante_gratitude.demp.Service.ServiceImplement.GestionarFuentes.FontsServicePdf.FontServicePdf;
 import restaurante_gratitude.demp.Service.ServiceImplement.GestionarReportes.EstilosPdfService.EstilosCeldasServices;
 import restaurante_gratitude.demp.Service.ServiceImplement.Productos.ObtenerProductosService;
@@ -42,93 +37,22 @@ import restaurante_gratitude.demp.Service.ServiceImplement.Productos.ObtenerProd
  * @author Usuario
  */
 @Service
-public class GestionarReportesPdfservice implements GestionarReportesPdf {
+public class ObtenerReporteProductosService implements ObtenerReportesProductos {
 
-    private UsuarioRepository usuarioRepo;
     private EstilosCeldasServices estiloCeldas;
     private ObtenerProductosService productosService;
     private ProductoRepository productoRepository;
     private FontServicePdf fontServicePdf;
 
-    public GestionarReportesPdfservice() {
-    }
-
     @Autowired
-    public GestionarReportesPdfservice(UsuarioRepository usuarioRepo, EstilosCeldasServices estiloCeldas, ObtenerProductosService productosService, ProductoRepository productoRepository, FontServicePdf fontServicePdf) {
-        this.usuarioRepo = usuarioRepo;
+    public ObtenerReporteProductosService(EstilosCeldasServices estiloCeldas, ObtenerProductosService productosService, ProductoRepository productoRepository, FontServicePdf fontServicePdf) {
         this.estiloCeldas = estiloCeldas;
         this.productosService = productosService;
         this.productoRepository = productoRepository;
         this.fontServicePdf = fontServicePdf;
     }
 
-    @Transactional
-    @Override
-    public byte[] usuariosRegistrados() {
-
-        List<Usuario> usuarios = usuarioRepo.findAll();
-
-        if (usuarios.isEmpty()) {
-            throw new NoDatosQueMostrarExecption(
-                    "Error lista vacia,  no hay usuarios registrados aun.");
-        }
-
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-
-        PdfWriter pdfWriter = new PdfWriter(baos);
-
-        PdfDocument pdfDocument = new PdfDocument(pdfWriter);
-
-        Document document = new Document(pdfDocument, PageSize.LEGAL.rotate());
-
-        Table table = new Table(7);
-
-        try {
-            table.addCell(estiloCeldas.celdasTitularesBasico()
-                    .add(new Paragraph("Primer nombre")));
-            table.addCell(estiloCeldas.celdasTitularesBasico()
-                    .add(new Paragraph("Primer Apellido")));
-            table.addCell(estiloCeldas.celdasTitularesBasico()
-                    .add(new Paragraph("Correo")));
-            table.addCell(estiloCeldas.celdasTitularesBasico()
-                    .add(new Paragraph("Numero de identificación")));
-            table.addCell(estiloCeldas.celdasTitularesBasico()
-                    .add(new Paragraph("Estado de cuenta")));
-            table.addCell(estiloCeldas.celdasTitularesBasico()
-                    .add(new Paragraph("Rol")));
-            table.addCell(estiloCeldas.celdasTitularesBasico()
-                    .add(new Paragraph("Fecha de registro")));
-
-        } catch (IOException ex) {
-            Logger.getLogger(GestionarReportesPdfservice.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        for (Usuario usuario : usuarios) {
-
-            table.addCell(estiloCeldas.celdasBasicas()
-                    .add(new Paragraph(usuario.getPrimerNombre())));
-            table.addCell(estiloCeldas.celdasBasicas()
-                    .add(new Paragraph(usuario.getPrimerApellido())));
-            table.addCell(estiloCeldas.celdasBasicas()
-                    .add(new Paragraph(usuario.getEmail())));
-            table.addCell(estiloCeldas.celdasBasicas()
-                    .add(new Paragraph(usuario.getIdentificacion().getNumero())));
-            table.addCell(estiloCeldas.celdasBasicas()
-                    .add(new Paragraph(usuario.getEstado_cuenta().getNombre())));
-            table.addCell(estiloCeldas.celdasBasicas()
-                    .add(new Paragraph(usuario.getRol().getNombre())));
-            table.addCell(estiloCeldas.celdasBasicas()
-                    .add(new Paragraph(usuario.getFechaRegistro().toString())));
-        }
-
-        document.add(table);
-
-        document.close();
-
-        return baos.toByteArray();
-    }
-
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public byte[] productosValidos() {
 
@@ -187,7 +111,7 @@ public class GestionarReportesPdfservice implements GestionarReportesPdf {
             }
 
         } catch (IOException ex) {
-            Logger.getLogger(GestionarReportesPdfservice.class.getName()).log(Level.SEVERE, null, ex);
+
         }
 
         document.add(titulo);
@@ -198,7 +122,7 @@ public class GestionarReportesPdfservice implements GestionarReportesPdf {
         return baos.toByteArray();
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public byte[] productosByCategoria(String categoria) {
 
@@ -222,7 +146,7 @@ public class GestionarReportesPdfservice implements GestionarReportesPdf {
                 .setFontColor(colorTitulo)
                 .setPadding(20);
 
-        float[] columnWidths = {2f, 2f, 4f, 1.5f};
+        float[] columnWidths = {2f, 4f, 3f, 1.5f};
         Table table = new Table(columnWidths);
         table.setWidth(UnitValue.createPercentValue(100));
         table.setVerticalAlignment(VerticalAlignment.MIDDLE);
@@ -240,8 +164,8 @@ public class GestionarReportesPdfservice implements GestionarReportesPdf {
                 ImageData imageData = ImageDataFactory.create(producto.getImagen());
                 Image image = new Image(imageData);
                 image.setAutoScale(true);
-                image.setWidth(70);
-                image.setHeight(70);
+                image.setWidth(150);
+                image.setHeight(150);
 
                 table.addCell(estiloCeldas.celdasBasicas().add(image));
                 table.addCell(estiloCeldas.celdasBasicas().add(new Paragraph(producto.getDescripcion())));
@@ -250,7 +174,7 @@ public class GestionarReportesPdfservice implements GestionarReportesPdf {
             }
 
         } catch (IOException ex) {
-            Logger.getLogger(GestionarReportesPdfservice.class.getName()).log(Level.SEVERE, null, ex);
+
         }
 
         document.add(titulo);
