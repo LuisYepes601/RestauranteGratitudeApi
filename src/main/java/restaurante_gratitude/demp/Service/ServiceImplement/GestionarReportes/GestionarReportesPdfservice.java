@@ -6,6 +6,8 @@ package restaurante_gratitude.demp.Service.ServiceImplement.GestionarReportes;
 
 import com.itextpdf.io.image.ImageData;
 import com.itextpdf.io.image.ImageDataFactory;
+import com.itextpdf.kernel.colors.Color;
+import com.itextpdf.kernel.colors.DeviceRgb;
 import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
@@ -24,6 +26,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import restaurante_gratitude.demp.ControlExeptions.Execptions.NoDatosQueMostrarExecption;
 import restaurante_gratitude.demp.DTOS.Response.Productos.ObtnerProductoDto;
 import restaurante_gratitude.demp.Entidades.Usuarios.Usuario;
@@ -59,6 +62,7 @@ public class GestionarReportesPdfservice implements GestionarReportesPdf {
         this.fontServicePdf = fontServicePdf;
     }
 
+    @Transactional
     @Override
     public byte[] usuariosRegistrados() {
 
@@ -124,6 +128,7 @@ public class GestionarReportesPdfservice implements GestionarReportesPdf {
         return baos.toByteArray();
     }
 
+    @Transactional
     @Override
     public byte[] productosValidos() {
 
@@ -158,15 +163,24 @@ public class GestionarReportesPdfservice implements GestionarReportesPdf {
 
             for (ObtnerProductoDto producto : productos) {
 
-                table.addCell(estiloCeldas.celdasBasicas().add(new Paragraph(producto.getNombre())));
+                table.addCell(estiloCeldas.celdasBasicas()
+                        .setBold()
+                        .setFontSize(15)
+                        .add(new Paragraph(producto.getNombre())));
 
                 ImageData imageData = ImageDataFactory.create(producto.getImagen());
 
                 Image image = new Image(imageData);
                 image.setWidth(100);
                 image.setHeight(100);
+                image.setAutoScale(true);
 
-                table.addCell(new Cell().add(image));
+                table.addCell(new Cell()
+                        .setVerticalAlignment(VerticalAlignment.MIDDLE)
+                        .setTextAlignment(TextAlignment.CENTER)
+                        .setPadding(20)
+                        .add(image));
+
                 table.addCell(estiloCeldas.celdasBasicas().setKeepTogether(false).add(new Paragraph(producto.getDescripcion())));
                 table.addCell(estiloCeldas.celdasBasicas().add(new Paragraph(producto.getPrecio().toString())));
                 table.addCell(estiloCeldas.celdasBasicas().add(new Paragraph(producto.getCategoria())));
@@ -181,6 +195,67 @@ public class GestionarReportesPdfservice implements GestionarReportesPdf {
 
         document.close();
 
+        return baos.toByteArray();
+    }
+
+    @Transactional
+    @Override
+    public byte[] productosByCategoria(String categoria) {
+
+        List<ObtnerProductoDto> productos = productosService.ObtenerProductosDtoDatosBasicosActivos(productoRepository
+                .findByCategoria_nobre(categoria));
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+        PdfWriter pdfWriter = new PdfWriter(baos);
+        PdfDocument pdfDocument = new PdfDocument(pdfWriter);
+
+        Document document = new Document(pdfDocument, PageSize.LEGAL.rotate());
+
+        Color colorTituloFondo = new DeviceRgb(46, 125, 50);
+        Color colorTitulo = new DeviceRgb(255, 255, 255);
+
+        Paragraph titulo = new Paragraph("Categoria: " + categoria)
+                .setFont(fontServicePdf.Roboto())
+                .setBold()
+                .setBackgroundColor(colorTitulo)
+                .setFontColor(colorTitulo)
+                .setPadding(20);
+
+        float[] columnWidths = {2f, 2f, 4f, 1.5f};
+        Table table = new Table(columnWidths);
+        table.setWidth(UnitValue.createPercentValue(100));
+        table.setVerticalAlignment(VerticalAlignment.MIDDLE);
+
+        try {
+            table.addCell(estiloCeldas.celdasTitularesBasico().add(new Paragraph("Nombre")));
+            table.addCell(estiloCeldas.celdasTitularesBasico().add(new Paragraph("Imagen")));
+            table.addCell(estiloCeldas.celdasTitularesBasico().add(new Paragraph("Descripcion")));
+            table.addCell(estiloCeldas.celdasTitularesBasico().add(new Paragraph("Precio")));
+
+            for (ObtnerProductoDto producto : productos) {
+
+                table.addCell(estiloCeldas.celdasBasicas().add(new Paragraph(producto.getNombre())));
+
+                ImageData imageData = ImageDataFactory.create(producto.getImagen());
+                Image image = new Image(imageData);
+                image.setAutoScale(true);
+                image.setWidth(70);
+                image.setHeight(70);
+
+                table.addCell(estiloCeldas.celdasBasicas().add(image));
+                table.addCell(estiloCeldas.celdasBasicas().add(new Paragraph(producto.getDescripcion())));
+                table.addCell(estiloCeldas.celdasBasicas().add(new Paragraph(producto.getPrecio().toString())));
+
+            }
+
+        } catch (IOException ex) {
+            Logger.getLogger(GestionarReportesPdfservice.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        document.add(titulo);
+        document.add(table);
+        document.close();
         return baos.toByteArray();
     }
 

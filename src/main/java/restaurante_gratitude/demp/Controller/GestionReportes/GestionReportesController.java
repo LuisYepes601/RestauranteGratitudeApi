@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import restaurante_gratitude.demp.Service.ServiceImplement.GestionarReportes.GestionarReportesPdfservice;
@@ -54,8 +55,8 @@ public class GestionReportesController {
                 .contentType(MediaType.APPLICATION_PDF)
                 .body(resource);
     }
-    
-     @GetMapping(value = "/productosValidos")
+
+    @GetMapping(value = "/productosValidos")
     public ResponseEntity<?> ProductosValidos() {
 
         byte[] bytes = gestionarReportesPdfservice.productosValidos();
@@ -64,6 +65,20 @@ public class GestionReportesController {
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=productosValidos.pdf")
+                .contentLength(resource.contentLength())
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(resource);
+    }
+
+    @GetMapping(value = "/productos/by/categoria/{categoria}")
+    public ResponseEntity<?> ProductosByCategoria(@PathVariable String categoria) {
+
+        byte[] bytes = gestionarReportesPdfservice.productosByCategoria(categoria);
+
+        ByteArrayResource resource = new ByteArrayResource(bytes);
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=productosPorCategoria.pdf")
                 .contentLength(resource.contentLength())
                 .contentType(MediaType.APPLICATION_PDF)
                 .body(resource);

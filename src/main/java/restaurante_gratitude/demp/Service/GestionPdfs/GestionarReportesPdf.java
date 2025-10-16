@@ -16,4 +16,6 @@ public interface GestionarReportesPdf {
     public byte[] usuariosRegistrados();
 
     public byte[] productosValidos();
+
+    public byte[] productosByCategoria(String categoria);
 }
