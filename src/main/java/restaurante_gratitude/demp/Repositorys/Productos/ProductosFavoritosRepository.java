@@ -18,5 +18,6 @@ import restaurante_gratitude.demp.Entidades.Usuarios.Usuario;
 @Repository
 public interface ProductosFavoritosRepository extends JpaRepository<ProductosFavoritos, ProductosFavoritosId> {
 
-    boolean existsByUsuarioAndProducto(Usuario usuario, Producto producto);
+    boolean existsByUsuarioAndProductoAndIsDeleteFalse(Usuario usuario, Producto producto);
+
 }

@@ -11,6 +11,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
 import java.time.LocalDate;
+import org.hibernate.annotations.ColumnDefault;
 import restaurante_gratitude.demp.Entidades.Usuarios.Usuario;
 
 /**
@@ -36,10 +37,18 @@ public class ProductosFavoritos {
     @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate fecha;
 
-    public ProductosFavoritos(ProductosFavoritosId productosFavoritosId, Usuario usuario, Producto producto) {
+    @ColumnDefault(value = "0")
+    private boolean isDelete;
+
+    private LocalDate fecha_eliminacion;
+
+    public ProductosFavoritos(ProductosFavoritosId productosFavoritosId, Usuario usuario, Producto producto, LocalDate fecha, boolean isDelete, LocalDate fecha_eliminacion) {
         this.productosFavoritosId = productosFavoritosId;
         this.usuario = usuario;
         this.producto = producto;
+        this.fecha = fecha;
+        this.isDelete = isDelete;
+        this.fecha_eliminacion = fecha_eliminacion;
     }
 
     public ProductosFavoritos() {
@@ -67,6 +76,30 @@ public class ProductosFavoritos {
 
     public void setProducto(Producto producto) {
         this.producto = producto;
+    }
+
+    public LocalDate getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(LocalDate fecha) {
+        this.fecha = fecha;
+    }
+
+    public boolean isIsDelete() {
+        return isDelete;
+    }
+
+    public void setIsDelete(boolean isDelete) {
+        this.isDelete = isDelete;
+    }
+
+    public LocalDate getFecha_eliminacion() {
+        return fecha_eliminacion;
+    }
+
+    public void setFecha_eliminacion(LocalDate fecha_eliminacion) {
+        this.fecha_eliminacion = fecha_eliminacion;
     }
 
 }

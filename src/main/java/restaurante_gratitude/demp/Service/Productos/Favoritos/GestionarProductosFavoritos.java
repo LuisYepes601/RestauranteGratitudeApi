@@ -5,6 +5,7 @@
 package restaurante_gratitude.demp.Service.Productos.Favoritos;
 
 import restaurante_gratitude.demp.DTOS.Request.ProductosFavoritos.ProductoFavoritoDtoRegistrar;
+import restaurante_gratitude.demp.DTOS.Request.ProductosFavoritos.ProductoFavoritoEliminarDto;
 
 /**
  *
@@ -13,5 +14,7 @@ import restaurante_gratitude.demp.DTOS.Request.ProductosFavoritos.ProductoFavori
 public interface GestionarProductosFavoritos {
 
     public String agregarProductoFavorito(ProductoFavoritoDtoRegistrar favoritoDtoRegistrar);
+    
+    public void eliminarProductoFavorito(ProductoFavoritoEliminarDto productoFavoritoEliminarDto);
 
 }

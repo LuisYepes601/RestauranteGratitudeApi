@@ -4,13 +4,17 @@
  */
 package restaurante_gratitude.demp.Service.ServiceImplement.Productos.Favorito;
 
+import java.time.LocalDate;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import restaurante_gratitude.demp.ControlExeptions.Execptions.DatoYaExistenteException;
 import restaurante_gratitude.demp.DTOS.Request.ProductosFavoritos.ProductoFavoritoDtoRegistrar;
+import restaurante_gratitude.demp.DTOS.Request.ProductosFavoritos.ProductoFavoritoEliminarDto;
 import restaurante_gratitude.demp.Entidades.Productos.Producto;
 import restaurante_gratitude.demp.Entidades.Productos.ProductosFavoritos;
+import restaurante_gratitude.demp.Entidades.Productos.ProductosFavoritosId;
 import restaurante_gratitude.demp.Entidades.Usuarios.Usuario;
 import restaurante_gratitude.demp.Repositorys.Productos.ProductoRepository;
 import restaurante_gratitude.demp.Repositorys.Productos.ProductosFavoritosRepository;
@@ -48,20 +52,34 @@ public class GestionarProductosFavoritosService implements GestionarProductosFav
                 findById(favoritoDtoRegistrar.getId_producto()),
                 "El producto seleccionado no se encuentra en el sistema actualmente. Le invitamos a intentarlo nuevamente");
 
-        if (productosFvoritosRepo.existsByUsuarioAndProducto(usuario, producto)) {
-
-            throw new DatoYaExistenteException("Error, el producto seleccionado ya se encuentra entre sus favoritos."
-                    + " Le invitamos a seleccionar un producto valido.");
-        }
+        Optional<ProductosFavoritos> productoFav = productosFvoritosRepo.findById(new ProductosFavoritosId(usuario.getId(), 0
+        ));
 
         ProductosFavoritos productosFavoritos = new ProductosFavoritos();
 
         productosFavoritos.setProducto(producto);
         productosFavoritos.setUsuario(usuario);
+        productosFavoritos.setFecha(LocalDate.now());
 
         productosFvoritosRepo.save(productosFavoritos);
 
         return usuario.getPrimerNombre() + " haz agregado el producto: " + producto.getNombre() + " a  la lista de tus favoritos.";
+
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void eliminarProductoFavorito(ProductoFavoritoEliminarDto ProductoFavoritoEliminarDto) {
+
+        ProductosFavoritos productosFavoritos = ValidacionesGlobales.obtenerSiExiste(
+                productosFvoritosRepo.findById(new ProductosFavoritosId(
+                        ProductoFavoritoEliminarDto.getId_usuario(),
+                        ProductoFavoritoEliminarDto.getId_producto())),
+                "Error. El producto seleccionado no esta entre tus favoritos. ");
+
+        productosFavoritos.setIsDelete(true);
+        productosFavoritos.setFecha_eliminacion(LocalDate.now());
+        productosFvoritosRepo.save(productosFavoritos);
 
     }
 
