@@ -31,7 +31,7 @@ public class ValidacionesGlobales {
     }
 
     public static void verificarCodigoRol(String codigoEsperado, String codigoIngresado, String mensajeError) {
-        if (!codigoEsperado.equalsIgnoreCase(codigoIngresado)) {
+        if (!codigoEsperado.trim().equalsIgnoreCase(codigoIngresado.trim())) {
             throw new DatoNoExistenteEcxeption(mensajeError);
         }
     }

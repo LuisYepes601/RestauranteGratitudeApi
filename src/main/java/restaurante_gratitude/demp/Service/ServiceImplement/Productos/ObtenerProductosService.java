@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import restaurante_gratitude.demp.ControlExeptions.Execptions.DatoNoExistenteEcxeption;
 import restaurante_gratitude.demp.ControlExeptions.Execptions.NoDatosQueMostrarExecption;
 import restaurante_gratitude.demp.DTOS.Response.Calificaciones.ObtenerCalificacionesDto;
@@ -32,6 +33,7 @@ public class ObtenerProductosService implements ObtenerProductos {
         this.productoRepository = productoRepository;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public List<ObtnerProductoDto> productosDatosBasicos() {
 
@@ -43,6 +45,7 @@ public class ObtenerProductosService implements ObtenerProductos {
 
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public List<ObtnerProductoDto> productosByCategoria(String categoria) {
 

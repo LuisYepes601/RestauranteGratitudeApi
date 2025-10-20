@@ -6,6 +6,7 @@ package restaurante_gratitude.demp.Service.ServiceImplement.Login.Registros;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import restaurante_gratitude.demp.DTOS.Request.Login.Registros.Empleado.ResgistroEmpleadoDto;
 import restaurante_gratitude.demp.DTOS.Request.Login.Registros.RegistroUsuarioBasicoDto;
 import restaurante_gratitude.demp.Entidades.Usuarios.Abastecedor;
@@ -54,6 +55,7 @@ public class RegistroEmpleadoService implements RegistroEmpleado {
         this.abastecedorRepository = abastecedorRepository;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public ResgistroEmpleadoDto registrarEmpleado(ResgistroEmpleadoDto empleadoDto) {
 

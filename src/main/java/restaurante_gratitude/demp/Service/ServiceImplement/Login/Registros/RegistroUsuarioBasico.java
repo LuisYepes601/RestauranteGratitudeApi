@@ -6,6 +6,7 @@ package restaurante_gratitude.demp.Service.ServiceImplement.Login.Registros;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import restaurante_gratitude.demp.DTOS.Request.Login.Registros.RegistroUsuarioBasicoDto;
 import restaurante_gratitude.demp.Entidades.Cuenta.Estado_cuenta;
 import restaurante_gratitude.demp.Entidades.DatosBasicos.Genero;
@@ -86,6 +87,7 @@ public class RegistroUsuarioBasico implements RegistrarUsuariobasico {
         this.correosService = correosService;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public RegistroUsuarioBasicoDto registrar(RegistroUsuarioBasicoDto usuarioBasicoDto) {
 
@@ -117,6 +119,10 @@ public class RegistroUsuarioBasico implements RegistrarUsuariobasico {
         Rol rol = ValidacionesGlobales.obtenerSiExiste(rolRepo.findByNombre(usuarioBasicoDto.getRol()),
                 "El rol: " + usuarioBasicoDto.getRol() + " no se encuentra en el sistema, lo invitamos a seleccionar una"
                 + " opcion correcta, para ccontinuar con el registro.");
+
+        System.out.println("rollllllllllllllllllllllllll:     " + usuarioBasicoDto.getRol());
+        System.out.println("codigooooooooooooooooooooooo:" + rol.getCodigoRol());
+        System.out.println("codigo ingresado:" + usuarioBasicoDto.getCodigoRol());
 
         if (!usuarioBasicoDto.getRol().toLowerCase().equalsIgnoreCase("usuario")) {
             ValidacionesGlobales.verificarCodigoRol(rol.getCodigoRol(),

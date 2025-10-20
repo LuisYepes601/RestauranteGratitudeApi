@@ -4,6 +4,7 @@
  */
 package restaurante_gratitude.demp.Repositorys.Inventario;
 
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import restaurante_gratitude.demp.Entidades.InventarioStockProducto.StockProducto;
@@ -14,5 +15,6 @@ import restaurante_gratitude.demp.Entidades.InventarioStockProducto.StockProduct
  */
 @Repository
 public interface StockProductoRepository extends JpaRepository<StockProducto, Integer> {
-    
+
+    Optional<StockProducto> findByProductoId(Integer id_producto);
 }

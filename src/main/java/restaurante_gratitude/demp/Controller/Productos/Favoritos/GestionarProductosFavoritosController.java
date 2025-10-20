@@ -10,11 +10,13 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import restaurante_gratitude.demp.DTOS.Request.ProductosFavoritos.ProductoFavoritoDtoRegistrar;
+import restaurante_gratitude.demp.DTOS.Request.ProductosFavoritos.ProductoFavoritoEliminarDto;
 import restaurante_gratitude.demp.Service.ServiceImplement.Productos.Favorito.GestionarProductosFavoritosService;
 
 /**
@@ -44,6 +46,20 @@ public class GestionarProductosFavoritosController {
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(response);
+    }
+
+    @DeleteMapping(value = "delete/")
+    public ResponseEntity<Map<String, String>> deleteProductById(
+            @Valid @RequestBody ProductoFavoritoEliminarDto favoritoEliminarDto) {
+
+        productosFavoritosService.eliminarProductoFavorito(favoritoEliminarDto);
+
+        Map<String, String> response = new HashMap<>();
+
+        response.put("mensaje", "El producto ha sido quitado de tus favoritos");
+
+        return ResponseEntity.ok(response);
+
     }
 
 }

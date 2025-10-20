@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import restaurante_gratitude.demp.ControlExeptions.Execptions.ContraseñaIncorrectaExecption;
 import restaurante_gratitude.demp.ControlExeptions.Execptions.CorreoEnUso;
+import restaurante_gratitude.demp.ControlExeptions.Execptions.DatoInvalidoException;
 import restaurante_gratitude.demp.ControlExeptions.Execptions.DatoNoExistenteEcxeption;
 import restaurante_gratitude.demp.ControlExeptions.Execptions.DatoYaExistenteException;
 import restaurante_gratitude.demp.ControlExeptions.Execptions.EliminarArchivoException;
@@ -175,6 +176,17 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.status(HttpStatus.CONFLICT)
                 .body(Map.of("mensaje", ""));
+
+    }
+
+    @ExceptionHandler(DatoInvalidoException.class)
+    public ResponseEntity<Map<String, String>> handlerDatoInvalidoException(DatoInvalidoException exception) {
+
+        Map<String, String> errores = new HashMap<>();
+        errores.put("error", exception.getMessage());
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(errores);
 
     }
 }

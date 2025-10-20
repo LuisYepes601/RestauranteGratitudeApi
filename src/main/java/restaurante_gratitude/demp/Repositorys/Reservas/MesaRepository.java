@@ -14,5 +14,5 @@ import restaurante_gratitude.demp.Entidades.Reservas.Mesa;
  */
 @Repository
 public interface MesaRepository extends JpaRepository<Mesa, Integer> {
-    
+
 }
