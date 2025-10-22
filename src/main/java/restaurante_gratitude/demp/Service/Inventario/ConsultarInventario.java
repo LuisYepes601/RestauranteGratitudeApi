@@ -5,15 +5,14 @@
 package restaurante_gratitude.demp.Service.Inventario;
 
 import java.util.List;
-import restaurante_gratitude.demp.Entidades.InventarioStockProducto.StockProducto;
+import restaurante_gratitude.demp.DTOS.Response.Inventario.inventarioDto;
 
 /**
  *
  * @author Usuario
  */
-
 public interface ConsultarInventario {
 
-    public List<StockProducto> getProductos();
+    public List<inventarioDto> getProductos();
 
 }
