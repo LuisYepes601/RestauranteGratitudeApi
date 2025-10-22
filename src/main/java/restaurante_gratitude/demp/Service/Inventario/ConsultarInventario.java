@@ -11,6 +11,7 @@ import restaurante_gratitude.demp.Entidades.InventarioStockProducto.StockProduct
  *
  * @author Usuario
  */
+
 public interface ConsultarInventario {
 
     public List<StockProducto> getProductos();

@@ -27,6 +27,7 @@ public class InventarioController {
     private GestionarCantidadMaximaService cantidadMaximaService;
     private GestionarCantidadMinimaService cantidadMinimaService;
     private GestionarStockService sttockService;
+    
 
     @Autowired
     public InventarioController(GestionarCantidadMaximaService cantidadMaximaService, GestionarCantidadMinimaService cantidadMinimaService, GestionarStockService sttockService) {
