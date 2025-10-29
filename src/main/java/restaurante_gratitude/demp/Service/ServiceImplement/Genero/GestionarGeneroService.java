@@ -4,10 +4,8 @@
  */
 package restaurante_gratitude.demp.Service.ServiceImplement.Genero;
 
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import restaurante_gratitude.demp.ControlExeptions.Execptions.DatoYaExistenteException;
 import restaurante_gratitude.demp.DTOS.Request.Genero.GeneroDto;
 import restaurante_gratitude.demp.Entidades.DatosBasicos.Genero;
 import restaurante_gratitude.demp.Repositorys.DatosBasicos.GeneroRepository;

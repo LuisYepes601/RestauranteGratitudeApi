@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Reserva Confirmada</title>
+</head>
+<body style="font-family: Arial, sans-serif; background-color: #f4f4f7; padding: 20px;">
+    <div style="max-width: 600px; margin: auto; background: white; border-radius: 10px;
+                overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+        
+        <!-- Logo -->
+        <img src="cid:logo" 
+             alt="Logo Restaurante Gratitude" 
+             width="150" 
+             style="display:block; max-width:150px; height:auto; margin:0 auto; border-radius:10px;">
+
+        <!-- Encabezado -->
+        <div style="background-color: #4CAF50; padding: 20px; text-align: center; color: white;">
+            <h1 style="margin: 0;">¡Reserva Confirmada! 🎉</h1>
+        </div>
+
+        <!-- Contenido -->
+        <div style="padding: 20px; color: #333;">
+            <p>Hola <b th:text="${nombreUsuario}">Usuario</b>,</p>
+            <p>Tu reserva ha sido registrada exitosamente. ✅</p>
+            
+            <p><b>Detalles de tu reserva:</b></p>
+            <ul>
+                <li>Fecha: <span th:text="${fecha}"></span></li>
+                <li>Hora de inicio: <span th:text="${horaInicio}"></span></li>
+                <li>Hora de fin: <span th:text="${horaFin}"></span></li>
+                <li>Mesa: <span th:text="${mesa}"></span></li>
+                <li>Tipo de reserva: <span th:text="${tipoReserva}"></span></li>
+            </ul>
+
+            <div style="text-align: center; margin: 30px 0;">
+                <a th:href="${loginUrl}"
+                   style="background-color: #4CAF50; color: white; padding: 12px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;">
+                    Ver mis reservas
+                </a>
+            </div>
+
+            <p style="font-size: 12px; color: #888; text-align: center;">
+                Este correo es generado automáticamente, por favor no respondas directamente.
+            </p>
+        </div>
+    </div>
+</body>
+</html>

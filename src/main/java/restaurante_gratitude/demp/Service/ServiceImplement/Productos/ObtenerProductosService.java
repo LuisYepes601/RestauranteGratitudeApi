@@ -79,6 +79,7 @@ public class ObtenerProductosService implements ObtenerProductos {
             ObtnerProductoDto productoDto = new ObtnerProductoDto();
 
             //DATOS BASICOS PRODUCTO
+            productoDto.setId(producto.getId());
             productoDto.setNombre(producto.getNombre());
             productoDto.setPrecio(producto.getPrecio());
             productoDto.setDescripcion(producto.getDescripcion());

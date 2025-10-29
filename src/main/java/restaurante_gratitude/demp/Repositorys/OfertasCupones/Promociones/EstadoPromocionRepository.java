@@ -4,6 +4,7 @@
  */
 package restaurante_gratitude.demp.Repositorys.OfertasCupones.Promociones;
 
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import restaurante_gratitude.demp.Entidades.OfertsCupons.Promociones.EstadoPromocion;
@@ -13,6 +14,7 @@ import restaurante_gratitude.demp.Entidades.OfertsCupons.Promociones.EstadoPromo
  * @author Usuario
  */
 @Repository
-public interface EstadoPromocionRepository extends JpaRepository<EstadoPromocion, Integer>{
-    
+public interface EstadoPromocionRepository extends JpaRepository<EstadoPromocion, Integer> {
+
+    public Optional<EstadoPromocion> findByNombre(String nombre);
 }

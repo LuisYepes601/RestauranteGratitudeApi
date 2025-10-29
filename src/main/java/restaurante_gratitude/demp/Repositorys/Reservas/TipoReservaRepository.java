@@ -4,6 +4,7 @@
  */
 package restaurante_gratitude.demp.Repositorys.Reservas;
 
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import restaurante_gratitude.demp.Entidades.Reservas.TipoReserva;
@@ -14,5 +15,7 @@ import restaurante_gratitude.demp.Entidades.Reservas.TipoReserva;
  */
 @Repository
 public interface TipoReservaRepository extends JpaRepository<TipoReserva, Integer> {
+ 
+    public Optional<TipoReserva>findByNombre(String nombre);
     
 }

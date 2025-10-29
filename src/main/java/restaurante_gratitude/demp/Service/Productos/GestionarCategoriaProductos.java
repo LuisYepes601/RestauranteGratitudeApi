@@ -4,6 +4,7 @@
  */
 package restaurante_gratitude.demp.Service.Productos;
 
+import java.util.List;
 import restaurante_gratitude.demp.DTOS.Request.Productos.Categoria.CategoriaProductoDto;
 
 /**
@@ -13,4 +14,6 @@ import restaurante_gratitude.demp.DTOS.Request.Productos.Categoria.CategoriaProd
 public interface GestionarCategoriaProductos {
 
     public CategoriaProductoDto agregarCategoria(CategoriaProductoDto categoriaProductoDto);
+
+    public List<CategoriaProductoDto> obtnerCategorias();
 }

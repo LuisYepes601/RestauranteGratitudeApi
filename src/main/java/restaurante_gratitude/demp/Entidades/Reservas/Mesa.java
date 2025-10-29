@@ -44,8 +44,6 @@ public class Mesa {
     @Column(nullable = false)
     private int cantidadPersonas;
     
-  
-    
 
     public Mesa(int id, int numero, int capacidad, String ur_img_mesa, EstadoMesa estadoMesa) {
         this.id = id;
@@ -96,6 +94,22 @@ public class Mesa {
 
     public void setEstadoMesa(EstadoMesa estadoMesa) {
         this.estadoMesa = estadoMesa;
+    }
+
+    public List<Reserva> getReservas() {
+        return reservas;
+    }
+
+    public void setReservas(List<Reserva> reservas) {
+        this.reservas = reservas;
+    }
+
+    public int getCantidadPersonas() {
+        return cantidadPersonas;
+    }
+
+    public void setCantidadPersonas(int cantidadPersonas) {
+        this.cantidadPersonas = cantidadPersonas;
     }
 
 }

@@ -4,29 +4,28 @@
  */
 package restaurante_gratitude.demp.DTOS.Request.Promociones;
 
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 /**
  *
  * @author User
  */
 public class TipoPromocionDto {
-    @NotBlank(message = "")
-    private Integer id;
+
+    @NotNull(message = "El nombre de la promocion no puede quedar vacio, le invitamos a rellenarlo. ")
     private String nombre;
+    
+    private int id;
 
-    public TipoPromocionDto(Integer id, String nombre) {
-        this.id = id;
+    public TipoPromocionDto() {
+    }
+
+    public TipoPromocionDto(String nombre, int id) {
         this.nombre = nombre;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
         this.id = id;
     }
+
+    
 
     public String getNombre() {
         return nombre;
@@ -35,6 +34,13 @@ public class TipoPromocionDto {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-    
-    
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
 }

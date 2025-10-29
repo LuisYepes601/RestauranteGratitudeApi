@@ -4,8 +4,11 @@
  */
 package restaurante_gratitude.demp.Service.ServiceImplement.Productos;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import restaurante_gratitude.demp.ControlExeptions.Execptions.NoDatosQueMostrarExecption;
 import restaurante_gratitude.demp.DTOS.Request.Productos.Categoria.CategoriaProductoDto;
 import restaurante_gratitude.demp.Entidades.Productos.Categoria;
 import restaurante_gratitude.demp.Repositorys.Productos.CategoriaProductoRepository;
@@ -45,6 +48,28 @@ public class GestionarCategoriaProductoService implements GestionarCategoriaProd
         categoriaRepository.save(categoria);
 
         return categoriaProductoDto;
+
+    }
+
+    @Override
+    public List<CategoriaProductoDto> obtnerCategorias() {
+
+        List<Categoria> categorias = categoriaRepository.findAll();
+
+        if (categorias.isEmpty()) {
+            throw new NoDatosQueMostrarExecption("No hay categorias disponibles en el sistema.");
+        }
+
+        List<CategoriaProductoDto> categoriaProductoDtos = new ArrayList<>();
+        CategoriaProductoDto categoriaProductoDto = new CategoriaProductoDto();
+
+        for (Categoria categoria : categorias) {
+            categoriaProductoDto.setNombre(categoria.getNobre());
+
+            categoriaProductoDtos.add(categoriaProductoDto);
+        }
+
+        return categoriaProductoDtos;
 
     }
 

@@ -24,7 +24,10 @@ public class CorsConfig {
                 registry.addMapping("/**")
                         .allowedOrigins(
                                 "http://127.0.0.1:5500",
-                                "https://inicio-sesion-cqye.vercel.app"
+                                "https://inicio-sesion-three.vercel.app/",
+                                "https://reservas-virid-theta.vercel.app/",
+                                "https://inicio-sesion-three.vercel.app/olvidasteTuContrase%C3%B1a.html",
+                                "http://127.0.0.1:5500/olvidasteTuContrase%C3%B1a.html"
                         )
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*")

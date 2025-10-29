@@ -14,6 +14,8 @@ import restaurante_gratitude.demp.DTOS.Response.Calificaciones.ObtenerCalificaci
  */
 public class ObtnerProductoDto {
 
+    Integer id;
+    
     private String nombre;
 
     private Double precio;
@@ -162,6 +164,14 @@ public class ObtnerProductoDto {
 
     public void setCalificacionesDtos(List<ObtenerCalificacionesDto> calificacionesDtos) {
         this.calificacionesDtos = calificacionesDtos;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
   

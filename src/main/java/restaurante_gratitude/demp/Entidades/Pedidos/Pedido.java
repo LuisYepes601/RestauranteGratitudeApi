@@ -148,4 +148,28 @@ public class Pedido {
         this.devolucion = devolucion;
     }
 
+    public Mesero getMesero() {
+        return mesero;
+    }
+
+    public void setMesero(Mesero mesero) {
+        this.mesero = mesero;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+    public UsoCupon getUsoCupon() {
+        return usoCupon;
+    }
+
+    public void setUsoCupon(UsoCupon usoCupon) {
+        this.usoCupon = usoCupon;
+    }
+
 }
