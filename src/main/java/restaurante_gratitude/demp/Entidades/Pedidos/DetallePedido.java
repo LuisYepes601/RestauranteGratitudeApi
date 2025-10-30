@@ -32,32 +32,32 @@ public class DetallePedido {
     private Producto producto;
 
     @ManyToOne
-    @MapsId("id_usuario")
-    @JoinColumn(name = "id_usuario")
-    private Usuario usuario;
-    
+    @MapsId("id_pedido")
+    @JoinColumn(name = "id_pedido")
+    private Pedido pedido;
+
     @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false)
     private Date fechaPedido;
-    
+
     private String decripcion;
-    
+
     @Column(nullable = false)
     private double subTotal;
-    
+
     @Column(nullable = false)
     private double total;
-    
+
     @Column(nullable = false)
     private int cantidad;
-    
+
     @Column(nullable = false)
     private double precioUnidad;
 
-    public DetallePedido(DetallePedidoId detallePedidoId, Producto producto, Usuario usuario, Date fechaPedido, String decripcion, double subTotal, double total, int cantidad, double precioUnidad) {
+    public DetallePedido(DetallePedidoId detallePedidoId, Producto producto, Pedido pedido, Date fechaPedido, String decripcion, double subTotal, double total, int cantidad, double precioUnidad) {
         this.detallePedidoId = detallePedidoId;
         this.producto = producto;
-        this.usuario = usuario;
+        this.pedido = pedido;
         this.fechaPedido = fechaPedido;
         this.decripcion = decripcion;
         this.subTotal = subTotal;
@@ -85,12 +85,12 @@ public class DetallePedido {
         this.producto = producto;
     }
 
-    public Usuario getUsuario() {
-        return usuario;
+    public Pedido getPedido() {
+        return pedido;
     }
 
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
+    public void setPedido(Pedido pedido) {
+        this.pedido = pedido;
     }
 
     public Date getFechaPedido() {
@@ -140,10 +140,5 @@ public class DetallePedido {
     public void setPrecioUnidad(double precioUnidad) {
         this.precioUnidad = precioUnidad;
     }
-    
-    
-    
-    
-    
 
 }

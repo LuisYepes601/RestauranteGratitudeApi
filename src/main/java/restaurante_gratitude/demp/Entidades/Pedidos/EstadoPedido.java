@@ -27,15 +27,13 @@ public class EstadoPedido {
     private String nombre;
 
     @OneToMany(mappedBy = "estadoPedido")
-    private List<Pedido>pedidos;
+    private List<Pedido> pedidos;
 
     public EstadoPedido(int id, String nombre, List<Pedido> pedidos) {
         this.id = id;
         this.nombre = nombre;
         this.pedidos = pedidos;
     }
-    
-    
 
     public EstadoPedido() {
     }

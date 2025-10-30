@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <title>¡Tu pedido está listo! - Delicias Verdes</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f4f6f9;
+      color: #333;
+      line-height: 1.6;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 600px;
+      margin: 20px auto;
+      background: #ffffff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+    .header {
+      background: linear-gradient(135deg, #0e7b16, #2e7d32);
+      color: white;
+      padding: 30px 20px;
+      text-align: center;
+    }
+    .header h1 {
+      margin: 0;
+      font-size: 1.8rem;
+    }
+    .content {
+      padding: 30px 25px;
+    }
+    .greeting {
+      font-size: 1.2rem;
+      color: #2e7d32;
+      font-weight: 600;
+    }
+    .order-summary {
+      background: #f8fff8;
+      border: 1px solid #c8e6c9;
+      border-radius: 10px;
+      padding: 20px;
+      margin: 20px 0;
+    }
+    .order-id {
+      font-size: 1.1rem;
+      font-weight: bold;
+      color: #0e7b16;
+      margin-bottom: 15px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 10px;
+      text-align: left;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    th {
+      background-color: #f1f8e9;
+      color: #2e7d32;
+      font-weight: 600;
+    }
+    .total-row {
+      font-weight: bold;
+      background-color: #e8f5e9;
+    }
+    .btn {
+      display: inline-block;
+      background: #2e7d32;
+      color: white;
+      padding: 12px 28px;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: 600;
+      margin-top: 20px;
+    }
+    .footer {
+      background-color: #f8f9fa;
+      padding: 25px;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #666;
+      border-top: 1px solid #eee;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Delicias Verdes</h1>
+      <p>Repostería • Heladería • Panadería • Gourmet</p>
+    </div>
+
+    <div class="content">
+      <p class="greeting">¡Hola <span th:text="${nombre}">Cliente</span>!</p>
+      <p>Tu pedido ha sido <strong>confirmado con éxito</strong>. Pronto estará listo para recoger.</p>
+
+      <div class="order-summary">
+        <div class="order-id">Pedido #<span th:text="${pedidoId}">123</span></div>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Producto</th>
+              <th>Cant.</th>
+              <th>Precio</th>
+              <th>Subtotal</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="item : ${detalles}">
+              <td th:text="${item.nombreProducto}">Torta de Chocolate</td>
+              <td th:text="${item.cantidad}">2</td>
+              <td th:text="'$' + ${item.precioUnidad}">$15.000</td>
+              <td th:text="'$' + (${item.cantidad} * ${item.precioUnidad})">$30.000</td>
+            </tr>
+            <tr class="total-row">
+              <td colspan="3"><strong>Total:</strong></td>
+              <td><strong th:text="'$' + ${total}">$45.000</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p><strong>Recoge en:</strong> Cra. 10 #20-30, Centro</p>
+      <p><strong>Horario:</strong> Lunes a Domingo • 8:00 AM - 8:00 PM</p>
+
+      <div style="text-align:center;">
+        <a href="https://deliciasverdes.com/mispedidos" class="btn">Ver mis pedidos</a>
+      </div>
+
+      <p>¡Gracias por confiar en nosotros!</p>
+    </div>
+
+    <div class="footer">
+      <p><strong>Delicias Verdes</strong> • Tu dulzura, nuestra pasión</p>
+      <p style="font-size:0.8rem;">Este es un correo automático. No respondas a este mensaje.</p>
+    </div>
+  </div>
+</body>
+</html>

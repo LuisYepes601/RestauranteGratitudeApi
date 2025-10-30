@@ -4,25 +4,37 @@
  */
 package restaurante_gratitude.demp.Entidades.Pedidos;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import java.io.Serializable;
 
 /**
  *
  * @author User
  */
 @Embeddable
-public class DetallePedidoId {
+public class DetallePedidoId implements Serializable {
 
+    @Column(name = "id_pedido")
+    private int id_pedido;
+
+    @Column(name = "id_producto")
     private int id_producto;
 
-    private int id_usuario;
-
-    public DetallePedidoId(int id_producto, int id_usuario) {
-        this.id_producto = id_producto;
-        this.id_usuario = id_usuario;
+    public DetallePedidoId() {
     }
 
-    public DetallePedidoId() {
+    public DetallePedidoId(int id_pedido, int id_producto) {
+        this.id_pedido = id_pedido;
+        this.id_producto = id_producto;
+    }
+
+    public int getId_pedido() {
+        return id_pedido;
+    }
+
+    public void setId_pedido(int id_pedido) {
+        this.id_pedido = id_pedido;
     }
 
     public int getId_producto() {
@@ -33,12 +45,30 @@ public class DetallePedidoId {
         this.id_producto = id_producto;
     }
 
-    public int getId_usuario() {
-        return id_usuario;
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 29 * hash + this.id_pedido;
+        hash = 29 * hash + this.id_producto;
+        return hash;
     }
 
-    public void setId_usuario(int id_usuario) {
-        this.id_usuario = id_usuario;
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final DetallePedidoId other = (DetallePedidoId) obj;
+        if (this.id_pedido != other.id_pedido) {
+            return false;
+        }
+        return this.id_producto == other.id_producto;
     }
 
 }

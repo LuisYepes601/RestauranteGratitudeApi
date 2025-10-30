@@ -11,10 +11,12 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import java.util.Date;
+import java.util.List;
 import restaurante_gratitude.demp.Entidades.Devoluciones.Devolucion;
 import restaurante_gratitude.demp.Entidades.OfertsCupons.Cupones.Cupon;
 import restaurante_gratitude.demp.Entidades.OfertsCupons.Cupones.UsoCupon;
@@ -73,7 +75,26 @@ public class Pedido {
     @OneToOne(mappedBy = "pedido")
     private UsoCupon usoCupon;
 
+    @OneToMany(mappedBy = "pedido")
+    private List<DetallePedido> detalles;
+
     public Pedido() {
+    }
+
+    public Pedido(int id, Date fechaPedido, double total, int totalItems, TipoPedido tipoPedido, EstadoPedido estadoPedido, RangoCalificacion rangoCalificacion, Cupon cupon, Devolucion devolucion, Mesero mesero, Usuario usuario, UsoCupon usoCupon, List<DetallePedido> detalles) {
+        this.id = id;
+        this.fechaPedido = fechaPedido;
+        this.total = total;
+        this.totalItems = totalItems;
+        this.tipoPedido = tipoPedido;
+        this.estadoPedido = estadoPedido;
+        this.rangoCalificacion = rangoCalificacion;
+        this.cupon = cupon;
+        this.devolucion = devolucion;
+        this.mesero = mesero;
+        this.usuario = usuario;
+        this.usoCupon = usoCupon;
+        this.detalles = detalles;
     }
 
     public int getId() {
@@ -170,6 +191,14 @@ public class Pedido {
 
     public void setUsoCupon(UsoCupon usoCupon) {
         this.usoCupon = usoCupon;
+    }
+
+    public List<DetallePedido> getDetalles() {
+        return detalles;
+    }
+
+    public void setDetalles(List<DetallePedido> detalles) {
+        this.detalles = detalles;
     }
 
 }
