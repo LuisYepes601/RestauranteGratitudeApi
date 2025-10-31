@@ -4,6 +4,7 @@
  */
 package restaurante_gratitude.demp.Repositorys.DatosBasicos.Identificaciones;
 
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import restaurante_gratitude.demp.Entidades.DatosBasicos.Identificaciones.Identificacion;
@@ -15,4 +16,5 @@ import restaurante_gratitude.demp.Entidades.DatosBasicos.Identificaciones.Identi
 @Repository
 public interface IdentificacionRepository extends JpaRepository<Identificacion, Integer>{
     
+    public Optional<Identificacion>findByNumero(String numero);
 }

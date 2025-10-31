@@ -103,6 +103,10 @@ public class RegistroUsuarioBasico implements RegistrarUsuariobasico {
         usuario.setTelefono(usuarioBasicoDto.getTelefono());
         usuario.setEmail(usuarioBasicoDto.getEmail());
 
+        ValidacionesGlobales.validarExistencia(
+                identificacionRepo.findByNumero(usuarioBasicoDto.getNumeroDeIdentificacion()),
+                "Error en el registro, el número de identificacion ya esta asociado a una cuenta");
+
         Identificacion identificacion = new Identificacion();
         identificacion.setNumero(usuarioBasicoDto.getNumeroDeIdentificacion());
 

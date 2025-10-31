@@ -27,7 +27,6 @@ import restaurante_gratitude.demp.Entidades.Cuenta.Estado_cuenta;
 import restaurante_gratitude.demp.Entidades.Devoluciones.Devolucion;
 import restaurante_gratitude.demp.Entidades.OfertsCupons.Cupones.UsoCupon;
 import restaurante_gratitude.demp.Entidades.PQRS.PQRS;
-import restaurante_gratitude.demp.Entidades.Pedidos.DetallePedido;
 import restaurante_gratitude.demp.Entidades.Pedidos.Pedido;
 import restaurante_gratitude.demp.Entidades.Preferencias.Preferencia;
 import restaurante_gratitude.demp.Entidades.Productos.ProductosFavoritos;
