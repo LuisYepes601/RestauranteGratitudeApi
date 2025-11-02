@@ -14,7 +14,6 @@ import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import java.util.Date;
 import restaurante_gratitude.demp.Entidades.Productos.Producto;
-import restaurante_gratitude.demp.Entidades.Usuarios.Usuario;
 
 /**
  *
