@@ -83,7 +83,7 @@ public class GestionarProductosController {
         return ResponseEntity.ok(respuesta);
     }
 
-    @PostMapping(value = "editar")
+    @PostMapping(value = "/editar")
     public ResponseEntity<?> editarDatosBasicosProductos(
             @RequestBody EditarDatosBasicProductDto datosBasicProductDto) {
 
