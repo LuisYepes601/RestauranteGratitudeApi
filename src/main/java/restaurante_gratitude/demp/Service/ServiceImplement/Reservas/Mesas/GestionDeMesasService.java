@@ -82,7 +82,7 @@ public class GestionDeMesasService implements GestionDeMesas {
 
     @Override
     public List<MesaDto> listarMesasDisponibles() {
-        String estadoMesa = "activa";
+        String estadoMesa = "Disponible";
 
         List<Mesa> mesasDisponibles = mesaRepo.findByEstadoMesa_Nombre(estadoMesa);
 

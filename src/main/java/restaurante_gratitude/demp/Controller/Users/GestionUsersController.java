@@ -4,12 +4,14 @@
  */
 package restaurante_gratitude.demp.Controller.Users;
 
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import restaurante_gratitude.demp.DTOS.Request.Users.UsuarioAdminDto;
 import restaurante_gratitude.demp.DTOS.Request.Users.UsuarioBasicDTO;
 import restaurante_gratitude.demp.Service.ServiceImplement.Users.GestionUsersService;
 
@@ -32,6 +34,12 @@ public class GestionUsersController {
     public ResponseEntity<UsuarioBasicDTO> obtenerUsuariById(@PathVariable Integer id) {
 
         return ResponseEntity.ok(gestionUsersService.obtnerUsuarioByID(id));
+    }
+
+    @GetMapping(value = "all")
+    public ResponseEntity<List<UsuarioAdminDto>> obtenerUusarios() {
+
+        return ResponseEntity.ok(gestionUsersService.usuarioAdminDtos());
     }
 
 }

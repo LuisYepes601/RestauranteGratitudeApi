@@ -4,9 +4,13 @@
  */
 package restaurante_gratitude.demp.Service.ServiceImplement.Users;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import restaurante_gratitude.demp.ControlExeptions.Execptions.NoDatosQueMostrarExecption;
+import restaurante_gratitude.demp.DTOS.Request.Users.UsuarioAdminDto;
 import restaurante_gratitude.demp.DTOS.Request.Users.UsuarioBasicDTO;
 import restaurante_gratitude.demp.Entidades.Usuarios.Usuario;
 import restaurante_gratitude.demp.Repositorys.Users.UsuarioRepository;
@@ -52,4 +56,34 @@ public class GestionUsersService implements GestionUsers {
         return basicDTO;
 
     }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public List<UsuarioAdminDto> usuarioAdminDtos() {
+
+        List<Usuario> usuarios = userRepo.findAll();
+
+        if (usuarios.isEmpty()) {
+            throw new NoDatosQueMostrarExecption("No hay usuarios registrados en el sistema");
+        }
+
+        List<UsuarioAdminDto> usuarioAdminDtos = new ArrayList<>();
+
+        for (Usuario usuario : usuarios) {
+
+            UsuarioAdminDto dto = new UsuarioAdminDto();
+
+            dto.setNombre(usuario.getPrimerNombre());
+            dto.setEmail(usuario.getEmail());
+            dto.setFechaRegistro(usuario.getFechaRegistro());
+            dto.setFoto(usuario.getFoto_perifl());
+            dto.setEstado(usuario.getEstado_cuenta().getNombre());
+
+            usuarioAdminDtos.add(dto);
+
+        }
+
+        return usuarioAdminDtos;
+    }
+
 }

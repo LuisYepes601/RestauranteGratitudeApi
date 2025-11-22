@@ -4,6 +4,7 @@
  */
 package restaurante_gratitude.demp.Service.ServiceImplement.Cuenta.Contraseña;
 
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -77,6 +78,7 @@ public class CambiarContraseñaService implements CambiarContraseña {
     }
 
     @Override
+
     public void cambiarContraseña(CambiarContraseñaDto cambiarContraseñaDto) {
 
         Usuario usuario = ValidacionesGlobales.obtenerSiExiste(
@@ -91,7 +93,7 @@ public class CambiarContraseñaService implements CambiarContraseña {
                 cambiarContraseñaDto.getContraseñaNueva());
 
         String contraseñaEncripatada = encripatmientoContraseñasService.encriptarContraseñas(
-                cambiarContraseñaDto.getContraseaActual());
+                cambiarContraseñaDto.getContraseñaNueva());
 
         usuario.setContraseña(contraseñaEncripatada);
 

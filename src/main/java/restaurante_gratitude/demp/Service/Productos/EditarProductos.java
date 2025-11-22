@@ -4,6 +4,9 @@
  */
 package restaurante_gratitude.demp.Service.Productos;
 
+import java.util.Map;
+import org.springframework.web.multipart.MultipartFile;
+import restaurante_gratitude.demp.DTOS.Request.Productos.CrearProductoDto;
 import restaurante_gratitude.demp.DTOS.Request.Productos.EditarDatosBasicProductDto;
 
 /**
@@ -13,4 +16,6 @@ import restaurante_gratitude.demp.DTOS.Request.Productos.EditarDatosBasicProduct
 public interface EditarProductos {
 
     public String editarProductoByid( EditarDatosBasicProductDto datosBasicProductDto);
+    
+    public Map<String, String> editarProdcuto(CrearProductoDto crearProductoDto, MultipartFile file);
 }

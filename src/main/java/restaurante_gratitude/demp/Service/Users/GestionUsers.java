@@ -4,6 +4,8 @@
  */
 package restaurante_gratitude.demp.Service.Users;
 
+import java.util.List;
+import restaurante_gratitude.demp.DTOS.Request.Users.UsuarioAdminDto;
 import restaurante_gratitude.demp.DTOS.Request.Users.UsuarioBasicDTO;
 
 /**
@@ -11,6 +13,8 @@ import restaurante_gratitude.demp.DTOS.Request.Users.UsuarioBasicDTO;
  * @author Usuario
  */
 public interface GestionUsers {
-    
+
     public UsuarioBasicDTO obtnerUsuarioByID(Integer id);
+
+    public List<UsuarioAdminDto> usuarioAdminDtos();
 }
