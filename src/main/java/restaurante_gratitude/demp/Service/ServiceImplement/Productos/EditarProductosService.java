@@ -25,7 +25,8 @@ import restaurante_gratitude.demp.Repositorys.Productos.ContenidoProducto;
 import restaurante_gratitude.demp.Repositorys.Productos.ProductoRepository;
 import restaurante_gratitude.demp.Repositorys.Productos.TipoContenidoProductoRepository;
 import restaurante_gratitude.demp.Service.Productos.EditarProductos;
-import restaurante_gratitude.demp.Service.ServiceImplement.GestionDeArchivosCloudiny.CargarImagenesService;
+import restaurante_gratitude.demp.Service.ServiceImplement.GestionDeArchivosCloudiny.CargarFileService;
+import restaurante_gratitude.demp.Service.ServiceImplement.GestionDeArchivosCloudiny.FileCloudinary;
 import restaurante_gratitude.demp.Validaciones.ValidacionesGlobales;
 
 /**
@@ -39,11 +40,11 @@ public class EditarProductosService implements EditarProductos {
     private CategoriaProductoRepository categoriaProdcutoRepo;
     private ContenidoProducto contenidoProductoRepo;
     private TipoContenidoProductoRepository tipoContenidoRepo;
-    private CargarImagenesService imagenService;
+    private CargarFileService imagenService;
     private StockProductoRepository stockProductoRepository;
 
     @Autowired
-    public EditarProductosService(ProductoRepository productoRepository, CategoriaProductoRepository categoriaProdcutoRepo, ContenidoProducto contenidoProductoRepo, TipoContenidoProductoRepository tipoContenidoRepo, CargarImagenesService imagenService, StockProductoRepository stockProductoRepository) {
+    public EditarProductosService(ProductoRepository productoRepository, CategoriaProductoRepository categoriaProdcutoRepo, ContenidoProducto contenidoProductoRepo, TipoContenidoProductoRepository tipoContenidoRepo, CargarFileService imagenService, StockProductoRepository stockProductoRepository) {
         this.productoRepository = productoRepository;
         this.categoriaProdcutoRepo = categoriaProdcutoRepo;
         this.contenidoProductoRepo = contenidoProductoRepo;
@@ -130,18 +131,9 @@ public class EditarProductosService implements EditarProductos {
 
         String imagen;
 
-        imagen = imagenService.cargarFoto(
-                file,
-                "La imagen no se pudo cargar.",
-                ObjectUtils.asMap("public_id", "productos/" + producto.getNombre(),
-                        "transformation", new Transformation<>()
-                                .quality("auto")
-                                .fetchFormat("auto")
-                                .width(300)
-                                .height(300)
-                                .crop("limit")
-                ),
-                producto.getNombre());
+        Map<String, Object> objectUtils = new HashMap<>();
+
+        imagen = imagenService.cargarArchivo(new FileCloudinary(objectUtils, file));
 
         producto.setImagen(imagen);
 
@@ -155,7 +147,6 @@ public class EditarProductosService implements EditarProductos {
         stockProducto.setCantidad(crearProductoDto.getCantidad());
         stockProducto.setCantidadMin(crearProductoDto.getCantidadMin());
         stockProducto.setCantidadMax(crearProductoDto.getCantidadMax());
-        
 
         stockProductoRepository.save(stockProducto);
 

@@ -4,19 +4,25 @@
  */
 package restaurante_gratitude.demp.Service.ServiceImplement.Genero;
 
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import restaurante_gratitude.demp.DTOS.Request.Genero.GeneroDto;
 import restaurante_gratitude.demp.Entidades.DatosBasicos.Genero;
 import restaurante_gratitude.demp.Repositorys.DatosBasicos.GeneroRepository;
 import restaurante_gratitude.demp.Service.Genero.GestionarGeneros;
 import restaurante_gratitude.demp.Validaciones.ValidacionesGlobales;
+import org.springframework.stereotype.Service;
+import restaurante_gratitude.demp.ControlExeptions.Execptions.DatoInvalidoException;
+import restaurante_gratitude.demp.ControlExeptions.Execptions.NoDatosQueMostrarExecption;
 
 /**
  *
  * @author Usuario
  */
-@Service
+@Service(value = "generoService")
 public class GestionarGeneroService implements GestionarGeneros {
 
     private GeneroRepository generoRepo;
@@ -51,4 +57,24 @@ public class GestionarGeneroService implements GestionarGeneros {
 
     }
 
+    @Override
+    public Page<GeneroDto> getGeneros(String name, Pageable pageable) {
+
+        int pageSize = pageable.getPageSize();
+        int pageNum = pageable.getPageNumber();
+
+        if (pageSize > 10) {
+            throw new DatoInvalidoException("El numero de items de la page no debe de ser mayor a 10");
+        }
+
+        Page<GeneroDto> page = generoRepo.generos(name, pageable);
+
+        if (page.isEmpty()) {
+
+            throw new NoDatosQueMostrarExecption("No hay generos que mostrar...");
+        }
+
+        return page;
+
+    }
 }

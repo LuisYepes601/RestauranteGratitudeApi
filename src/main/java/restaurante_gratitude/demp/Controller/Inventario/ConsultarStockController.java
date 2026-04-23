@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import restaurante_gratitude.demp.DTOS.Response.Inventario.inventarioDto;
+import restaurante_gratitude.demp.Service.Direcciones.GestionarDepartamentos;
+import restaurante_gratitude.demp.Service.ServiceImplement.Direcciones.GestionarDepartamentosService;
 import restaurante_gratitude.demp.Service.ServiceImplement.Inventario.ConsultarInventarioService;
 
 /**
@@ -31,6 +33,7 @@ public class ConsultarStockController {
     
     @GetMapping(value = "/")
     public ResponseEntity<List<inventarioDto>> consultarInventario() {
+        
         
         return ResponseEntity.status(HttpStatus.OK)
                 .body(consultarInventarioService.getProductos());

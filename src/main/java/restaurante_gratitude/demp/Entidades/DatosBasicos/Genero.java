@@ -6,6 +6,7 @@ package restaurante_gratitude.demp.Entidades.DatosBasicos;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -27,7 +28,7 @@ public class Genero {
     @Column(nullable = false)
     private String nombre;
 
-    @OneToMany(mappedBy = "genero")
+    @OneToMany(mappedBy = "genero", fetch = FetchType.LAZY)
     private List<Usuario> usuarios;
 
     public Genero(int id, String nombre, List<Usuario> usuarios) {
@@ -35,8 +36,6 @@ public class Genero {
         this.nombre = nombre;
         this.usuarios = usuarios;
     }
-
-  
 
     public Genero() {
     }
@@ -64,7 +63,5 @@ public class Genero {
     public void setUsuarios(List<Usuario> usuarios) {
         this.usuarios = usuarios;
     }
-
-
 
 }

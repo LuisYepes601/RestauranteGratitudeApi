@@ -7,8 +7,11 @@ package restaurante_gratitude.demp.Service.ServiceImplement.Users;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.GetMapping;
 import restaurante_gratitude.demp.ControlExeptions.Execptions.NoDatosQueMostrarExecption;
 import restaurante_gratitude.demp.DTOS.Request.Users.UsuarioAdminDto;
 import restaurante_gratitude.demp.DTOS.Request.Users.UsuarioBasicDTO;
@@ -84,6 +87,25 @@ public class GestionUsersService implements GestionUsers {
         }
 
         return usuarioAdminDtos;
+    }
+
+    public Page<UsuarioBasicDTO> getUsersPueba(Pageable pageable) {
+        
+        System.out.println("-----------------------------------------------");
+
+        Page<Usuario> usuarios = userRepo.findAll(pageable);
+
+        Page<UsuarioBasicDTO> basicDTOs = usuarios.map(usuario -> {
+
+            UsuarioBasicDTO basicDTO = new UsuarioBasicDTO();
+            basicDTO.setTipoIdntificacion(usuario.getIdentificacion().getTipoIdentificacion().getNombre());
+
+            return basicDTO;
+
+        });
+
+        return basicDTOs;
+
     }
 
 }

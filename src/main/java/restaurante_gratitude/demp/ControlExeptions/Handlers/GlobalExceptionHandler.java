@@ -37,8 +37,11 @@ public class GlobalExceptionHandler {
 
         Map<String, String> error = new HashMap<>();
 
+        StackTraceElement stackTraceElement = ex.getStackTrace()[0];
+
         error.put("Error:", ex.getMessage());
         error.put("Causa", ex.getCause().toString());
+        error.put("Clase", stackTraceElement.getClassName());
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
 
@@ -72,7 +75,13 @@ public class GlobalExceptionHandler {
 
         Map<String, String> error = new HashMap<>();
 
+        StackTraceElement stackTraceElement = ex.getStackTrace()[0];
+
         error.put("Error", ex.getMessage());
+        error.put("Class", stackTraceElement.getClassName());
+        error.put("File", stackTraceElement.getFileName().toString());
+        error.put("line", String.valueOf(stackTraceElement.getLineNumber()));
+        error.put("Method", stackTraceElement.getMethodName());
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
 
@@ -82,8 +91,14 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Map<String, String>> handleRolNoExisteExecption(RolNoExisteExecption ex) {
 
         Map<String, String> error = new HashMap<>();
-
+        
+        StackTraceElement stackTraceElement = ex.getStackTrace()[0];
+        
         error.put("Error", ex.getMessage());
+        error.put("Class", stackTraceElement.getClassName());
+        error.put("File", stackTraceElement.getFileName().toString());
+        error.put("line", String.valueOf(stackTraceElement.getLineNumber()));
+        error.put("Method", stackTraceElement.getMethodName());
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(error);

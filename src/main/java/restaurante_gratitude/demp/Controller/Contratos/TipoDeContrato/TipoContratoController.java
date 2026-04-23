@@ -21,7 +21,7 @@ import restaurante_gratitude.demp.Service.ServiceImplement.Contratos.TipoContrat
  * @author Usuario
  */
 @RestController
-@RequestMapping("tipo/contrato/")
+@RequestMapping("/typeContrat")
 public class TipoContratoController {
 
     private TipoContratoService contratoService;

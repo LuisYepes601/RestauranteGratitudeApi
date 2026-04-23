@@ -4,11 +4,15 @@
  */
 package restaurante_gratitude.demp.Service.GestionDeDocumentos.Imagenes;
 
+import java.util.Map;
+import org.springframework.web.multipart.MultipartFile;
+import restaurante_gratitude.demp.Service.ServiceImplement.GestionDeArchivosCloudiny.FileCloudinary;
+
 /**
  *
  * @author User
  */
-public interface eliminarFotos {
+public interface CargarArchivos {
 
-    public void eliminarFoto(String url, String error);
+    public String cargarArchivo(FileCloudinary fileCloudinary);
 }

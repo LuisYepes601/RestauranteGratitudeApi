@@ -6,15 +6,19 @@ package restaurante_gratitude.demp.Service.ServiceImplement.Cuenta.Contraseña.P
 
 import com.cloudinary.Transformation;
 import com.cloudinary.utils.ObjectUtils;
+import java.util.HashMap;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import restaurante_gratitude.demp.Entidades.Usuarios.Usuario;
 import restaurante_gratitude.demp.Repositorys.Users.UsuarioRepository;
 import restaurante_gratitude.demp.Service.Cuenta.Perfil.GestionarFotoPerfil;
-import restaurante_gratitude.demp.Service.ServiceImplement.GestionDeArchivosCloudiny.CargarImagenesService;
+import restaurante_gratitude.demp.Service.GestionDeDocumentos.Imagenes.CargarArchivos;
 import restaurante_gratitude.demp.Service.ServiceImplement.GestionDeArchivosCloudiny.EliminarImagenesService;
+import restaurante_gratitude.demp.Service.ServiceImplement.GestionDeArchivosCloudiny.FileCloudinary;
 import restaurante_gratitude.demp.Validaciones.ValidacionesGlobales;
 
 /**
@@ -25,13 +29,16 @@ import restaurante_gratitude.demp.Validaciones.ValidacionesGlobales;
 public class GestionarFotoDePerfilService implements GestionarFotoPerfil {
 
     private UsuarioRepository usuarioRepo;
-    private CargarImagenesService imagenesService;
+
+    @Qualifier("fileService")
+    private CargarArchivos cargarArchivos;
+
     private EliminarImagenesService eliminarImagenesService;
 
     @Autowired
-    public GestionarFotoDePerfilService(UsuarioRepository usuarioRepo, CargarImagenesService imagenesService, EliminarImagenesService eliminarImagenesService) {
+    public GestionarFotoDePerfilService(UsuarioRepository usuarioRepo, CargarArchivos cargarArchivos, EliminarImagenesService eliminarImagenesService) {
         this.usuarioRepo = usuarioRepo;
-        this.imagenesService = imagenesService;
+        this.cargarArchivos = cargarArchivos;
         this.eliminarImagenesService = eliminarImagenesService;
     }
 
@@ -43,12 +50,12 @@ public class GestionarFotoDePerfilService implements GestionarFotoPerfil {
         this.usuarioRepo = usuarioRepo;
     }
 
-    public CargarImagenesService getImagenesService() {
-        return imagenesService;
+    public CargarArchivos getCargarArchivos() {
+        return cargarArchivos;
     }
 
-    public void setImagenesService(CargarImagenesService imagenesService) {
-        this.imagenesService = imagenesService;
+    public void setCargarArchivos(CargarArchivos cargarArchivos) {
+        this.cargarArchivos = cargarArchivos;
     }
 
     public EliminarImagenesService getEliminarImagenesService() {
@@ -67,21 +74,19 @@ public class GestionarFotoDePerfilService implements GestionarFotoPerfil {
                 usuarioRepo.findById(id),
                 "Error el suuario no tiene una cuenta creada.");
 
-        String foto = imagenesService.cargarFoto(
-                file,
-                "La imagen no se puede cargar en estos momentos le inviatamos aintentarlo nuevamente.",
-                ObjectUtils.asMap(
-                        "public_id", "usuarios/perfil_ " + usuario.getPrimerNombre(),
-                        "transformation", new Transformation<>()
-                                .quality("auto")
-                                .fetchFormat("auto")
-                                .crop("limit")
-                                .width(400)
-                                .height(400)
-                ),
-                usuario.getPrimerNombre());
+        Map<String, Object> utils = new HashMap<>();
 
-        usuario.setFoto_perifl(foto);
+        utils.put("public_id", "usuarios/perfil_ " + usuario.getPrimerNombre());
+        utils.put("transformation", new Transformation<>()
+                .quality("auto")
+                .fetchFormat("auto")
+                .crop("limit")
+                .width(400)
+                .height(400));
+
+        String urlFoto = cargarArchivos.cargarArchivo(new FileCloudinary(utils, file));
+
+        usuario.setFoto_perifl(urlFoto);
         usuarioRepo.save(usuario);
 
     }
@@ -94,7 +99,7 @@ public class GestionarFotoDePerfilService implements GestionarFotoPerfil {
                 usuarioRepo.findById(id_user),
                 "Error no se pudo eliminar la foto de perfil por que el usuario no tiene cuenta.");
 
-        eliminarImagenesService.eliminarFoto(usuario.getFoto_perifl(),
+        eliminarImagenesService.eliminarFile(usuario.getFoto_perifl(),
                 "No se pudo eliminar la foto de perfil en "
                 + "estos momentos le invitamos a intentarlo nuevamente.");
 

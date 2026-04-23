@@ -10,14 +10,14 @@ import java.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import restaurante_gratitude.demp.ControlExeptions.Execptions.EliminarArchivoException;
-import restaurante_gratitude.demp.Service.GestionDeDocumentos.Imagenes.eliminarFotos;
+import restaurante_gratitude.demp.Service.GestionDeDocumentos.Imagenes.EliminarFiles;
 
 /**
  *
  * @author User
  */
 @Service
-public class EliminarImagenesService implements eliminarFotos {
+public class EliminarImagenesService implements EliminarFiles {
 
     private Cloudinary cloudinary;
 
@@ -28,7 +28,7 @@ public class EliminarImagenesService implements eliminarFotos {
     }
 
     @Override
-    public void eliminarFoto(String url, String error) {
+    public void eliminarFile(String url, String error) {
 
         String id_publico = ExtraerIdPublico.extraerPublicId(url);
 
@@ -37,7 +37,7 @@ public class EliminarImagenesService implements eliminarFotos {
                     id_publico,
                     ObjectUtils.asMap("invalidate", true));
         } catch (IOException ex) {
-            throw new EliminarArchivoException("El archivo no se pudo eliminar, le invitamos a realizarlo nuevamente.");
+            throw new EliminarArchivoException(error);
         }
     }
 

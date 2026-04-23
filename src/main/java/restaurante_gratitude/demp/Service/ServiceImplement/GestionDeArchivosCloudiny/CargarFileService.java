@@ -7,38 +7,42 @@ package restaurante_gratitude.demp.Service.ServiceImplement.GestionDeArchivosClo
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import restaurante_gratitude.demp.ControlExeptions.Execptions.ErrorAlSubirArchivoException;
-import restaurante_gratitude.demp.Service.GestionDeDocumentos.Imagenes.cargarFotos;
+import restaurante_gratitude.demp.Service.GestionDeDocumentos.Imagenes.CargarArchivos;
 
 /**
  *
  * @author User
  */
-@Service
-public class CargarImagenesService implements cargarFotos {
+@Service(value = "fileService")
+public class CargarFileService implements CargarArchivos {
 
     private Cloudinary cloudinary;
 
     @Autowired
-    public CargarImagenesService(Cloudinary cloudinary) {
+    public CargarFileService(Cloudinary cloudinary) {
         this.cloudinary = cloudinary;
     }
 
     @Override
-    public String cargarFoto(MultipartFile imagen, String mensajeError, Map objectUtils, String nombreImagen) {
+    public String cargarArchivo(FileCloudinary fileCloudinary) {
 
-        if (imagen.isEmpty()) {
+        if (fileCloudinary.getFile().isEmpty()) {
             throw new ErrorAlSubirArchivoException("Error, no se puedo cargar la imagen, no hay imagen que cargar.");
         }
 
-        Map resultadoCarga = null;
+        Map<String, String> resultadoCarga = new HashMap<>();
+
         try {
-            resultadoCarga = cloudinary.uploader().upload(imagen.getBytes(),
-                    objectUtils);
+            resultadoCarga = cloudinary
+                    .uploader()
+                    .upload(fileCloudinary.getFile().getInputStream(), fileCloudinary.getObjectUtils());
+
         } catch (IOException ex) {
             throw new ErrorAlSubirArchivoException("Error, no se puedo cargar el archivo. Le invitamos "
                     + " a intentarlo nuevamente.");

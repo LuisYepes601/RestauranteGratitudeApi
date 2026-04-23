@@ -24,7 +24,8 @@ import restaurante_gratitude.demp.Repositorys.Productos.ContenidoProducto;
 import restaurante_gratitude.demp.Repositorys.Productos.ProductoRepository;
 import restaurante_gratitude.demp.Repositorys.Productos.TipoContenidoProductoRepository;
 import restaurante_gratitude.demp.Service.Productos.CrearProductos;
-import restaurante_gratitude.demp.Service.ServiceImplement.GestionDeArchivosCloudiny.CargarImagenesService;
+import restaurante_gratitude.demp.Service.ServiceImplement.GestionDeArchivosCloudiny.CargarFileService;
+import restaurante_gratitude.demp.Service.ServiceImplement.GestionDeArchivosCloudiny.FileCloudinary;
 import restaurante_gratitude.demp.Validaciones.ValidacionesGlobales;
 
 /**
@@ -39,13 +40,13 @@ public class CrearProductoService implements CrearProductos {
     private TipoContenidoProductoRepository tipoContenidoProductoRepository;
     private CategoriaProductoRepository categoriaProductoRepository;
     private StockProductoRepository stockProductoRepository;
-    private CargarImagenesService caragarImagenesService;
+    private CargarFileService caragarImagenesService;
 
     public CrearProductoService() {
     }
 
     @Autowired
-    public CrearProductoService(ProductoRepository productoRepo, ContenidoProducto contenidoProductoRepo, TipoContenidoProductoRepository tipoContenidoProductoRepository, CategoriaProductoRepository categoriaProductoRepository, StockProductoRepository stockProductoRepository, CargarImagenesService caragarImagenesService) {
+    public CrearProductoService(ProductoRepository productoRepo, ContenidoProducto contenidoProductoRepo, TipoContenidoProductoRepository tipoContenidoProductoRepository, CategoriaProductoRepository categoriaProductoRepository, StockProductoRepository stockProductoRepository, CargarFileService caragarImagenesService) {
         this.productoRepo = productoRepo;
         this.contenidoProductoRepo = contenidoProductoRepo;
         this.tipoContenidoProductoRepository = tipoContenidoProductoRepository;
@@ -95,18 +96,17 @@ public class CrearProductoService implements CrearProductos {
 
         String imagen;
 
-        imagen = caragarImagenesService.cargarFoto(
-                file,
-                "La imagen no se pudo cargar.",
-                ObjectUtils.asMap("public_id", "productos/" + producto.getNombre(),
-                        "transformation", new Transformation<>()
-                                .quality("auto")
-                                .fetchFormat("auto")
-                                .width(300)
-                                .height(300)
-                                .crop("limit")
-                ),
-                producto.getNombre());
+        Map<String, Object> objectUtils = new HashMap<>();
+
+        objectUtils.put("public_id", "productos/" + producto.getNombre());
+        objectUtils.put("transformation", new Transformation<>()
+                .quality("auto")
+                .fetchFormat("auto")
+                .width(300)
+                .height(300)
+                .crop("limit"));
+
+        imagen = caragarImagenesService.cargarArchivo(new FileCloudinary(objectUtils, file));
 
         producto.setImagen(imagen);
 

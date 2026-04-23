@@ -6,6 +6,8 @@ package restaurante_gratitude.demp.Controller.Users;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,6 +42,12 @@ public class GestionUsersController {
     public ResponseEntity<List<UsuarioAdminDto>> obtenerUusarios() {
 
         return ResponseEntity.ok(gestionUsersService.usuarioAdminDtos());
+    }
+
+    @GetMapping(value = "todo")
+    public ResponseEntity<Page> getUuserall(Pageable pageable) {
+
+        return ResponseEntity.ok(gestionUsersService.getUsersPueba(pageable));
     }
 
 }

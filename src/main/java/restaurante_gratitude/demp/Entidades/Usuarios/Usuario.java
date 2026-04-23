@@ -6,6 +6,7 @@ package restaurante_gratitude.demp.Entidades.Usuarios;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -68,7 +69,7 @@ public class Usuario {
     @JoinColumn(name = "id_identificacion")
     private Identificacion identificacion;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_rol")
     private Rol rol;
 
@@ -85,11 +86,11 @@ public class Usuario {
     @Column(nullable = false)
     private String contraseña;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_genero")
     private Genero genero;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_sexo")
     private Sexo sexo;
 
@@ -100,36 +101,36 @@ public class Usuario {
     @Column(nullable = false)
     private boolean estado;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_estado_cuenta")
     private Estado_cuenta estado_cuenta;
 
-    @OneToMany(mappedBy = "usuario")
+    @OneToMany(mappedBy = "usuario" , fetch = FetchType.LAZY)
     private List<ReporteProblema> reporteProblemas;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_preferencias")
     private Preferencia preferencia;
 
-    @OneToMany(mappedBy = "usuario")
+    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
     private List<Reserva> reservas;
 
-    @OneToMany(mappedBy = "usuario")
+    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
     private List<PQRS> pqrses;
 
-    @OneToMany(mappedBy = "usuario")
+    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
     private List<Devolucion> devoluciones;
 
-    @OneToMany(mappedBy = "usuario")
+    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
     private List<Pedido> pedidos;
 
-    @OneToMany(mappedBy = "usuario")
+    @OneToMany(mappedBy = "usuario" , fetch = FetchType.LAZY)
     private List<UsoCupon> usoCupones;
 
-    @OneToMany(mappedBy = "usuario")
+    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
     private List<CalficacionProducto> calficacionProductos;
 
-    @OneToMany(mappedBy = "usuario")
+    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
     private List<ProductosFavoritos> productosFavoritos;
 
     @OneToOne(mappedBy = "Usuario")
