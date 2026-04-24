@@ -2,6 +2,7 @@
 <actions>
         <action>
             <actionName>run</actionName>
+            <recursive>false</recursive>
             <packagings>
                 <packaging>jar</packaging>
             </packagings>
@@ -15,6 +16,14 @@
                 <exec.appArgs></exec.appArgs>
                 <exec.mainClass>restaurante_gratitude.demp.RestauranteGratitudeApplication</exec.mainClass>
                 <exec.executable>java</exec.executable>
+                <Env.DB_USERNAME>postgres</Env.DB_USERNAME>
+                <Env.DB_PASSWORD>Luis1703@</Env.DB_PASSWORD>
+                <Env.DB_URL>jdbc:postgresql://localhost:5432/restaurante_gratitude</Env.DB_URL>
+                <Env.CDNARY_NAME>divhisdcx</Env.CDNARY_NAME>
+                <Env.CDNARY_KEY>911728918984316</Env.CDNARY_KEY>
+                <Env.CDNARY_SECRET> 7LssRNHPoQrrolULjVEIowy2K1A</Env.CDNARY_SECRET>
+                
+                
             </properties>
         </action>
         <action>
