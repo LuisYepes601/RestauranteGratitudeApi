@@ -18,7 +18,7 @@
                 <exec.executable>java</exec.executable>
                 <Env.DB_USERNAME>postgres.qsypuapjtgzuzmzqkhle</Env.DB_USERNAME>
                 <Env.DB_PASSWORD>LT2#%6K2kg3&amp;7TT</Env.DB_PASSWORD>
-                <Env.DB_URL>jdbc:postgresql://db.qsypuapjtgzuzmzqkhle.supabase.co:5432/postgres</Env.DB_URL>
+                <Env.DB_URL>jdbc:postgresql://aws-1-us-east-2.pooler.supabase.com:6543/postgres?prepareThreshold=0</Env.DB_URL>
                 <Env.CDNARY_NAME>divhisdcx</Env.CDNARY_NAME>
                 <Env.CDNARY_KEY>911728918984316</Env.CDNARY_KEY>
                 <Env.CDNARY_SECRET>7LssRNHPoQrrolULjVEIowy2K1A</Env.CDNARY_SECRET>
@@ -60,6 +60,24 @@
                 <exec.mainClass>restaurante_gratitude.demp.RestauranteGratitudeApplication</exec.mainClass>
                 <exec.executable>java</exec.executable>
                 <exec.appArgs></exec.appArgs>
+            </properties>
+        </action>
+        <action>
+            <actionName>rebuild</actionName>
+            <packagings>
+                <packaging>*</packaging>
+            </packagings>
+            <goals>
+                <goal>clean</goal>
+                <goal>install</goal>
+            </goals>
+            <properties>
+                <Env.DB_USERNAME>postgres.qsypuapjtgzuzmzqkhle</Env.DB_USERNAME>
+                <Env.DB_PASSWORD>LT2#%6K2kg3&amp;7TT</Env.DB_PASSWORD>
+                <Env.DB_URL>jdbc:postgresql://aws-1-us-east-2.pooler.supabase.com:6543/postgres?prepareThreshold=0</Env.DB_URL>
+                <Env.CDNARY_NAME>divhisdcx</Env.CDNARY_NAME>
+                <Env.CDNARY_KEY>911728918984316</Env.CDNARY_KEY>
+                <Env.CDNARY_SECRET>7LssRNHPoQrrolULjVEIowy2K1A</Env.CDNARY_SECRET>
             </properties>
         </action>
     </actions>
