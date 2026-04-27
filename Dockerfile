@@ -7,7 +7,7 @@ WORKDIR /app
 COPY . .
 
 # Compila el proyecto sin ejecutar tests
-RUN mvn clean package -DskipTests
+RUN mvn clean package 
 
 # Etapa 2: imagen final con JDK
 FROM eclipse-temurin:17-jdk
