@@ -10,7 +10,9 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import java.util.List;
 import restaurante_gratitude.demp.Entidades.Usuarios.Usuario;
 
@@ -19,6 +21,9 @@ import restaurante_gratitude.demp.Entidades.Usuarios.Usuario;
  * @author User
  */
 @Entity
+@Table(name = "genero", indexes = {
+    @Index(name = "idx_genero_nombre", columnList = "nombre", unique = true)
+})
 public class Genero {
 
     @Id

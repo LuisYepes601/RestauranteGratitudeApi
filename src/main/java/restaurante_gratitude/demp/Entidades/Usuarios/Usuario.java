@@ -10,12 +10,14 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import java.util.Date;
@@ -42,6 +44,15 @@ import restaurante_gratitude.demp.Entidades.Roles.Rol;
  */
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
+@Table(name = "usuario",
+        indexes = {
+            @Index(name = "idx_usuario_email_unique", columnList = "email", unique = true),
+            @Index(name = "idx_usuario_genre_id", columnList = "id_genero"),
+            @Index(name = "idx_usuario_rol_id", columnList = "id_rol"),
+            @Index(name = "idx_usuario_identification_id", columnList = "id_identificacion"),
+            @Index(name = "idx_usuario_sexo_id", columnList = "id_sexo")
+
+        })
 public class Usuario {
 
     @Id
@@ -105,7 +116,7 @@ public class Usuario {
     @JoinColumn(name = "id_estado_cuenta")
     private Estado_cuenta estado_cuenta;
 
-    @OneToMany(mappedBy = "usuario" , fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
     private List<ReporteProblema> reporteProblemas;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -124,7 +135,7 @@ public class Usuario {
     @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
     private List<Pedido> pedidos;
 
-    @OneToMany(mappedBy = "usuario" , fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
     private List<UsoCupon> usoCupones;
 
     @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
@@ -166,7 +177,6 @@ public class Usuario {
         this.productosFavoritos = productosFavoritos;
         this.empleado = empleado;
     }
-
 
     public Usuario() {
     }
