@@ -50,7 +50,10 @@ import restaurante_gratitude.demp.Entidades.Roles.Rol;
             @Index(name = "idx_usuario_genre_id", columnList = "id_genero"),
             @Index(name = "idx_usuario_rol_id", columnList = "id_rol"),
             @Index(name = "idx_usuario_identification_id", columnList = "id_identificacion"),
-            @Index(name = "idx_usuario_sexo_id", columnList = "id_sexo")
+            @Index(name = "idx_usuario_sexo_id", columnList = "id_sexo"),
+            @Index(name = "idx_usuario_estado_cuennta_id", columnList = "id_estado_cuenta"),
+            @Index(name = "idx_usuario_preferencia_id", columnList = "id_preferencias"),
+            @Index(name = "idx_usuario_direccion_id", columnList = "id_direccion")
 
         })
 public class Usuario {
@@ -146,6 +149,15 @@ public class Usuario {
 
     @OneToOne(mappedBy = "Usuario")
     private Empleado empleado;
+
+    @OneToMany(mappedBy = "modifiedBy", fetch = FetchType.LAZY)
+    private List<Sexo> sexos;
+
+    @OneToMany(mappedBy = "created_by", fetch = FetchType.LAZY)
+    private List<Sexo> sexosCreated;
+
+    @OneToMany(mappedBy = "deletedBy", fetch = FetchType.LAZY)
+    private List<Sexo> sexosDelete;
 
     public Usuario(int id, String primerNombre, String segundoNombre, String primerApellido, String segundoApellido, String telefono, String email, Identificacion identificacion, Rol rol, Direccion direccion, String foto_perifl, Date fechaNacimiento, String contraseña, Genero genero, Sexo sexo, Date fechaRegistro, boolean estado, Estado_cuenta estado_cuenta, List<ReporteProblema> reporteProblemas, Preferencia preferencia, List<Reserva> reservas, List<PQRS> pqrses, List<Devolucion> devoluciones, List<Pedido> pedidos, List<UsoCupon> usoCupones, List<CalficacionProducto> calficacionProductos, List<ProductosFavoritos> productosFavoritos, Empleado empleado) {
         this.id = id;

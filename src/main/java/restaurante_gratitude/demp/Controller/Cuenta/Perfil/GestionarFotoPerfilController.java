@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import restaurante_gratitude.demp.Service.ServiceImplement.Cuenta.Contraseña.Perfil.GestionarFotoDePerfilService;
+import restaurante_gratitude.demp.Service.ServiceImplement.Cuenta.Perfil.GestionarFotoDePerfilService;
 
 /**
  *

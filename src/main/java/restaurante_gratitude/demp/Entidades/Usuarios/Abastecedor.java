@@ -33,6 +33,5 @@ public class Abastecedor extends Empleado {
     public void setCompras(List<Compra> compras) {
         this.compras = compras;
     }
-    
-    
+
 }

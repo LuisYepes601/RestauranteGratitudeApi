@@ -7,13 +7,18 @@ package restaurante_gratitude.demp.Controller.Rol;
 import java.util.Map;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import restaurante_gratitude.demp.DTOS.Request.Rol.RolDto;
+import restaurante_gratitude.demp.Entidades.Roles.Rol;
 import restaurante_gratitude.demp.Service.ServiceImplement.Rol.GestionRolesService;
 
 /**
@@ -21,7 +26,7 @@ import restaurante_gratitude.demp.Service.ServiceImplement.Rol.GestionRolesServi
  * @author Usuario
  */
 @RestController
-@RequestMapping("rol")
+@RequestMapping("/rol")
 public class GestionRolesController {
 
     private GestionRolesService gestionRolesService;
@@ -37,7 +42,6 @@ public class GestionRolesController {
     public GestionRolesService getGestionRolesService() {
         return gestionRolesService;
     }
-    
 
     public void setGestionRolesService(GestionRolesService gestionRolesService) {
         this.gestionRolesService = gestionRolesService;
@@ -51,6 +55,13 @@ public class GestionRolesController {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(Map.of("Mensaje", "Rol: " + rolDto.getNombre()
                         + " ha sido agregado con exito."));
+    }
+
+    @GetMapping("/findByName")
+    public ResponseEntity<?> findByName(@RequestParam(required = false) String name, Pageable pageable) {
+
+        return ResponseEntity.ok(gestionRolesService.finbyName(name, pageable));
+
     }
 
 }

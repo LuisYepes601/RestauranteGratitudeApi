@@ -9,7 +9,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import java.util.List;
 import restaurante_gratitude.demp.Entidades.Usuarios.Usuario;
 
@@ -18,6 +20,9 @@ import restaurante_gratitude.demp.Entidades.Usuarios.Usuario;
  * @author User
  */
 @Entity
+@Table(name = "estado_cuenta", indexes = {
+    @Index(name = "idx_estado_cuenta_nombre", columnList = "nombre")
+})
 public class Estado_cuenta {
 
     @Id

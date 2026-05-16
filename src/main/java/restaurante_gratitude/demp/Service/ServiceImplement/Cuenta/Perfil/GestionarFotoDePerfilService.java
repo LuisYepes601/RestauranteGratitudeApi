@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package restaurante_gratitude.demp.Service.ServiceImplement.Cuenta.Contraseña.Perfil;
+package restaurante_gratitude.demp.Service.ServiceImplement.Cuenta.Perfil;
 
 import com.cloudinary.Transformation;
 import com.cloudinary.utils.ObjectUtils;
@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import restaurante_gratitude.demp.Entidades.Usuarios.Usuario;
+import restaurante_gratitude.demp.Helpers.Cloudinary.CloudinaryFileHelpers;
 import restaurante_gratitude.demp.Repositorys.Users.UsuarioRepository;
 import restaurante_gratitude.demp.Service.Cuenta.Perfil.GestionarFotoPerfil;
 import restaurante_gratitude.demp.Service.GestionDeDocumentos.Imagenes.CargarArchivos;
@@ -74,15 +75,9 @@ public class GestionarFotoDePerfilService implements GestionarFotoPerfil {
                 usuarioRepo.findById(id),
                 "Error el suuario no tiene una cuenta creada.");
 
-        Map<String, Object> utils = new HashMap<>();
+        Map<String, Object> utils;
 
-        utils.put("public_id", "usuarios/perfil_ " + usuario.getPrimerNombre());
-        utils.put("transformation", new Transformation<>()
-                .quality("auto")
-                .fetchFormat("auto")
-                .crop("limit")
-                .width(400)
-                .height(400));
+        utils = CloudinaryFileHelpers.ProfilePhtotoUser(usuario.getPrimerNombre());
 
         String urlFoto = cargarArchivos.cargarArchivo(new FileCloudinary(utils, file));
 

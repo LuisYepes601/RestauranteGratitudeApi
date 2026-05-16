@@ -4,10 +4,15 @@
  */
 package restaurante_gratitude.demp.Service.ServiceImplement.Rol;
 
+import java.util.ArrayList;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import restaurante_gratitude.demp.ControlExeptions.Execptions.DatoYaExistenteException;
+import restaurante_gratitude.demp.ControlExeptions.Execptions.NoDatosQueMostrarExecption;
 import restaurante_gratitude.demp.DTOS.Request.Rol.RolDto;
 import restaurante_gratitude.demp.Entidades.Roles.Rol;
 import restaurante_gratitude.demp.Repositorys.Roles.RolRepository;
@@ -35,6 +40,7 @@ public class GestionRolesService implements GestionarRoles {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public RolDto crearRol(RolDto rolDto) {
         Optional<Rol> optional = rolrepo.findByNombre(rolDto.getNombre());
 
@@ -46,10 +52,28 @@ public class GestionRolesService implements GestionarRoles {
         Rol rol = new Rol();
 
         rol.setNombre(rolDto.getNombre());
-        rol.setCodigoRol(rolDto.getCodigo());
+
+        if (rolDto.getCodigo() != null) {
+            
+            rol.setCodigoRol(rolDto.getCodigo());
+        }
+
         rolrepo.save(rol);
 
         return rolDto;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<Rol> finbyName(String nombre, Pageable pageable) {
+
+        Page<Rol> roles = rolrepo.findByName(nombre, pageable);
+
+        if (roles.isEmpty()) {
+            throw new NoDatosQueMostrarExecption("No hay roles qu emostrar");
+        }
+        return roles;
+
     }
 
 }

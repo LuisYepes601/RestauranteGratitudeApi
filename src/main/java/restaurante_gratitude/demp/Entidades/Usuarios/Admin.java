@@ -5,8 +5,10 @@
 package restaurante_gratitude.demp.Entidades.Usuarios;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToMany;
 import java.util.List;
+import restaurante_gratitude.demp.Entidades.DatosBasicos.Sexo;
 import restaurante_gratitude.demp.Entidades.Devoluciones.Devolucion;
 import restaurante_gratitude.demp.Entidades.Devoluciones.RespuestaDevolucion;
 import restaurante_gratitude.demp.Entidades.Estudios.Estudio;
@@ -37,6 +39,7 @@ public class Admin extends Empleado {
     @OneToMany(mappedBy = "admin")
     private List<Devolucion> devoluciones;
 
+
     public Admin() {
     }
 
@@ -56,6 +59,10 @@ public class Admin extends Empleado {
         this.pqrses = pqrses;
         this.devoluciones = devoluciones;
     }
+
+    
+
+    
 
     public List<Reserva> getReservas() {
         return reservas;
@@ -97,6 +104,4 @@ public class Admin extends Empleado {
         this.devoluciones = devoluciones;
     }
 
-    
-    
 }

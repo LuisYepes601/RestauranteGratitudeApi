@@ -23,7 +23,6 @@ import restaurante_gratitude.demp.Entidades.InformacionLaboral.InformacionLabora
  * @author Usuario
  */
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)
 public class Empleado {
 
     @Id
