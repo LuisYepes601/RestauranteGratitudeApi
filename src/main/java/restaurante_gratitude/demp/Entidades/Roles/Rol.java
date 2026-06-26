@@ -14,7 +14,10 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.List;
+import jdk.jfr.Name;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 import restaurante_gratitude.demp.Entidades.Usuarios.Usuario;
 
 /**
@@ -24,20 +27,23 @@ import restaurante_gratitude.demp.Entidades.Usuarios.Usuario;
 @Table(name = "rol",
         indexes = {
             @Index(name = "idx_unique_rol_nombre", unique = true, columnList = "nombre"),
-            @Index(name = "idx_rol_codigo_rol", columnList = "codigoRol")
-
+            @Index(name = "idx_comp_id_nombre", columnList = "id,nombre")
         })
 @Entity
 public class Rol {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Name("id")
     private int id;
 
-    @Column(nullable = false)
+    @Column(nullable = false,
+            name = "nombre")
     private String nombre;
 
-    private String codigoRol;
+    @Column(nullable = true,
+            name = "description")
+    private String description;
 
     @OneToMany(mappedBy = "rol")
     private List<Usuario> usuarios;
@@ -58,10 +64,10 @@ public class Rol {
     @Column(name = "delete_at")
     private LocalDateTime deleteAt;
 
-    public Rol(int id, String nombre, String codigoRol, List<Usuario> usuarios, boolean isDelete, LocalDateTime createAt, LocalDateTime updateAt, LocalDateTime deleteAt) {
+    public Rol(int id, String nombre, String description, List<Usuario> usuarios, boolean isDelete, LocalDateTime createAt, LocalDateTime updateAt, LocalDateTime deleteAt) {
         this.id = id;
         this.nombre = nombre;
-        this.codigoRol = codigoRol;
+        this.description = description;
         this.usuarios = usuarios;
         this.isDelete = isDelete;
         this.createAt = createAt;
@@ -96,14 +102,6 @@ public class Rol {
         this.usuarios = usuarios;
     }
 
-    public String getCodigoRol() {
-        return codigoRol;
-    }
-
-    public void setCodigoRol(String codigoRol) {
-        this.codigoRol = codigoRol;
-    }
-
     public boolean isIsDelete() {
         return isDelete;
     }
@@ -134,6 +132,14 @@ public class Rol {
 
     public void setDeleteAt(LocalDateTime deleteAt) {
         this.deleteAt = deleteAt;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
 }
