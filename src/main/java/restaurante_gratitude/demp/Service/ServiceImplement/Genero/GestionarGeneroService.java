@@ -4,8 +4,10 @@
  */
 package restaurante_gratitude.demp.Service.ServiceImplement.Genero;
 
+import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,6 +20,8 @@ import restaurante_gratitude.demp.Validaciones.ValidacionesGlobales;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import restaurante_gratitude.demp.ControlExeptions.Execptions.DatoInvalidoException;
+import restaurante_gratitude.demp.ControlExeptions.Execptions.DatoNoExistenteEcxeption;
+import restaurante_gratitude.demp.ControlExeptions.Execptions.DatoYaExistenteException;
 import restaurante_gratitude.demp.ControlExeptions.Execptions.NoDatosQueMostrarExecption;
 
 /**
@@ -81,4 +85,58 @@ public class GestionarGeneroService implements GestionarGeneros {
         return page;
 
     }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public GeneroDto updateGenreById(Integer id, GeneroDto dto) {
+
+        Optional<Genero> optional = generoRepo.findById(id);
+
+        if (optional.isEmpty()) {
+
+            throw new DatoNoExistenteEcxeption("El genero no se encuentra en el sistema");
+        }
+
+        Genero genero = optional.get();
+
+        Optional<Genero> existe = generoRepo.findByNombreIgnoreCase(dto.getNombre());
+
+        if (existe.isPresent()
+                && existe.get().getId() != genero.getId()) {
+
+            throw new DatoYaExistenteException("Ya existe un genero con ese nombre en el sistema.");
+
+        }
+
+        genero.setNombre(dto.getNombre());
+
+        if (dto.getDescription() != null) {
+
+            genero.setDescription(dto.getDescription());
+        }
+
+        generoRepo.save(genero);
+
+        return dto;
+
+    }
+
+    @Override
+    public void deleteGenreById(Integer id) {
+
+        Optional<Genero> optional = generoRepo.findById(id);
+
+        if (optional.isEmpty()) {
+
+            throw new DatoNoExistenteEcxeption("El genero no existe en el sistema");
+        }
+
+        Genero genero = optional.get();
+
+        genero.setIsDelete(true);
+        genero.setDeleteAt(LocalDateTime.now());
+
+        generoRepo.save(genero);
+    }
+
 }
