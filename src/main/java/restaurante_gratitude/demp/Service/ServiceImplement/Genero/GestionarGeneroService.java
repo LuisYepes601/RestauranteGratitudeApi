@@ -5,18 +5,14 @@
 package restaurante_gratitude.demp.Service.ServiceImplement.Genero;
 
 import java.time.LocalDateTime;
-import java.util.Comparator;
-import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import restaurante_gratitude.demp.DTOS.Request.Genero.GeneroDto;
 import restaurante_gratitude.demp.Entidades.DatosBasicos.Genero;
 import restaurante_gratitude.demp.Repositorys.DatosBasicos.GeneroRepository;
 import restaurante_gratitude.demp.Service.Genero.GestionarGeneros;
-import restaurante_gratitude.demp.Validaciones.ValidacionesGlobales;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import restaurante_gratitude.demp.ControlExeptions.Execptions.DatoInvalidoException;
@@ -50,15 +46,40 @@ public class GestionarGeneroService implements GestionarGeneros {
     @Transactional(rollbackFor = Exception.class)
     public GeneroDto crearGenero(GeneroDto generoDto) {
 
-        ValidacionesGlobales.validarExistencia(generoRepo.findByNombre(generoDto.getNombre()),
-                "El genero: " + generoDto.getNombre()
-                + " no se pudo agregar, por que ya existe en "
-                + "el sistema, lo invitamos a agregar un genero que no este creado ya.");
+        Optional<Genero> optional = generoRepo.findByNombreIgnoreCase(generoDto.getNombre());
 
-        Genero genero = new Genero();
-        genero.setNombre(generoDto.getNombre());
+        Genero genero;
 
-        generoRepo.save(genero);
+        if (optional.isEmpty()) {
+
+            genero = new Genero();
+            genero.setNombre(generoDto.getNombre());
+            genero.setCreateAt(LocalDateTime.now());
+
+            if (generoDto.getDescription() != null) {
+
+                genero.setDescription(generoDto.getDescription());
+            }
+
+            generoRepo.save(genero);
+            return generoDto;
+        }
+
+        genero = optional.get();
+
+        if (genero.isIsDelete()) {
+
+            genero.setIsDelete(false);
+            genero.setCreateAt(LocalDateTime.now());
+
+            if (genero.getDescription() != null) {
+
+                genero.setDescription(generoDto.getDescription());
+            }
+            generoRepo.save(genero);
+        } else {
+            throw new DatoYaExistenteException("El genero ya existe en el sistema.");
+        }
 
         return generoDto;
 
@@ -66,16 +87,9 @@ public class GestionarGeneroService implements GestionarGeneros {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Page<GeneroDto> getGeneros(String name, Pageable pageable) {
+    public Page<GeneroDto> getGeneros(String name, boolean isDelete, Pageable pageable) {
 
-        int pageSize = pageable.getPageSize();
-        int pageNum = pageable.getPageNumber();
-
-        if (pageSize > 10) {
-            throw new DatoInvalidoException("El numero de items de la page no debe de ser mayor a 10");
-        }
-
-        Page<GeneroDto> page = generoRepo.generos(name, pageable);
+        Page<GeneroDto> page = generoRepo.generos(name, isDelete, pageable);
 
         if (page.isEmpty()) {
 
@@ -108,11 +122,14 @@ public class GestionarGeneroService implements GestionarGeneros {
 
         }
 
+        System.out.println(dto.getDescription());
         genero.setNombre(dto.getNombre());
 
         if (dto.getDescription() != null) {
 
             genero.setDescription(dto.getDescription());
+
+            System.out.println(dto.getDescription());
         }
 
         generoRepo.save(genero);
@@ -121,6 +138,7 @@ public class GestionarGeneroService implements GestionarGeneros {
 
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void deleteGenreById(Integer id) {
 
@@ -133,10 +151,40 @@ public class GestionarGeneroService implements GestionarGeneros {
 
         Genero genero = optional.get();
 
+        if (genero.isIsDelete()) {
+
+            throw new DatoNoExistenteEcxeption("El genero no existe en el sistema");
+
+        }
+
         genero.setIsDelete(true);
         genero.setDeleteAt(LocalDateTime.now());
 
         generoRepo.save(genero);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void activate(Integer id) {
+
+        Optional<Genero> optional = generoRepo.findById(id);
+
+        if (optional.isEmpty()) {
+
+            throw new DatoNoExistenteEcxeption("El genero seleccionado no existe en el sistema.");
+        }
+
+        Genero genero = optional.get();
+
+        if (!genero.isIsDelete()) {
+
+            throw new DatoInvalidoException("El genero ya se encuentra activo en el sistema.");
+        }
+
+        genero.setIsDelete(false);
+
+        generoRepo.save(genero);
+
     }
 
 }
