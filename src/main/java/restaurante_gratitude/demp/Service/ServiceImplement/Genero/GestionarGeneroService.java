@@ -7,6 +7,10 @@ package restaurante_gratitude.demp.Service.ServiceImplement.Genero;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import restaurante_gratitude.demp.DTOS.Request.Genero.GeneroDto;
@@ -19,6 +23,8 @@ import restaurante_gratitude.demp.ControlExeptions.Execptions.DatoInvalidoExcept
 import restaurante_gratitude.demp.ControlExeptions.Execptions.DatoNoExistenteEcxeption;
 import restaurante_gratitude.demp.ControlExeptions.Execptions.DatoYaExistenteException;
 import restaurante_gratitude.demp.ControlExeptions.Execptions.NoDatosQueMostrarExecption;
+import restaurante_gratitude.demp.DTOS.PageResponse;
+import restaurante_gratitude.demp.DTOS.Response.Genero.generoDetailsDto;
 
 /**
  *
@@ -42,6 +48,8 @@ public class GestionarGeneroService implements GestionarGeneros {
         this.generoRepo = generoRepo;
     }
 
+    @CacheEvict(value = "generos, genero-detail",
+            allEntries = true)
     @Override
     @Transactional(rollbackFor = Exception.class)
     public GeneroDto crearGenero(GeneroDto generoDto) {
@@ -55,6 +63,10 @@ public class GestionarGeneroService implements GestionarGeneros {
             genero = new Genero();
             genero.setNombre(generoDto.getNombre());
             genero.setCreateAt(LocalDateTime.now());
+            genero.setCreateBy("YEPESLUIS006@GMAIL.COM");
+            genero.setCreatorName("luis yepes");
+            genero.setUpdateName("Luis YEPPES");
+            genero.setUpdateBy("YEPESLUIS006@GMAIL.COM");
 
             if (generoDto.getDescription() != null) {
 
@@ -71,6 +83,8 @@ public class GestionarGeneroService implements GestionarGeneros {
 
             genero.setIsDelete(false);
             genero.setCreateAt(LocalDateTime.now());
+            genero.setCreateBy("YEPESLUIS006@GMAIL.COM");
+            genero.setCreatorName("luis yepes");
 
             if (genero.getDescription() != null) {
 
@@ -85,9 +99,10 @@ public class GestionarGeneroService implements GestionarGeneros {
 
     }
 
+    @Cacheable(value = "generos")
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Page<GeneroDto> getGeneros(String name, boolean isDelete, Pageable pageable) {
+    public PageResponse<GeneroDto> getGeneros(String name, boolean isDelete, Pageable pageable) {
 
         Page<GeneroDto> page = generoRepo.generos(name, isDelete, pageable);
 
@@ -96,10 +111,31 @@ public class GestionarGeneroService implements GestionarGeneros {
             throw new NoDatosQueMostrarExecption("No hay generos que mostrar...");
         }
 
-        return page;
+        PageResponse<GeneroDto> pageResponse = new PageResponse();
+
+        pageResponse.setContent(page.getContent());
+        pageResponse.setEmpty(page.isEmpty());
+        pageResponse.setNumber(page.getNumber());
+        pageResponse.setNumberOfElements(page.getNumberOfElements());
+        pageResponse.setPageNumber(page.getPageable().getPageNumber());
+        pageResponse.setPageSize(page.getPageable().getPageSize());
+        pageResponse.setSize(page.getSize());
+        pageResponse.setTotalElements(page.getTotalElements());
+        pageResponse.setTotalPages(page.getTotalPages());
+
+        return pageResponse;
 
     }
 
+    @Caching(
+            put = {
+                @CachePut(value = "genero", key = "#id"),
+                @CachePut(value = "genero-detail", key = "#id")
+            },
+            evict = {
+                @CacheEvict(value = "generos", allEntries = true),
+                @CacheEvict(value = "genero-detail", key = "#id")
+            })
     @Transactional(rollbackFor = Exception.class)
     @Override
     public GeneroDto updateGenreById(Integer id, GeneroDto dto) {
@@ -122,8 +158,9 @@ public class GestionarGeneroService implements GestionarGeneros {
 
         }
 
-        System.out.println(dto.getDescription());
         genero.setNombre(dto.getNombre());
+        genero.setUpdateBy("YEPESLUIS008@GMAIL.COM");
+        genero.setUpdateName("LUIS YEPES");
 
         if (dto.getDescription() != null) {
 
@@ -138,6 +175,8 @@ public class GestionarGeneroService implements GestionarGeneros {
 
     }
 
+    @CacheEvict(value = "generos",
+            allEntries = true)
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void deleteGenreById(Integer id) {
@@ -159,10 +198,16 @@ public class GestionarGeneroService implements GestionarGeneros {
 
         genero.setIsDelete(true);
         genero.setDeleteAt(LocalDateTime.now());
+        genero.setDeleteName("LUIS YEPES");
+        genero.setDeleteBy("LUIS YEPES");
+        genero.setUpdateName("Luis YEPPES");
+        genero.setUpdateBy("YEPESLUIS006@GMAIL.COM");
 
         generoRepo.save(genero);
     }
 
+    @CacheEvict(value = "generos",
+            allEntries = true)
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void activate(Integer id) {
@@ -182,9 +227,20 @@ public class GestionarGeneroService implements GestionarGeneros {
         }
 
         genero.setIsDelete(false);
+        genero.setUpdateName("Luis YEPPES");
+        genero.setUpdateBy("YEPESLUIS006@GMAIL.COM");
 
         generoRepo.save(genero);
 
+    }
+
+    @Cacheable(value = "genero-detail", key = "#id")
+    @Transactional(readOnly = true)
+    @Override
+    public generoDetailsDto getDeatails(Integer id) {
+
+        return generoRepo.getDetailById(id).
+                orElseThrow(() -> new DatoNoExistenteEcxeption("El genero no existe en el sistema"));
     }
 
 }
