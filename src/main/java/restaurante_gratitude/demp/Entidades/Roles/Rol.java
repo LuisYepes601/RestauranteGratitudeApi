@@ -15,9 +15,8 @@ import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.List;
 import jdk.jfr.Name;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.boot.context.properties.bind.DefaultValue;
+import restaurante_gratitude.demp.Entidades.Auditory.Auditable;
 import restaurante_gratitude.demp.Entidades.Usuarios.Usuario;
 
 /**
@@ -27,10 +26,11 @@ import restaurante_gratitude.demp.Entidades.Usuarios.Usuario;
 @Table(name = "rol",
         indexes = {
             @Index(name = "idx_unique_rol_nombre", unique = true, columnList = "nombre"),
-            @Index(name = "idx_comp_id_nombre", columnList = "id,nombre")
+            @Index(name = "idx_comp_nombre_isdelete", unique = true, columnList = "nombre,is_delete")
+
         })
 @Entity
-public class Rol {
+public class Rol extends Auditable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,44 +38,27 @@ public class Rol {
     private int id;
 
     @Column(nullable = false,
-            name = "nombre")
+            name = "nombre",
+            length = 20)
     private String nombre;
 
     @Column(nullable = true,
-            name = "description")
+            name = "description",
+            length = 200)
     private String description;
 
     @OneToMany(mappedBy = "rol")
     private List<Usuario> usuarios;
 
-    @Column(nullable = false,
-            name = "is_delete")
-    private boolean isDelete;
+    public Rol() {
+    }
 
-    @Column(nullable = false,
-            name = "create_at")
-    private LocalDateTime createAt;
-
-    @Column(nullable = false,
-            name = "update_at")
-    @UpdateTimestamp
-    private LocalDateTime updateAt;
-
-    @Column(name = "delete_at")
-    private LocalDateTime deleteAt;
-
-    public Rol(int id, String nombre, String description, List<Usuario> usuarios, boolean isDelete, LocalDateTime createAt, LocalDateTime updateAt, LocalDateTime deleteAt) {
+    public Rol(int id, String nombre, String description, List<Usuario> usuarios, LocalDateTime createAt, LocalDateTime updateAt, LocalDateTime deleteAt, boolean isDelete, String createBy, String creatorName, String updateBy, String updateName, String deleteBy, String deleteName) {
+        super(createAt, updateAt, deleteAt, isDelete, createBy, creatorName, updateBy, updateName, deleteBy, deleteName);
         this.id = id;
         this.nombre = nombre;
         this.description = description;
         this.usuarios = usuarios;
-        this.isDelete = isDelete;
-        this.createAt = createAt;
-        this.updateAt = updateAt;
-        this.deleteAt = deleteAt;
-    }
-
-    public Rol() {
     }
 
     public int getId() {
@@ -94,52 +77,20 @@ public class Rol {
         this.nombre = nombre;
     }
 
-    public List<Usuario> getUsuarios() {
-        return usuarios;
-    }
-
-    public void setUsuarios(List<Usuario> usuarios) {
-        this.usuarios = usuarios;
-    }
-
-    public boolean isIsDelete() {
-        return isDelete;
-    }
-
-    public void setIsDelete(boolean isDelete) {
-        this.isDelete = isDelete;
-    }
-
-    public LocalDateTime getCreateAt() {
-        return createAt;
-    }
-
-    public void setCreateAt(LocalDateTime createAt) {
-        this.createAt = createAt;
-    }
-
-    public LocalDateTime getUpdateAt() {
-        return updateAt;
-    }
-
-    public void setUpdateAt(LocalDateTime updateAt) {
-        this.updateAt = updateAt;
-    }
-
-    public LocalDateTime getDeleteAt() {
-        return deleteAt;
-    }
-
-    public void setDeleteAt(LocalDateTime deleteAt) {
-        this.deleteAt = deleteAt;
-    }
-
     public String getDescription() {
         return description;
     }
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public List<Usuario> getUsuarios() {
+        return usuarios;
+    }
+
+    public void setUsuarios(List<Usuario> usuarios) {
+        this.usuarios = usuarios;
     }
 
 }

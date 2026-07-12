@@ -4,16 +4,24 @@
  */
 package restaurante_gratitude.demp.Service.ServiceImplement.Rol;
 
-import java.util.ArrayList;
+import java.time.LocalDateTime;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import restaurante_gratitude.demp.ControlExeptions.Execptions.DatoNoExistenteEcxeption;
 import restaurante_gratitude.demp.ControlExeptions.Execptions.DatoYaExistenteException;
 import restaurante_gratitude.demp.ControlExeptions.Execptions.NoDatosQueMostrarExecption;
-import restaurante_gratitude.demp.DTOS.Request.Rol.RolDto;
+import restaurante_gratitude.demp.DTOS.Global.BasicResponseDto;
+import restaurante_gratitude.demp.DTOS.PageResponse;
+import restaurante_gratitude.demp.DTOS.Request.Rol.RolDtoReq;
+import restaurante_gratitude.demp.DTOS.Response.Rol.DetailsRolDtoResp;
+import restaurante_gratitude.demp.DTOS.Response.Rol.RolDtoresponse;
 import restaurante_gratitude.demp.Entidades.Roles.Rol;
 import restaurante_gratitude.demp.Repositorys.Roles.RolRepository;
 import restaurante_gratitude.demp.Service.Rol.GestionarRoles;
@@ -39,40 +47,134 @@ public class GestionRolesService implements GestionarRoles {
         this.rolrepo = rolrepo;
     }
 
+    @CacheEvict(value = "roles",
+            allEntries = true)
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public RolDto crearRol(RolDto rolDto) {
-        Optional<Rol> optional = rolrepo.findByNombre(rolDto.getNombre());
+    public void crearRol(RolDtoReq rolDto) {
+
+        Optional<Rol> optional = rolrepo.findByNombreIgnoreCase(rolDto.getNombre().trim());
+
+        Rol rol;
 
         if (optional.isPresent()) {
-            throw new DatoYaExistenteException("No se pudo crear el rol: " + rolDto.getNombre()
-                    + " por que ya esta creado en el sistema. Lo invitamos a crear uno no existente");
+
+            rol = optional.get();
+
+            if (rol.isIsDelete()) {
+
+                rol.setIsDelete(false);
+                rol.setCreateAt(LocalDateTime.now());
+                rol.setUpdateBy("luis");
+                rol.setUpdateName("luis");
+                rol.setCreatorName("luis");
+                rol.setCreateBy("yepes");
+
+                rolrepo.save(rol);
+                return;
+
+            } else {
+                throw new DatoYaExistenteException("El rol: " + rolDto.getNombre() + " ya se encuentra en el sistema.");
+
+            }
+
         }
 
-        Rol rol = new Rol();
+        rol = new Rol();
 
+        rol.setCreateAt(LocalDateTime.now());
         rol.setNombre(rolDto.getNombre());
+        rol.setCreateBy("yepes");
+        rol.setCreatorName("luis");
+        rol.setUpdateBy("luis");
+        rol.setUpdateName("luis");
 
-        if (rolDto.getCodigo() != null) {
-            
-            rol.setCodigoRol(rolDto.getCodigo());
+        if (rolDto.getDescription() != null) {
+            rol.setDescription(rolDto.getDescription());
         }
 
         rolrepo.save(rol);
+        return;
 
-        return rolDto;
     }
 
+    @Cacheable(value = "roles")
     @Override
     @Transactional(readOnly = true)
-    public Page<Rol> finbyName(String nombre, Pageable pageable) {
+    public PageResponse<RolDtoresponse> findAll(String nombre,
+            boolean isDelete, Pageable pageable) {
 
-        Page<Rol> roles = rolrepo.findByName(nombre, pageable);
+        Page<RolDtoresponse> roles = rolrepo.findAll(
+                nombre,
+                isDelete,
+                pageable);
+
+        PageResponse<RolDtoresponse> pageResponse = new PageResponse<>();
+
+        pageResponse.setContent(roles.getContent());
+        pageResponse.setEmpty(roles.isEmpty());
+        pageResponse.setNumber(roles.getNumber());
+        pageResponse.setNumberOfElements(roles.getNumberOfElements());
+        pageResponse.setPageNumber(roles.getPageable().getPageNumber());
+        pageResponse.setPageSize(roles.getPageable().getPageSize());
+        pageResponse.setSize(roles.getSize());
+        pageResponse.setTotalElements(roles.getTotalElements());
+        pageResponse.setTotalPages(roles.getTotalPages());
 
         if (roles.isEmpty()) {
-            throw new NoDatosQueMostrarExecption("No hay roles qu emostrar");
+            throw new NoDatosQueMostrarExecption("No hay roles que mostrar.");
         }
-        return roles;
+        return pageResponse;
+
+    }
+
+    @Cacheable(value = "rol-detail", key = "#id")
+    @Transactional(readOnly = true)
+    @Override
+    public DetailsRolDtoResp getDetailsRol(Integer id) {
+
+        DetailsRolDtoResp detailsRolDtoResp = rolrepo.getDetails(id)
+                .orElseThrow(() -> new DatoNoExistenteEcxeption("Error el rol no exite en el sistema."));
+
+        return detailsRolDtoResp;
+
+    }
+
+    @Caching(evict = {
+        @CacheEvict(value = "roles", allEntries = true)
+    })
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public BasicResponseDto updateByid(Integer id, RolDtoReq dtoReq) {
+
+        Rol rol = rolrepo.findById(id)
+                .orElseThrow(() -> new DatoNoExistenteEcxeption("El rol no existe en el sistema"));
+
+        if (rol.isIsDelete()) {
+
+            throw new DatoNoExistenteEcxeption("El rol no existe en el sistema");
+        }
+
+        Rol rol1 = rolrepo.findByNombreIgnoreCase(dtoReq.getNombre().trim())
+                .orElseThrow(() -> new DatoNoExistenteEcxeption("Error el rol no exite en el sistema."));
+
+        if (rol1.getNombre().toUpperCase().contains(dtoReq.getNombre().trim().toLowerCase())
+                && rol1.getId() != rol.getId()) {
+
+            throw new DatoYaExistenteException("El rol ya existe en el sistema");
+        }
+
+        if (dtoReq.getDescription() != null) {
+            rol.setDescription(dtoReq.getDescription());
+        }
+
+        rol.setNombre(dtoReq.getNombre());
+        rol.setUpdateBy("luis");
+        rol.setUpdateName("luyis");
+
+        rolrepo.save(rol);
+
+        return new BasicResponseDto("El Rol " + rol.getNombre() + " ha sisdo actualizado correctamente");
 
     }
 

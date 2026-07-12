@@ -120,22 +120,11 @@ public class RegistroUsuarioBasico implements RegistrarUsuariobasico {
 
         usuario.setIdentificacion(identificacion);
 
-        Rol rol = ValidacionesGlobales.obtenerSiExiste(rolRepo.findByNombre(usuarioBasicoDto.getRol()),
+        Rol rol = ValidacionesGlobales.obtenerSiExiste(rolRepo.findByNombreIgnoreCase(usuarioBasicoDto.getRol()),
                 "El rol: " + usuarioBasicoDto.getRol() + " no se encuentra en el sistema, lo invitamos a seleccionar una"
                 + " opcion correcta, para ccontinuar con el registro.");
 
-        System.out.println("rollllllllllllllllllllllllll:     " + usuarioBasicoDto.getRol());
-        System.out.println("codigooooooooooooooooooooooo:" + rol.getCodigoRol());
-        System.out.println("codigo ingresado:" + usuarioBasicoDto.getCodigoRol());
-
-        if (!usuarioBasicoDto.getRol().toLowerCase().equalsIgnoreCase("usuario")) {
-            ValidacionesGlobales.verificarCodigoRol(rol.getCodigoRol(),
-                    usuarioBasicoDto.getCodigoRol(),
-                    "Error de registro, "
-                    + "el código de rol que ingreso no es valido para el rol que usted selecciono, "
-                    + "lo invitamos a verificar la información ingresada.");
-        }
-
+      
         usuario.setRol(rol);
 
         Direccion direccion = new Direccion();

@@ -4,64 +4,104 @@
  */
 package restaurante_gratitude.demp.Controller.Rol;
 
-import java.util.Map;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import restaurante_gratitude.demp.DTOS.Request.Rol.RolDto;
-import restaurante_gratitude.demp.Entidades.Roles.Rol;
-import restaurante_gratitude.demp.Service.ServiceImplement.Rol.GestionRolesService;
+import restaurante_gratitude.demp.DTOS.Global.BasicResponseDto;
+import restaurante_gratitude.demp.DTOS.PageResponse;
+import restaurante_gratitude.demp.DTOS.Request.Rol.RolDtoReq;
+import restaurante_gratitude.demp.DTOS.Response.Rol.DetailsRolDtoResp;
+import restaurante_gratitude.demp.DTOS.Response.Rol.RolDtoresponse;
+import restaurante_gratitude.demp.Service.Rol.GestionarRoles;
 
 /**
  *
  * @author Usuario
  */
+@Tag(name = "Rol",
+        description = "Módulo encargado de gestionar todas las operacione sobre los roles en el sistema.")
 @RestController
 @RequestMapping("/rol")
 public class GestionRolesController {
 
-    private GestionRolesService gestionRolesService;
+    private GestionarRoles gestionarRoles;
 
     @Autowired
-    public GestionRolesController(GestionRolesService gestionRolesService) {
-        this.gestionRolesService = gestionRolesService;
+
+    public GestionRolesController(GestionarRoles gestionarRoles) {
+        this.gestionarRoles = gestionarRoles;
     }
 
     public GestionRolesController() {
     }
 
-    public GestionRolesService getGestionRolesService() {
-        return gestionRolesService;
+    public GestionarRoles getGestionarRoles() {
+        return gestionarRoles;
     }
 
-    public void setGestionRolesService(GestionRolesService gestionRolesService) {
-        this.gestionRolesService = gestionRolesService;
+    public void setGestionarRoles(GestionarRoles gestionarRoles) {
+        this.gestionarRoles = gestionarRoles;
     }
 
+    @Operation(description = "Operación encargada de crear nuevos roles en el sistema.",
+            method = "POST")
     @PostMapping("/crear")
-    public ResponseEntity<?> crearRol(@Valid @RequestBody RolDto rolDto) {
+    public ResponseEntity<BasicResponseDto> crearRol(
+            @Valid
+            @RequestBody RolDtoReq rolDto) {
 
-        RolDto respuesta = gestionRolesService.crearRol(rolDto);
+        gestionarRoles.crearRol(rolDto);
 
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(Map.of("Mensaje", "Rol: " + rolDto.getNombre()
-                        + " ha sido agregado con exito."));
+        return ResponseEntity
+                .ok(new BasicResponseDto("El rol ha sido creado con exito."));
     }
 
-    @GetMapping("/findByName")
-    public ResponseEntity<?> findByName(@RequestParam(required = false) String name, Pageable pageable) {
+    @Operation(description = "Operación encargada de mostrar todos los roles que se encuentran en el sistema.")
+    @GetMapping("/findAll")
+    public ResponseEntity<PageResponse<RolDtoresponse>> findByName(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) boolean isDelete,
+            Pageable pageable) {
 
-        return ResponseEntity.ok(gestionRolesService.finbyName(name, pageable));
+        return ResponseEntity.ok(gestionarRoles.findAll(
+                name,
+                isDelete,
+                pageable));
 
+    }
+
+    @Operation(
+            description = "Operación encargada de obtener mas detalles de un rol..",
+            method = "GET")
+    @GetMapping(value = "/details/{id}")
+    public ResponseEntity<DetailsRolDtoResp> getDetailsbyIdRol(@PathVariable(
+            value = "id",
+            required = true) Integer id) {
+
+        return ResponseEntity.ok(gestionarRoles.getDetailsRol(id));
+    }
+
+    @Operation(description = "Operación encargada de actualizar datos de un rol",
+            method = "POST")
+    @PutMapping(value = "/upadte/{id}")
+    public ResponseEntity<BasicResponseDto> updateById(@PathVariable(
+            value = "id",
+            required = true) Integer id,
+            @Valid
+            @RequestParam RolDtoReq dtoReq) {
+
+        return ResponseEntity.ok(gestionarRoles.updateByid(id, dtoReq));
     }
 
 }

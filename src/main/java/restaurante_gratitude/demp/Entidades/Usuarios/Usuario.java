@@ -62,12 +62,18 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(nullable = false)
+    @Column(name = "primer_nombre",
+            nullable = false,
+            length = 50)
     private String primerNombre;
 
+    @Column(name = "segundo_nombre",
+            length = 50)
     private String segundoNombre;
 
-    @Column(nullable = false)
+    @Column(name = "primer_apellido",
+            nullable = false,
+            length = 50)
     private String primerApellido;
 
     @Column(nullable = false)

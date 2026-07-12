@@ -23,6 +23,7 @@ import restaurante_gratitude.demp.ControlExeptions.Execptions.DatoInvalidoExcept
 import restaurante_gratitude.demp.ControlExeptions.Execptions.DatoNoExistenteEcxeption;
 import restaurante_gratitude.demp.ControlExeptions.Execptions.DatoYaExistenteException;
 import restaurante_gratitude.demp.ControlExeptions.Execptions.NoDatosQueMostrarExecption;
+import restaurante_gratitude.demp.DTOS.Global.BasicResponseDto;
 import restaurante_gratitude.demp.DTOS.PageResponse;
 import restaurante_gratitude.demp.DTOS.Response.Genero.generoDetailsDto;
 
@@ -48,11 +49,11 @@ public class GestionarGeneroService implements GestionarGeneros {
         this.generoRepo = generoRepo;
     }
 
-    @CacheEvict(value = "generos, genero-detail",
+    @CacheEvict(value = "generos",
             allEntries = true)
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public GeneroDto crearGenero(GeneroDto generoDto) {
+    public void crearGenero(GeneroDto generoDto) {
 
         Optional<Genero> optional = generoRepo.findByNombreIgnoreCase(generoDto.getNombre());
 
@@ -74,7 +75,7 @@ public class GestionarGeneroService implements GestionarGeneros {
             }
 
             generoRepo.save(genero);
-            return generoDto;
+            return;
         }
 
         genero = optional.get();
@@ -94,8 +95,6 @@ public class GestionarGeneroService implements GestionarGeneros {
         } else {
             throw new DatoYaExistenteException("El genero ya existe en el sistema.");
         }
-
-        return generoDto;
 
     }
 
@@ -138,7 +137,7 @@ public class GestionarGeneroService implements GestionarGeneros {
             })
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public GeneroDto updateGenreById(Integer id, GeneroDto dto) {
+    public void updateGenreById(Integer id, GeneroDto dto) {
 
         Optional<Genero> optional = generoRepo.findById(id);
 
@@ -171,12 +170,12 @@ public class GestionarGeneroService implements GestionarGeneros {
 
         generoRepo.save(genero);
 
-        return dto;
-
     }
 
-    @CacheEvict(value = "generos",
-            allEntries = true)
+    @Caching(evict = {
+        @CacheEvict(value = "generos", allEntries = true),
+        @CacheEvict(value = "genero-detail", key = "#id")
+    })
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void deleteGenreById(Integer id) {

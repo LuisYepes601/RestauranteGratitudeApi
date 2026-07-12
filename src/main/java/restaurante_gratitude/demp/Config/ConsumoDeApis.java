@@ -4,8 +4,16 @@
  */
 package restaurante_gratitude.demp.Config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import java.net.http.HttpClient;
+import java.time.Clock;
+import java.time.ZoneId;
+import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.client.RestTemplate;
 
 /**
@@ -20,4 +28,7 @@ public class ConsumoDeApis {
 
         return new RestTemplate();
     }
+
+   
+
 }

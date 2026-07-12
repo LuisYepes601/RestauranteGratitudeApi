@@ -14,7 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  * @author Usuario
  */
 @Configuration
-public class EncriptacionContraseñasConfig {
+public class passwordEncoderConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {

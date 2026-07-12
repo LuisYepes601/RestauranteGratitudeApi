@@ -4,10 +4,13 @@
  */
 package restaurante_gratitude.demp.Service.Genero;
 
+import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import restaurante_gratitude.demp.DTOS.Global.BasicResponseDto;
+import restaurante_gratitude.demp.DTOS.PageResponse;
 import restaurante_gratitude.demp.DTOS.Request.Genero.GeneroDto;
-import restaurante_gratitude.demp.Entidades.DatosBasicos.Genero;
+import restaurante_gratitude.demp.DTOS.Response.Genero.generoDetailsDto;
 
 /**
  *
@@ -15,8 +18,15 @@ import restaurante_gratitude.demp.Entidades.DatosBasicos.Genero;
  */
 public interface GestionarGeneros {
 
-    public GeneroDto crearGenero(GeneroDto generoDto);
+    public void crearGenero(GeneroDto generoDto);
 
-    public Page<GeneroDto> getGeneros(String name, Pageable pageable);
+    public PageResponse<GeneroDto> getGeneros(String name, boolean isDelete, Pageable pageable);
 
+    public void updateGenreById(Integer id, GeneroDto dto);
+
+    public void deleteGenreById(Integer id);
+
+    public void activate(Integer id);
+
+    public generoDetailsDto getDeatails(Integer id);
 }

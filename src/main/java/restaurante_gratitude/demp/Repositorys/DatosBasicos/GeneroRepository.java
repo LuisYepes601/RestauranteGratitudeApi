@@ -9,8 +9,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import restaurante_gratitude.demp.DTOS.Request.Genero.GeneroDto;
+import restaurante_gratitude.demp.DTOS.Response.Genero.generoDetailsDto;
 import restaurante_gratitude.demp.Entidades.DatosBasicos.Genero;
 
 /**
@@ -22,10 +24,37 @@ public interface GeneroRepository extends JpaRepository<Genero, Integer> {
 
     Optional<Genero> findByNombre(String nombre);
 
-    @Query("SELECT NEW restaurante_gratitude.demp.DTOS.Request.Genero.GeneroDto(g.nombre)"
-            + " FROM Genero g "
-            + " WHERE (:name IS NULL OR g.nombre = :name)"
-            + " OR (:name IS NULL OR g.nombre LIKE CONCAT (:name, '%'))")
-    public Page<GeneroDto> generos(String name, Pageable pageable);
+    @Query("""
+        SELECT NEW restaurante_gratitude.demp.DTOS.Request.Genero.GeneroDto(
+            g.id,
+            g.nombre,
+            g.description,
+            g.createAt,
+            g.updateAt,
+            g.createBy,
+            g.isDelete
+        )
+        FROM Genero g
+        WHERE (:name IS NULL OR g.nombre LIKE CONCAT(CAST(:name AS string), '%'))
+        AND g.isDelete = :isDelete
+        """)
+    Page<GeneroDto> generos(
+            @Param("name") String name,
+            @Param("isDelete") boolean isDelete,
+            Pageable pageable);
+
+    public Optional<Genero> findByNombreIgnoreCase(String nombre);
+
+    @Query("SELECT NEW restaurante_gratitude.demp.DTOS.Response.Genero.generoDetailsDto( "
+            + "g.deleteAt,"
+            + "g.creatorName,"
+            + "g.updateBy,"
+            + "g.updateName,"
+            + "g.deleteBy,"
+            + "g.deleteName) "
+            + "FROM Genero g"
+            + " WHERE g.id = :id")
+    public Optional<generoDetailsDto> getDetailById(
+            @Param(value = "id") Integer id);
 
 }

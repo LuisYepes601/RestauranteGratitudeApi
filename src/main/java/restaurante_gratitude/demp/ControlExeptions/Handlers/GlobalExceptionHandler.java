@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -43,7 +44,9 @@ public class GlobalExceptionHandler {
         error.put("Causa", ex.getCause().toString());
         error.put("Clase", stackTraceElement.getClassName());
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+        return ResponseEntity.status(
+                HttpStatus.BAD_REQUEST)
+                .body(error);
 
     }
 
@@ -91,9 +94,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Map<String, String>> handleRolNoExisteExecption(RolNoExisteExecption ex) {
 
         Map<String, String> error = new HashMap<>();
-        
+
         StackTraceElement stackTraceElement = ex.getStackTrace()[0];
-        
+
         error.put("Error", ex.getMessage());
         error.put("Class", stackTraceElement.getClassName());
         error.put("File", stackTraceElement.getFileName().toString());
@@ -203,5 +206,12 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(errores);
 
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<?> responseEntity(HttpMessageNotReadableException e) {
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(Map.of("message", "Los datos enviados tinen un formato invalido"));
     }
 }
