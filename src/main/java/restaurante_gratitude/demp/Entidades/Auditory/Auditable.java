@@ -12,7 +12,6 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-
 /**
  *
  * @author luis
@@ -42,7 +41,7 @@ public class Auditable {
     private String createBy;
 
     @Column(name = "creator_name",
-            nullable = false, 
+            nullable = false,
             length = 50)
     private String creatorName;
 

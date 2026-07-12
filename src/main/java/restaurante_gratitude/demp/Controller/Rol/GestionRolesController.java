@@ -10,6 +10,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,7 +39,6 @@ public class GestionRolesController {
     private GestionarRoles gestionarRoles;
 
     @Autowired
-
     public GestionRolesController(GestionarRoles gestionarRoles) {
         this.gestionarRoles = gestionarRoles;
     }
@@ -92,7 +92,8 @@ public class GestionRolesController {
         return ResponseEntity.ok(gestionarRoles.getDetailsRol(id));
     }
 
-    @Operation(description = "Operación encargada de actualizar datos de un rol",
+    @Operation(
+            description = "Operación encargada de actualizar datos de un rol",
             method = "POST")
     @PutMapping(value = "/upadte/{id}")
     public ResponseEntity<BasicResponseDto> updateById(@PathVariable(
@@ -102,6 +103,32 @@ public class GestionRolesController {
             @RequestParam RolDtoReq dtoReq) {
 
         return ResponseEntity.ok(gestionarRoles.updateByid(id, dtoReq));
+    }
+
+    @Operation(
+            description = "Operación encargada de eliminar un genero del sistema a traves de su id",
+            method = "DELETE")
+    @DeleteMapping(value = "/delete/{}")
+    public ResponseEntity<BasicResponseDto> deleteById(@PathVariable(
+            value = "id",
+            required = true) Integer id) {
+
+        return ResponseEntity.ok()
+                .body(gestionarRoles.deleteById(id));
+
+    }
+
+    @Operation(
+            description = "Operación encargada de activar un rol eliminado en el sistema.",
+            method = "PUT")
+    @PutMapping(value = "/activate/{id}")
+    public ResponseEntity<BasicResponseDto> activateById(@PathVariable(
+            value = "id",
+            required = true) Integer id) {
+
+        return ResponseEntity
+                .ok()
+                .body(gestionarRoles.activateById(id));
     }
 
 }

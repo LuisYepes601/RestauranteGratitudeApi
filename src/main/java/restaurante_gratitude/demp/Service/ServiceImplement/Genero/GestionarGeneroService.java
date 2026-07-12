@@ -26,6 +26,7 @@ import restaurante_gratitude.demp.ControlExeptions.Execptions.NoDatosQueMostrarE
 import restaurante_gratitude.demp.DTOS.Global.BasicResponseDto;
 import restaurante_gratitude.demp.DTOS.PageResponse;
 import restaurante_gratitude.demp.DTOS.Response.Genero.generoDetailsDto;
+import restaurante_gratitude.demp.Utils.AuditableUtils;
 
 /**
  *
@@ -62,12 +63,12 @@ public class GestionarGeneroService implements GestionarGeneros {
         if (optional.isEmpty()) {
 
             genero = new Genero();
+
+            AuditableUtils.create(
+                    genero,
+                    "pruebacre",
+                    "pruebacre");
             genero.setNombre(generoDto.getNombre());
-            genero.setCreateAt(LocalDateTime.now());
-            genero.setCreateBy("YEPESLUIS006@GMAIL.COM");
-            genero.setCreatorName("luis yepes");
-            genero.setUpdateName("Luis YEPPES");
-            genero.setUpdateBy("YEPESLUIS006@GMAIL.COM");
 
             if (generoDto.getDescription() != null) {
 
@@ -82,10 +83,12 @@ public class GestionarGeneroService implements GestionarGeneros {
 
         if (genero.isIsDelete()) {
 
-            genero.setIsDelete(false);
-            genero.setCreateAt(LocalDateTime.now());
-            genero.setCreateBy("YEPESLUIS006@GMAIL.COM");
-            genero.setCreatorName("luis yepes");
+            AuditableUtils.activate(
+                    genero,
+                    "prueba",
+                    "prueba");
+            genero.setCreateBy("prueba");
+            genero.setCreatorName("prueba");
 
             if (genero.getDescription() != null) {
 
@@ -158,8 +161,7 @@ public class GestionarGeneroService implements GestionarGeneros {
         }
 
         genero.setNombre(dto.getNombre());
-        genero.setUpdateBy("YEPESLUIS008@GMAIL.COM");
-        genero.setUpdateName("LUIS YEPES");
+        AuditableUtils.update(genero, "luis", "luis");
 
         if (dto.getDescription() != null) {
 
@@ -195,18 +197,15 @@ public class GestionarGeneroService implements GestionarGeneros {
 
         }
 
-        genero.setIsDelete(true);
-        genero.setDeleteAt(LocalDateTime.now());
-        genero.setDeleteName("LUIS YEPES");
-        genero.setDeleteBy("LUIS YEPES");
-        genero.setUpdateName("Luis YEPPES");
-        genero.setUpdateBy("YEPESLUIS006@GMAIL.COM");
-
+        AuditableUtils.delete(genero, "test", "test");
         generoRepo.save(genero);
     }
 
-    @CacheEvict(value = "generos",
-            allEntries = true)
+    @Caching(evict = {
+        @CacheEvict(value = "generos", allEntries = true),
+        @CacheEvict(value = "genero-detail", key = "#id")
+
+    })
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void activate(Integer id) {
@@ -225,9 +224,10 @@ public class GestionarGeneroService implements GestionarGeneros {
             throw new DatoInvalidoException("El genero ya se encuentra activo en el sistema.");
         }
 
-        genero.setIsDelete(false);
-        genero.setUpdateName("Luis YEPPES");
-        genero.setUpdateBy("YEPESLUIS006@GMAIL.COM");
+        AuditableUtils.activate(
+                genero,
+                "pruebaact",
+                "pruebaact");
 
         generoRepo.save(genero);
 

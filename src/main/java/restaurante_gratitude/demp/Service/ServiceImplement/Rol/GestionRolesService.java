@@ -25,6 +25,7 @@ import restaurante_gratitude.demp.DTOS.Response.Rol.RolDtoresponse;
 import restaurante_gratitude.demp.Entidades.Roles.Rol;
 import restaurante_gratitude.demp.Repositorys.Roles.RolRepository;
 import restaurante_gratitude.demp.Service.Rol.GestionarRoles;
+import restaurante_gratitude.demp.Utils.AuditableUtils;
 
 /**
  *
@@ -63,10 +64,10 @@ public class GestionRolesService implements GestionarRoles {
 
             if (rol.isIsDelete()) {
 
-                rol.setIsDelete(false);
-                rol.setCreateAt(LocalDateTime.now());
-                rol.setUpdateBy("luis");
-                rol.setUpdateName("luis");
+                AuditableUtils.activate(
+                        rol,
+                        "luis",
+                        "yeee");
                 rol.setCreatorName("luis");
                 rol.setCreateBy("yepes");
 
@@ -82,12 +83,10 @@ public class GestionRolesService implements GestionarRoles {
 
         rol = new Rol();
 
-        rol.setCreateAt(LocalDateTime.now());
-        rol.setNombre(rolDto.getNombre());
-        rol.setCreateBy("yepes");
-        rol.setCreatorName("luis");
-        rol.setUpdateBy("luis");
-        rol.setUpdateName("luis");
+        AuditableUtils.create(
+                rol,
+                "ffff",
+                "gggg");
 
         if (rolDto.getDescription() != null) {
             rol.setDescription(rolDto.getDescription());
@@ -168,9 +167,10 @@ public class GestionRolesService implements GestionarRoles {
             rol.setDescription(dtoReq.getDescription());
         }
 
-        rol.setNombre(dtoReq.getNombre());
-        rol.setUpdateBy("luis");
-        rol.setUpdateName("luyis");
+        AuditableUtils.update(
+                rol,
+                "iiii",
+                "jjj");
 
         rolrepo.save(rol);
 
@@ -178,6 +178,12 @@ public class GestionRolesService implements GestionarRoles {
 
     }
 
+    @Caching(evict = {
+        @CacheEvict(value = "roles", allEntries = true),
+        @CacheEvict(value = "rol-detail", key = "#id")
+
+    })
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public BasicResponseDto deleteById(Integer id) {
 
@@ -189,14 +195,39 @@ public class GestionRolesService implements GestionarRoles {
             throw new DatoNoExistenteEcxeption("El rol no se encuentra en el sistema");
         }
 
-        rol.setIsDelete(true);
-        rol.setDeleteAt(LocalDateTime.now());
-        rol.setDeleteBy("ll");
-        rol.setDeleteName("llll");
-        rol.setUpdateBy("dddd");
-        rol.setUpdateName("hhhh");
+        AuditableUtils.delete(
+                rol,
+                "ppp",
+                "ppp");
 
         return new BasicResponseDto("El rol " + rol.getNombre().toUpperCase() + " ha sido eliminado del sistema.");
+    }
+
+    @Caching(evict = {
+        @CacheEvict(value = "roles", allEntries = true),
+        @CacheEvict(value = "rol-detail", key = "#id")
+
+    })
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public BasicResponseDto activateById(Integer id) {
+
+        Rol rol = rolrepo.findById(id)
+                .orElseThrow(() -> new DatoNoExistenteEcxeption("El rol no existe en el sistema."));
+
+        if (!rol.isIsDelete()) {
+
+            throw new DatoYaExistenteException("El rol ya se encuentra activoen el sistema.");
+        }
+
+        AuditableUtils.activate(
+                rol,
+                "rolprue",
+                "rolprue");
+        rolrepo.save(rol);
+
+        return new BasicResponseDto("El rol " + rol.getNombre() + " ha sido activado de manera exitosamente");
+
     }
 
 }
