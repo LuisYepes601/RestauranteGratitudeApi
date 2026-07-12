@@ -178,4 +178,25 @@ public class GestionRolesService implements GestionarRoles {
 
     }
 
+    @Override
+    public BasicResponseDto deleteById(Integer id) {
+
+        Rol rol = rolrepo.findById(id)
+                .orElseThrow(() -> new DatoNoExistenteEcxeption("El rol no se encuentra en el sistema"));
+
+        if (rol.isIsDelete()) {
+
+            throw new DatoNoExistenteEcxeption("El rol no se encuentra en el sistema");
+        }
+
+        rol.setIsDelete(true);
+        rol.setDeleteAt(LocalDateTime.now());
+        rol.setDeleteBy("ll");
+        rol.setDeleteName("llll");
+        rol.setUpdateBy("dddd");
+        rol.setUpdateName("hhhh");
+
+        return new BasicResponseDto("El rol " + rol.getNombre().toUpperCase() + " ha sido eliminado del sistema.");
+    }
+
 }
