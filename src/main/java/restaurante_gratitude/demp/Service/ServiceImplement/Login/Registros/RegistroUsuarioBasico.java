@@ -174,7 +174,7 @@ public class RegistroUsuarioBasico implements RegistrarUsuariobasico {
 
         usuario.setGenero(genero);
 
-        Sexo sexo = ValidacionesGlobales.obtenerSiExiste(sexoRepo.findByNombre(usuarioBasicoDto.getSexo()),
+        Sexo sexo = ValidacionesGlobales.obtenerSiExiste(sexoRepo.findByNombreIgnoreCase(usuarioBasicoDto.getSexo()),
                 "El tipo de sexo que ingreso no se encuentra en el sistema");
 
         usuario.setSexo(sexo);

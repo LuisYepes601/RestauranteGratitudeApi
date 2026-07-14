@@ -27,8 +27,8 @@ public interface GestionarRoles {
     public DetailsRolDtoResp getDetailsRol(Integer id);
 
     public BasicResponseDto updateByid(Integer id, RolDtoReq dtoReq);
-    
+
     public BasicResponseDto deleteById(Integer id);
-    
+
     public BasicResponseDto activateById(Integer id);
 }

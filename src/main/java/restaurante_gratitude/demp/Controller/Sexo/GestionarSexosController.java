@@ -4,51 +4,144 @@
  */
 package restaurante_gratitude.demp.Controller.Sexo;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.Map;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import restaurante_gratitude.demp.DTOS.Global.BasicResponseDto;
+import restaurante_gratitude.demp.DTOS.PageResponse;
 import restaurante_gratitude.demp.DTOS.Request.Sexo.SexoDto;
-import restaurante_gratitude.demp.Service.ServiceImplement.Sexo.GestionarSexosService;
+import restaurante_gratitude.demp.DTOS.Response.Sexo.SexoDetailsDto;
+import restaurante_gratitude.demp.DTOS.Response.Sexo.SexoResponseDto;
+import restaurante_gratitude.demp.Service.Sexo.GestionarSexos;
 
 /**
  *
  * @author User
  */
+@Tag(name = "Sexo")
 @RestController
-@RequestMapping("/sexo")
+@RequestMapping(value = "/sexo")
 public class GestionarSexosController {
 
-    private GestionarSexosService gestionarSexosService;
+    private GestionarSexos gestionarSexosService;
 
     @Autowired
-    public GestionarSexosController(GestionarSexosService gestionarSexosService) {
+    public GestionarSexosController(GestionarSexos gestionarSexosService) {
         this.gestionarSexosService = gestionarSexosService;
     }
 
     public GestionarSexosController() {
     }
 
-    public GestionarSexosService getGestionarSexosService() {
+    public GestionarSexos getGestionarSexosService() {
         return gestionarSexosService;
     }
 
-    public void setGestionarSexosService(GestionarSexosService gestionarSexosService) {
+    public void setGestionarSexosService(GestionarSexos gestionarSexosService) {
         this.gestionarSexosService = gestionarSexosService;
     }
 
-    @PostMapping("/crear")
-    public ResponseEntity<?> agregarSexo(@Valid @RequestBody SexoDto sexoDto) {
+    @Operation(
+            description = "Operación encargada de crear un género en el sistema.",
+            method = "POST")
+    @PostMapping(value = "/create")
+    public ResponseEntity<BasicResponseDto> agregarSexo(
+            @Valid
+            @RequestBody SexoDto sexoDto) {
 
-        SexoDto respuesta = gestionarSexosService.agregarSexo(sexoDto);
+        return ResponseEntity
+                .ok()
+                .body(gestionarSexosService.agregarSexo(sexoDto));
+    }
 
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(Map.of("Mensaje", "El sexo " + sexoDto.getNombre() + " ha sido agregado con exito."));
+    @GetMapping(value = "/findAll")
+    public ResponseEntity<PageResponse<SexoResponseDto>> findAll(
+            @RequestParam(
+                    name = "nombre",
+                    required = false) String nombre,
+            @RequestParam(
+                    name = "isDelete",
+                    required = false) boolean isDelete,
+            Pageable pageable) {
+
+        return ResponseEntity
+                .ok()
+                .body(gestionarSexosService.getAll(
+                        nombre,
+                        isDelete,
+                        pageable));
+    }
+
+    @Operation(
+            description = "Operación encargada de acytulizar un registro de sexo en el sistema.",
+            method = "PUT")
+    @PutMapping(value = "/update/{id}")
+    public ResponseEntity<BasicResponseDto> updateById(
+            @PathVariable(
+                    name = "id",
+                    required = true) Integer id,
+            @RequestBody(required = true) SexoDto sexoDto) {
+
+        BasicResponseDto response = gestionarSexosService.updateById(id, sexoDto);
+
+        return ResponseEntity
+                .ok()
+                .body(response);
+    }
+
+    @Operation(
+            description = "Operación encargada de eliminar Sexos del sistema.",
+            method = "DELETE")
+    @DeleteMapping(value = "/delete/{id}")
+    public ResponseEntity<BasicResponseDto> deleteById(
+            @PathVariable(
+                    name = "id",
+                    required = true) Integer id) {
+
+        return ResponseEntity
+                .ok()
+                .body(gestionarSexosService.deleteById(id));
+    }
+
+    @Operation(description = "Operacion enecargada de activar registros de Sexo en el sistema")
+    @PutMapping(value = "/activate/{id}")
+    public ResponseEntity<BasicResponseDto> activateById(
+            @PathVariable(
+                    name = "id",
+                    required = true) Integer id) {
+
+        return ResponseEntity
+                .ok()
+                .body(gestionarSexosService.activateById(id));
+
+    }
+
+    @Operation(description = "Operación encargada de mostrar detalles de un regitro de Sexo.")
+    @GetMapping(value = "/details/{id}")
+    public ResponseEntity<SexoDetailsDto> getDetailsById(
+            @PathVariable(
+                    name = "id",
+                    required = true) Integer id) {
+
+        return ResponseEntity
+                .ok()
+                .body(gestionarSexosService.getDetails(id));
+
     }
 
 }

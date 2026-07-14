@@ -57,7 +57,7 @@ public class EditarDatosBasicosService implements EditarDatosBasicos {
         usuario.setGenero(genero);
 
         Sexo sexo = ValidacionesGlobales.obtenerSiExiste(
-                sexoRepo.findByNombre(datosBasicosDto.getSexo()),
+                sexoRepo.findByNombreIgnoreCase(datosBasicosDto.getSexo()),
                 "Erroe el sexo no se encuentra en el sisetma");
 
         usuario.setSexo(sexo);

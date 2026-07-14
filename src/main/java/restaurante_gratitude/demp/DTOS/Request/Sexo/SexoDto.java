@@ -50,4 +50,17 @@ public class SexoDto {
         this.nombre = nombre;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public SexoDto(String nombre, String description) {
+        this.nombre = nombre;
+        this.description = description;
+    }
+
 }

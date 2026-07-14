@@ -95,12 +95,12 @@ public class GestionRolesController {
     @Operation(
             description = "Operación encargada de actualizar datos de un rol",
             method = "POST")
-    @PutMapping(value = "/upadte/{id}")
+    @PutMapping(value = "/update/{id}")
     public ResponseEntity<BasicResponseDto> updateById(@PathVariable(
             value = "id",
             required = true) Integer id,
             @Valid
-            @RequestParam RolDtoReq dtoReq) {
+            @RequestBody RolDtoReq dtoReq) {
 
         return ResponseEntity.ok(gestionarRoles.updateByid(id, dtoReq));
     }
@@ -108,7 +108,7 @@ public class GestionRolesController {
     @Operation(
             description = "Operación encargada de eliminar un genero del sistema a traves de su id",
             method = "DELETE")
-    @DeleteMapping(value = "/delete/{}")
+    @DeleteMapping(value = "/delete/{id}")
     public ResponseEntity<BasicResponseDto> deleteById(@PathVariable(
             value = "id",
             required = true) Integer id) {

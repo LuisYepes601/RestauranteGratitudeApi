@@ -4,7 +4,6 @@
  */
 package restaurante_gratitude.demp.Service.ServiceImplement.Rol;
 
-import java.time.LocalDateTime;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
@@ -83,6 +82,8 @@ public class GestionRolesService implements GestionarRoles {
 
         rol = new Rol();
 
+        rol.setNombre(rolDto.getNombre().trim());
+
         AuditableUtils.create(
                 rol,
                 "ffff",
@@ -154,14 +155,15 @@ public class GestionRolesService implements GestionarRoles {
             throw new DatoNoExistenteEcxeption("El rol no existe en el sistema");
         }
 
-        Rol rol1 = rolrepo.findByNombreIgnoreCase(dtoReq.getNombre().trim())
-                .orElseThrow(() -> new DatoNoExistenteEcxeption("Error el rol no exite en el sistema."));
+        Optional<Rol> optional = rolrepo.findByNombreIgnoreCase(dtoReq.getNombre().trim());
 
-        if (rol1.getNombre().toUpperCase().contains(dtoReq.getNombre().trim().toLowerCase())
-                && rol1.getId() != rol.getId()) {
+        if (optional.isPresent()
+                && optional.get().getId() != rol.getId()) {
 
             throw new DatoYaExistenteException("El rol ya existe en el sistema");
         }
+
+        rol.setNombre(dtoReq.getNombre().trim());
 
         if (dtoReq.getDescription() != null) {
             rol.setDescription(dtoReq.getDescription());
