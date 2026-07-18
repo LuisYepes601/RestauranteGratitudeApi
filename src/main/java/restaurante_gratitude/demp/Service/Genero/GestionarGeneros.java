@@ -20,7 +20,7 @@ public interface GestionarGeneros {
 
     public void crearGenero(GeneroDto generoDto);
 
-    public PageResponse<GeneroDto> getGeneros(String name, boolean isDelete, Pageable pageable);
+    public PageResponse<GeneroDto> getGeneros(String name, Boolean isDelete, Pageable pageable);
 
     public void updateGenreById(Integer id, GeneroDto dto);
 

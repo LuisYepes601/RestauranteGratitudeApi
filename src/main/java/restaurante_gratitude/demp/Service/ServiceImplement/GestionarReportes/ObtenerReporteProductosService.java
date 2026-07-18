@@ -127,7 +127,7 @@ public class ObtenerReporteProductosService implements ObtenerReportesProductos 
     public byte[] productosByCategoria(String categoria) {
 
         List<ObtnerProductoDto> productos = productosService.ObtenerProductosDtoDatosBasicosActivos(productoRepository
-                .findByCategoria_nobre(categoria));
+                .findByCategoria_nombre(categoria));
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
 

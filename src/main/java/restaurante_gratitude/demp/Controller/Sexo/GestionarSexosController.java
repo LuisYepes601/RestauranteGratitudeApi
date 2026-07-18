@@ -6,12 +6,9 @@ package restaurante_gratitude.demp.Controller.Sexo;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import java.util.Map;
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.query.Param;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,7 +32,7 @@ import restaurante_gratitude.demp.Service.Sexo.GestionarSexos;
  */
 @Tag(name = "Sexo")
 @RestController
-@RequestMapping(value = "/sexo")
+@RequestMapping(value = "api/v1/sexo")
 public class GestionarSexosController {
 
     private GestionarSexos gestionarSexosService;
@@ -59,7 +56,7 @@ public class GestionarSexosController {
     @Operation(
             description = "Operación encargada de crear un género en el sistema.",
             method = "POST")
-    @PostMapping(value = "/create")
+    @PostMapping()
     public ResponseEntity<BasicResponseDto> agregarSexo(
             @Valid
             @RequestBody SexoDto sexoDto) {
@@ -69,14 +66,14 @@ public class GestionarSexosController {
                 .body(gestionarSexosService.agregarSexo(sexoDto));
     }
 
-    @GetMapping(value = "/findAll")
+    @GetMapping()
     public ResponseEntity<PageResponse<SexoResponseDto>> findAll(
             @RequestParam(
                     name = "nombre",
                     required = false) String nombre,
             @RequestParam(
                     name = "isDelete",
-                    required = false) boolean isDelete,
+                    required = false) Boolean isDelete,
             Pageable pageable) {
 
         return ResponseEntity
@@ -90,11 +87,12 @@ public class GestionarSexosController {
     @Operation(
             description = "Operación encargada de acytulizar un registro de sexo en el sistema.",
             method = "PUT")
-    @PutMapping(value = "/update/{id}")
+    @PutMapping(value = "/{id}")
     public ResponseEntity<BasicResponseDto> updateById(
             @PathVariable(
                     name = "id",
                     required = true) Integer id,
+            @Valid
             @RequestBody(required = true) SexoDto sexoDto) {
 
         BasicResponseDto response = gestionarSexosService.updateById(id, sexoDto);
@@ -107,7 +105,7 @@ public class GestionarSexosController {
     @Operation(
             description = "Operación encargada de eliminar Sexos del sistema.",
             method = "DELETE")
-    @DeleteMapping(value = "/delete/{id}")
+    @DeleteMapping(value = "/{id}")
     public ResponseEntity<BasicResponseDto> deleteById(
             @PathVariable(
                     name = "id",
@@ -119,7 +117,7 @@ public class GestionarSexosController {
     }
 
     @Operation(description = "Operacion enecargada de activar registros de Sexo en el sistema")
-    @PutMapping(value = "/activate/{id}")
+    @PutMapping(value = "/{id}/activate")
     public ResponseEntity<BasicResponseDto> activateById(
             @PathVariable(
                     name = "id",
@@ -132,7 +130,7 @@ public class GestionarSexosController {
     }
 
     @Operation(description = "Operación encargada de mostrar detalles de un regitro de Sexo.")
-    @GetMapping(value = "/details/{id}")
+    @GetMapping(value = "/{id}/details")
     public ResponseEntity<SexoDetailsDto> getDetailsById(
             @PathVariable(
                     name = "id",

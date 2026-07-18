@@ -17,7 +17,7 @@ import restaurante_gratitude.demp.Entidades.Pedidos.Pedido;
  *
  * @author User
  */
-@Entity
+/*@Entity
 public class RangoCalificacion {
 
     @Id
@@ -75,4 +75,4 @@ public class RangoCalificacion {
         this.calficacionProductos = calficacionProductos;
     }
 
-}
+}*/

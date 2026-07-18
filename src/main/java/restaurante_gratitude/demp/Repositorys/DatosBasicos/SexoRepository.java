@@ -25,22 +25,22 @@ public interface SexoRepository extends JpaRepository<Sexo, Integer> {
     public Optional<Sexo> findByNombreIgnoreCase(String nombre);
 
     @Query("""
-        SELECT NEW restaurante_gratitude.demp.DTOS.Response.Sexo.SexoResponseDto(
-            s.id,
-            s.nombre,
-            s.isDelete,
-            s.description,
-            s.createAt,
-            s.updateAt,
-            s.createBy
-        )
-        FROM Sexo s
-        WHERE (:nombre IS NULL OR s.nombre LIKE CONCAT(:nombre, '%'))
-        AND s.isDelete = :isDelete
-        """)
+    SELECT NEW restaurante_gratitude.demp.DTOS.Response.Sexo.SexoResponseDto(
+        s.id,
+        s.nombre,
+        s.isDelete,
+        s.description,
+        s.createAt,
+        s.updateAt,
+        s.createBy
+    )
+    FROM Sexo s
+    WHERE (:nombre IS NULL OR LOWER(s.nombre) LIKE LOWER(CONCAT(CAST(:nombre AS string), '%')))
+      AND (s.isDelete = :isDelete OR :isDelete IS NULL)
+    """)
     Page<SexoResponseDto> getAll(
             @Param("nombre") String nombre,
-            @Param("isDelete") boolean isDelete,
+            @Param("isDelete") Boolean isDelete,
             Pageable pageable
     );
 

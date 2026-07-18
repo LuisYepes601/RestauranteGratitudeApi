@@ -22,7 +22,7 @@ public interface GestionarRoles {
 
     public void crearRol(RolDtoReq rolDto);
 
-    public PageResponse<RolDtoresponse> findAll(String nombre, boolean isDelete, Pageable pageable);
+    public PageResponse<RolDtoresponse> findAll(String nombre, Boolean isDelete, Pageable pageable);
 
     public DetailsRolDtoResp getDetailsRol(Integer id);
 

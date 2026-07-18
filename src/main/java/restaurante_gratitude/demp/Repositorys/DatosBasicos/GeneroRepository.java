@@ -36,11 +36,11 @@ public interface GeneroRepository extends JpaRepository<Genero, Integer> {
         )
         FROM Genero g
         WHERE (:name IS NULL OR g.nombre LIKE CONCAT(CAST(:name AS string), '%'))
-        AND g.isDelete = :isDelete
+        AND ( g.isDelete = :isDelete OR :isDelete IS NULL) 
         """)
     Page<GeneroDto> generos(
             @Param("name") String name,
-            @Param("isDelete") boolean isDelete,
+            @Param("isDelete") Boolean isDelete,
             Pageable pageable);
 
     public Optional<Genero> findByNombreIgnoreCase(String nombre);

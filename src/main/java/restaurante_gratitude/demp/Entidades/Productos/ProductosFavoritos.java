@@ -10,6 +10,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
+import jakarta.persistence.Table;
 import java.time.LocalDate;
 import org.hibernate.annotations.ColumnDefault;
 import restaurante_gratitude.demp.Entidades.Usuarios.Usuario;
@@ -18,6 +19,7 @@ import restaurante_gratitude.demp.Entidades.Usuarios.Usuario;
  *
  * @author User
  */
+@Table(name = "productos_favoritos")
 @Entity
 public class ProductosFavoritos {
 
@@ -37,7 +39,6 @@ public class ProductosFavoritos {
     @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate fecha;
 
-    @ColumnDefault(value = "0")
     private boolean isDelete;
 
     private LocalDate fecha_eliminacion;

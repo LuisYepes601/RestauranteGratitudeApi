@@ -59,9 +59,9 @@ public class CrearProductoService implements CrearProductos {
     @Transactional(rollbackFor = Exception.class)
     public Map<String, String> crearProducto(CrearProductoDto crearProductoDto, MultipartFile file) {
 
-        ValidacionesGlobales.validarExistencia(
+        /* ValidacionesGlobales.validarExistencia(
                 productoRepo
-                        .findByNombre(crearProductoDto.getNombre()),
+                        .findByNombre(crearProductoDto.),
                 "Error. El producto: " + crearProductoDto.getNombre() + " ya se encuentra en el sistema."
                 + " Le invitamos a crear un producto que no exista.");
 
@@ -72,7 +72,7 @@ public class CrearProductoService implements CrearProductos {
         producto.setPrecio(crearProductoDto.getPrecio());
 
         Categoria categoria = ValidacionesGlobales.obtenerSiExiste(
-                categoriaProductoRepository.findBynobre(crearProductoDto.getCategoria()),
+                categoriaProductoRepository.findBynombre(crearProductoDto.getCategoria()),
                 "La categoria: " + crearProductoDto.getCategoria() + " no se encuentra disponible en el sistema."
                 + " Le invitamos a ingresar una categoria valida. ");
 
@@ -120,11 +120,10 @@ public class CrearProductoService implements CrearProductos {
         stockProducto.setFecha_ingreso(crearProductoDto.getFecha_ingreso());
         stockProducto.setProducto(producto);
 
-        stockProductoRepository.save(stockProducto);
-
+        stockProductoRepository.save(stockProducto);*/
         Map<String, String> respuesta = new HashMap<>();
 
-        respuesta.put("mensaje", "El producto: " + crearProductoDto.getNombre() + " ha sido agregado con exito al sistema.");
+        respuesta.put("mensaje", "El producto:  " + "ha sido agregado con exito al sistema.");
 
         return respuesta;
     }

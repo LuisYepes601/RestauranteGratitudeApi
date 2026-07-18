@@ -69,7 +69,7 @@ public class GestionarProductosFavoritosService implements GestionarProductosFav
             
             productosFavoritos = productoFav.get();
             productosFavoritos.setFecha(LocalDate.now());
-            productosFavoritos.setIsDelete(false);
+            //productosFavoritos.setIsDelete(false);
         }
         
         productosFvoritosRepo.save(productosFavoritos);
@@ -88,7 +88,6 @@ public class GestionarProductosFavoritosService implements GestionarProductosFav
                         ProductoFavoritoEliminarDto.getId_producto())),
                 "Error. El producto seleccionado no esta entre tus favoritos. ");
         
-        productosFavoritos.setIsDelete(true);
         productosFavoritos.setFecha_eliminacion(LocalDate.now());
         productosFvoritosRepo.save(productosFavoritos);
         

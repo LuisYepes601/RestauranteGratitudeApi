@@ -104,7 +104,7 @@ public class GestionarGeneroService implements GestionarGeneros {
     @Cacheable(value = "generos")
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public PageResponse<GeneroDto> getGeneros(String name, boolean isDelete, Pageable pageable) {
+    public PageResponse<GeneroDto> getGeneros(String name, Boolean isDelete, Pageable pageable) {
 
         Page<GeneroDto> page = generoRepo.generos(name, isDelete, pageable);
 

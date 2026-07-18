@@ -19,7 +19,7 @@ public interface GestionarSexos {
 
     public BasicResponseDto agregarSexo(SexoDto sexoDto);
 
-    public PageResponse<SexoResponseDto> getAll(String nombre, boolean isDelete, Pageable pageable);
+    public PageResponse<SexoResponseDto> getAll(String nombre, Boolean isDelete, Pageable pageable);
 
     public BasicResponseDto updateById(Integer id, SexoDto sexoDto);
 

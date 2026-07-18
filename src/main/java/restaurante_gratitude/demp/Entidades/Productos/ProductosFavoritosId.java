@@ -5,13 +5,14 @@
 package restaurante_gratitude.demp.Entidades.Productos;
 
 import jakarta.persistence.Embeddable;
+import java.io.Serializable;
 
 /**
  *
  * @author User
  */
 @Embeddable
-public class ProductosFavoritosId {
+public class ProductosFavoritosId implements Serializable{
     
     private int id_usuario;
     private int id_producto;

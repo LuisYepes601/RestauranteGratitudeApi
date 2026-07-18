@@ -49,7 +49,7 @@ public class ObtenerProductosService implements ObtenerProductos {
     @Override
     public List<ObtnerProductoDto> productosByCategoria(String categoria) {
 
-        List<Producto> p = productoRepository.findByCategoria_nobre(categoria);
+        List<Producto> p = productoRepository.findByCategoria_nombre(categoria);
 
         List<ObtnerProductoDto> productoDtos = ObtenerProductosDtoDatosBasicosActivos(p);
 
@@ -86,7 +86,7 @@ public class ObtenerProductosService implements ObtenerProductos {
             productoDto.setImagen(producto.getImagen());
 
             //DATOS DE CATEGORIA
-            productoDto.setCategoria(producto.getCategoria().getNobre());
+            productoDto.setCategoria(producto.getCategoria().getNombre());
             productoDto.setId_categoria(producto.getCategoria().getId());
 
             //DATOS DE CONTENIDO DEL PRODCUTO
@@ -108,8 +108,7 @@ public class ObtenerProductosService implements ObtenerProductos {
 
                 ObtenerCalificacionesDto calificacionesDto = new ObtenerCalificacionesDto();
 
-                calificacionesDto.setIdRango(calficacionProducto.getRangoCalificacion().getId());
-                calificacionesDto.setNombreRango(calficacionProducto.getRangoCalificacion().getNombre());
+              
 
                 calificacionesDto.setDescripcion(calficacionProducto.getDescripcion());
                 calificacionesDto.setEvidencia(calficacionProducto.getEvidencia());

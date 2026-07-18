@@ -26,9 +26,7 @@ public class CalficacionProducto {
 
     private String evidencia;
 
-    @ManyToOne
-    @JoinColumn(name = "id_rango_calificacion")
-    private RangoCalificacion rangoCalificacion;
+    private Integer rangoCalificacion;
 
     @ManyToOne
     @MapsId("id_usuario")
@@ -40,7 +38,7 @@ public class CalficacionProducto {
     @JoinColumn(name = "id_producto")
     private Producto producto;
 
-    public CalficacionProducto(CalificacionProductoId calificacionProductoId, String descripcion, String evidencia, RangoCalificacion rangoCalificacion, Usuario usuario, Producto producto) {
+    public CalficacionProducto(CalificacionProductoId calificacionProductoId, String descripcion, String evidencia, Integer rangoCalificacion, Usuario usuario, Producto producto) {
         this.calificacionProductoId = calificacionProductoId;
         this.descripcion = descripcion;
         this.evidencia = evidencia;
@@ -76,14 +74,6 @@ public class CalficacionProducto {
         this.evidencia = evidencia;
     }
 
-    public RangoCalificacion getRangoCalificacion() {
-        return rangoCalificacion;
-    }
-
-    public void setRangoCalificacion(RangoCalificacion rangoCalificacion) {
-        this.rangoCalificacion = rangoCalificacion;
-    }
-
     public Usuario getUsuario() {
         return usuario;
     }
@@ -98,6 +88,14 @@ public class CalficacionProducto {
 
     public void setProducto(Producto producto) {
         this.producto = producto;
+    }
+
+    public Integer getRangoCalificacion() {
+        return rangoCalificacion;
+    }
+
+    public void setRangoCalificacion(Integer rangoCalificacion) {
+        this.rangoCalificacion = rangoCalificacion;
     }
 
 }

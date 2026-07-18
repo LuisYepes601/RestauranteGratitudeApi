@@ -102,7 +102,7 @@ public class GestionRolesService implements GestionarRoles {
     @Override
     @Transactional(readOnly = true)
     public PageResponse<RolDtoresponse> findAll(String nombre,
-            boolean isDelete, Pageable pageable) {
+            Boolean isDelete, Pageable pageable) {
 
         Page<RolDtoresponse> roles = rolrepo.findAll(
                 nombre,

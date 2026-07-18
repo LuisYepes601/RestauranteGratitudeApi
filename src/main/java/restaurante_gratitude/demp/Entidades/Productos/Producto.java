@@ -9,12 +9,15 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 import java.util.List;
 import org.hibernate.annotations.ColumnDefault;
+import restaurante_gratitude.demp.Entidades.Auditory.Auditable;
 import restaurante_gratitude.demp.Entidades.InventarioStockProducto.StockProducto;
 import restaurante_gratitude.demp.Entidades.OfertsCupons.Promociones.Promocion;
 import restaurante_gratitude.demp.Entidades.Pedidos.DetallePedido;
@@ -24,23 +27,38 @@ import restaurante_gratitude.demp.Entidades.RangoCalificacion.CalficacionProduct
  *
  * @author Usuario
  */
+@Table(
+        name = "producto",
+        indexes = {
+            @Index(name = "idx_precio", columnList = "precio"),
+            @Index(name = "idx_categoria_id", columnList = "id_categoria"),
+            @Index(name = "idx_comp", columnList = "nombre,precio,isDelete")
+        })
 @Entity
-public class Producto {
+public class Producto extends Auditable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(unique = true, nullable = false)
+    @Column(name = "nombre",
+            unique = true,
+            nullable = false,
+            length = 50)
     private String nombre;
 
-    @Column(nullable = false)
+    @Column(
+            name = "precio",
+            nullable = false)
     private double precio;
 
-    @Column(nullable = false)
+    @Column(name = "description",
+            nullable = false,
+            length = 200)
     private String descripcion;
 
-    @Column(nullable = false)
+    @Column(name = "image",
+            nullable = false)
     private String imagen;
 
     @ManyToOne
@@ -67,11 +85,7 @@ public class Producto {
     @OneToMany(mappedBy = "producto")
     private List<ProductosFavoritos> productosFavoritos;
 
-    @Column(nullable = false)
-    @ColumnDefault("0")
-    private boolean isDelete = false;
-
-    public Producto(int id, String nombre, double precio, String descripcion, String imagen, Categoria categoria, Contenido contenido, Promocion promocion, StockProducto stockProducto, List<CalficacionProducto> calficacionProductos, List<DetallePedido> detallePedidos, List<ProductosFavoritos> productosFavoritos, boolean isDelete) {
+    public Producto(int id, String nombre, double precio, String descripcion, String imagen, Categoria categoria, Contenido contenido, Promocion promocion, StockProducto stockProducto, List<CalficacionProducto> calficacionProductos, List<DetallePedido> detallePedidos, List<ProductosFavoritos> productosFavoritos) {
         this.id = id;
         this.nombre = nombre;
         this.precio = precio;
@@ -84,7 +98,6 @@ public class Producto {
         this.calficacionProductos = calficacionProductos;
         this.detallePedidos = detallePedidos;
         this.productosFavoritos = productosFavoritos;
-        this.isDelete = isDelete;
     }
 
     public Producto() {
@@ -184,14 +197,6 @@ public class Producto {
 
     public void setProductosFavoritos(List<ProductosFavoritos> productosFavoritos) {
         this.productosFavoritos = productosFavoritos;
-    }
-
-    public boolean isIsDelete() {
-        return isDelete;
-    }
-
-    public void setIsDelete(boolean isDelete) {
-        this.isDelete = isDelete;
     }
 
 }

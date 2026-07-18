@@ -96,7 +96,7 @@ public class EditarProductosService implements EditarProductos {
     @Override
     public Map<String, String> editarProdcuto(CrearProductoDto crearProductoDto, MultipartFile file) {
 
-        Producto producto = ValidacionesGlobales.obtenerSiExiste(
+        /*Producto producto = ValidacionesGlobales.obtenerSiExiste(
                 productoRepository
                         .findByNombre(crearProductoDto.getNombre()),
                 "Error. El producto: " + crearProductoDto.getNombre() + " no se encuentra en el sistema."
@@ -107,7 +107,7 @@ public class EditarProductosService implements EditarProductos {
         producto.setPrecio(crearProductoDto.getPrecio());
 
         Categoria categoria = ValidacionesGlobales.obtenerSiExiste(
-                categoriaProdcutoRepo.findBynobre(crearProductoDto.getCategoria()),
+                categoriaProdcutoRepo.findBynombre(crearProductoDto.getCategoria()),
                 "La categoria: " + crearProductoDto.getCategoria() + " no se encuentra disponible en el sistema."
                 + " Le invitamos a ingresar una categoria valida. ");
 
@@ -148,11 +148,11 @@ public class EditarProductosService implements EditarProductos {
         stockProducto.setCantidadMin(crearProductoDto.getCantidadMin());
         stockProducto.setCantidadMax(crearProductoDto.getCantidadMax());
 
-        stockProductoRepository.save(stockProducto);
+        stockProductoRepository.save(stockProducto);*/
 
         Map<String, String> respuesta = new HashMap<>();
 
-        respuesta.put("mensaje", "El producto: " + crearProductoDto.getNombre() + " ha sido agregado con exito al sistema.");
+        respuesta.put("mensaje", "El producto: " + crearProductoDto + " ha sido agregado con exito al sistema.");
 
         return respuesta;
     }

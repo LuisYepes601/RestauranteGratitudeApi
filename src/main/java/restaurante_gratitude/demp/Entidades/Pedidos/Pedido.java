@@ -21,7 +21,6 @@ import java.util.List;
 import restaurante_gratitude.demp.Entidades.Devoluciones.Devolucion;
 import restaurante_gratitude.demp.Entidades.OfertsCupons.Cupones.Cupon;
 import restaurante_gratitude.demp.Entidades.OfertsCupons.Cupones.UsoCupon;
-import restaurante_gratitude.demp.Entidades.RangoCalificacion.RangoCalificacion;
 import restaurante_gratitude.demp.Entidades.Usuarios.Mesero;
 import restaurante_gratitude.demp.Entidades.Usuarios.Usuario;
 
@@ -54,10 +53,7 @@ public class Pedido {
     @JoinColumn(name = "id_estado_pedido")
     private EstadoPedido estadoPedido;
 
-    @ManyToOne
-    @JoinColumn(name = "id_rango_calificacion")
-    private RangoCalificacion rangoCalificacion;
-
+   
     @ManyToOne
     @JoinColumn(name = "id_cupon")
     private Cupon cupon;
@@ -82,14 +78,13 @@ public class Pedido {
     public Pedido() {
     }
 
-    public Pedido(int id, Date fechaPedido, double total, int totalItems, TipoPedido tipoPedido, EstadoPedido estadoPedido, RangoCalificacion rangoCalificacion, Cupon cupon, Devolucion devolucion, Mesero mesero, Usuario usuario, UsoCupon usoCupon, List<DetallePedido> detalles) {
+    public Pedido(int id, Date fechaPedido, double total, int totalItems, TipoPedido tipoPedido, EstadoPedido estadoPedido, Cupon cupon, Devolucion devolucion, Mesero mesero, Usuario usuario, UsoCupon usoCupon, List<DetallePedido> detalles) {
         this.id = id;
         this.fechaPedido = fechaPedido;
         this.total = total;
         this.totalItems = totalItems;
         this.tipoPedido = tipoPedido;
         this.estadoPedido = estadoPedido;
-        this.rangoCalificacion = rangoCalificacion;
         this.cupon = cupon;
         this.devolucion = devolucion;
         this.mesero = mesero;
@@ -146,13 +141,7 @@ public class Pedido {
         this.estadoPedido = estadoPedido;
     }
 
-    public RangoCalificacion getRangoCalificacion() {
-        return rangoCalificacion;
-    }
-
-    public void setRangoCalificacion(RangoCalificacion rangoCalificacion) {
-        this.rangoCalificacion = rangoCalificacion;
-    }
+   
 
     public Cupon getCupon() {
         return cupon;

@@ -6,6 +6,7 @@ package restaurante_gratitude.demp.Service.Productos;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import org.springframework.web.multipart.MultipartFile;
 import restaurante_gratitude.demp.DTOS.Request.Productos.CrearProductoDto;
 import restaurante_gratitude.demp.DTOS.Response.Productos.ObtnerProductoDto;
@@ -18,6 +19,7 @@ import restaurante_gratitude.demp.Entidades.Productos.Producto;
 public interface CrearProductos {
 
     public Map<String, String> crearProducto(CrearProductoDto crearProductoDto, MultipartFile file);
-
+    
+   
 
 }

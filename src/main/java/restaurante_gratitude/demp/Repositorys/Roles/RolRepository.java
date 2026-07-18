@@ -38,10 +38,10 @@ public interface RolRepository extends JpaRepository<Rol, Integer> {
             + ") "
             + "FROM  Rol r "
             + "WHERE (r.nombre LIKE CONCAT (:nombre,'%') OR :nombre IS NULL ) "
-            + "AND (r.isDelete = :isDelete)")
+            + "AND (r.isDelete = :isDelete OR :isDelete IS NULL)")
     public Page<RolDtoresponse> findAll(
             @Param(value = "nombre") String nombre,
-            @Param(value = "isDelete") boolean isDelete,
+            @Param(value = "isDelete") Boolean isDelete,
             Pageable pageable);
 
     @Query("SELECT new restaurante_gratitude.demp.DTOS.Response.Rol.DetailsRolDtoResp("

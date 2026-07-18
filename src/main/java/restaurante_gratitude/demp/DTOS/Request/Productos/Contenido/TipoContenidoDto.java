@@ -30,6 +30,5 @@ public class TipoContenidoDto {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-    
-    
+
 }

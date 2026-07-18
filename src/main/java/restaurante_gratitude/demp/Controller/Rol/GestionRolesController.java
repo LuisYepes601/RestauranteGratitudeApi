@@ -33,7 +33,7 @@ import restaurante_gratitude.demp.Service.Rol.GestionarRoles;
 @Tag(name = "Rol",
         description = "Módulo encargado de gestionar todas las operacione sobre los roles en el sistema.")
 @RestController
-@RequestMapping("/rol")
+@RequestMapping("api/v1/rol")
 public class GestionRolesController {
 
     private GestionarRoles gestionarRoles;
@@ -56,7 +56,7 @@ public class GestionRolesController {
 
     @Operation(description = "Operación encargada de crear nuevos roles en el sistema.",
             method = "POST")
-    @PostMapping("/crear")
+    @PostMapping()
     public ResponseEntity<BasicResponseDto> crearRol(
             @Valid
             @RequestBody RolDtoReq rolDto) {
@@ -68,10 +68,10 @@ public class GestionRolesController {
     }
 
     @Operation(description = "Operación encargada de mostrar todos los roles que se encuentran en el sistema.")
-    @GetMapping("/findAll")
+    @GetMapping()
     public ResponseEntity<PageResponse<RolDtoresponse>> findByName(
             @RequestParam(required = false) String name,
-            @RequestParam(required = false) boolean isDelete,
+            @RequestParam(required = false) Boolean isDelete,
             Pageable pageable) {
 
         return ResponseEntity.ok(gestionarRoles.findAll(
@@ -84,7 +84,7 @@ public class GestionRolesController {
     @Operation(
             description = "Operación encargada de obtener mas detalles de un rol..",
             method = "GET")
-    @GetMapping(value = "/details/{id}")
+    @GetMapping(value = "/{id}/details")
     public ResponseEntity<DetailsRolDtoResp> getDetailsbyIdRol(@PathVariable(
             value = "id",
             required = true) Integer id) {
@@ -95,7 +95,7 @@ public class GestionRolesController {
     @Operation(
             description = "Operación encargada de actualizar datos de un rol",
             method = "POST")
-    @PutMapping(value = "/update/{id}")
+    @PutMapping(value = "/{id}")
     public ResponseEntity<BasicResponseDto> updateById(@PathVariable(
             value = "id",
             required = true) Integer id,
@@ -108,7 +108,7 @@ public class GestionRolesController {
     @Operation(
             description = "Operación encargada de eliminar un genero del sistema a traves de su id",
             method = "DELETE")
-    @DeleteMapping(value = "/delete/{id}")
+    @DeleteMapping(value = "/{id}")
     public ResponseEntity<BasicResponseDto> deleteById(@PathVariable(
             value = "id",
             required = true) Integer id) {
@@ -121,7 +121,7 @@ public class GestionRolesController {
     @Operation(
             description = "Operación encargada de activar un rol eliminado en el sistema.",
             method = "PUT")
-    @PutMapping(value = "/activate/{id}")
+    @PutMapping(value = "/{id}/activate")
     public ResponseEntity<BasicResponseDto> activateById(@PathVariable(
             value = "id",
             required = true) Integer id) {
