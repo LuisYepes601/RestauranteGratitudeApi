@@ -16,7 +16,6 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.util.List;
-import org.hibernate.annotations.ColumnDefault;
 import restaurante_gratitude.demp.Entidades.Auditory.Auditable;
 import restaurante_gratitude.demp.Entidades.InventarioStockProducto.StockProducto;
 import restaurante_gratitude.demp.Entidades.OfertsCupons.Promociones.Promocion;

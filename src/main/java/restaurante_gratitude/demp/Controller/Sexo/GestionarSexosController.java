@@ -30,7 +30,8 @@ import restaurante_gratitude.demp.Service.Sexo.GestionarSexos;
  *
  * @author User
  */
-@Tag(name = "Sexos")
+@Tag(name = "Sexos",
+        description = "Módulo encargado de administrar los sexos en el sisetma.")
 @RestController
 @RequestMapping(value = "api/v1/sexos")
 public class GestionarSexosController {
