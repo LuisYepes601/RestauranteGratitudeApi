@@ -11,6 +11,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import restaurante_gratitude.demp.DTOS.Response.Productos.Categoria.CategoryDetailsDto;
 import restaurante_gratitude.demp.DTOS.Response.Productos.Categoria.CategoryDtoResponse;
 import restaurante_gratitude.demp.Entidades.Productos.Categoria;
 
@@ -45,5 +46,21 @@ public interface CategoriaProductoRepository extends JpaRepository<Categoria, In
             @Param(value = "nombre") String nombre,
             @Param(value = "isDelete") Boolean isDelete,
             Pageable pageable);
+
+    @Query("""
+           SELECT NEW restaurante_gratitude.demp.DTOS.Response.Productos.Categoria.CategoryDetailsDto(
+           c.deleteAt,
+           c.creatorName,
+           c.updateBy,
+           c.updateName,
+           c.deleteName,
+           c.deleteBy
+           )
+           
+           FROM Categoria c
+           
+           WHERE (:id = c.id)
+           """)
+    public Optional<CategoryDetailsDto> getDetails(@Param(value = "id") Integer id);
 
 }

@@ -30,9 +30,9 @@ import restaurante_gratitude.demp.Service.Sexo.GestionarSexos;
  *
  * @author User
  */
-@Tag(name = "Sexo")
+@Tag(name = "Sexos")
 @RestController
-@RequestMapping(value = "api/v1/sexo")
+@RequestMapping(value = "api/v1/sexos")
 public class GestionarSexosController {
 
     private GestionarSexos gestionarSexosService;

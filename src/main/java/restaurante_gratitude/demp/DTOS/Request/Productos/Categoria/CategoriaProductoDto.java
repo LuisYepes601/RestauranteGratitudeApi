@@ -6,6 +6,7 @@ package restaurante_gratitude.demp.DTOS.Request.Productos.Categoria;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 /**
  *
@@ -17,6 +18,10 @@ public class CategoriaProductoDto {
             name = "Nombre",
             description = "Nombre de la categoria que desea crear",
             requiredMode = Schema.RequiredMode.REQUIRED)
+    @Size(
+            min = 3,
+            max = 50,
+            message = "El nombre de la categoria debe de contener almenos 3 caracteres y máximo 50.")
     @NotBlank(message = "El campo nombdre de categoria, no puede estar vacio, le invitamso a rrellenarlo"
             + " , por ejemplo; Nombre: Postres")
     private String nombre;
@@ -26,6 +31,10 @@ public class CategoriaProductoDto {
             example = "Esta categoria representa a los productos de panaderia",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
+    @Size(
+            min = 10,
+            max = 200,
+            message = "La descripción de la categoria debe de contener almenos 3 caracteres y máximo 50.")
     private String description;
 
     public CategoriaProductoDto(String nombre) {

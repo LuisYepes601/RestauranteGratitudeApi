@@ -30,10 +30,10 @@ import restaurante_gratitude.demp.Service.Rol.GestionarRoles;
  *
  * @author Usuario
  */
-@Tag(name = "Rol",
+@Tag(name = "Roles",
         description = "Módulo encargado de gestionar todas las operacione sobre los roles en el sistema.")
 @RestController
-@RequestMapping("api/v1/rol")
+@RequestMapping("api/v1/roles")
 public class GestionRolesController {
 
     private GestionarRoles gestionarRoles;

@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 public class CategoryDtoResponse {
 
     private Integer id;
-    
+
     private String nombre;
 
     @Schema(accessMode = Schema.AccessMode.READ_ONLY)
@@ -42,7 +42,8 @@ public class CategoryDtoResponse {
         this.createBy = createBy;
     }
 
-  
+    public CategoryDtoResponse() {
+    }
 
     public String getNombre() {
         return nombre;
