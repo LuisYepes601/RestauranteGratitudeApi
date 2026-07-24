@@ -22,7 +22,7 @@ import restaurante_gratitude.demp.Entidades.Productos.Producto;
 @Repository
 public interface ProductoRepository extends JpaRepository<Producto, Integer> {
 
-    public Optional<Producto> findByNombre(String nombre);
+    public Optional<Producto> findByNombreIgnoreCase(String nombre);
 
     public List<Producto> findByCategoria_nombre(String nombre);
 

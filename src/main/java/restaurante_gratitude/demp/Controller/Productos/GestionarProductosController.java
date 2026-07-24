@@ -4,7 +4,10 @@
  */
 package restaurante_gratitude.demp.Controller.Productos;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +23,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import restaurante_gratitude.demp.DTOS.Global.BasicResponseDto;
 import restaurante_gratitude.demp.DTOS.Request.Productos.CrearProductoDto;
+import restaurante_gratitude.demp.Service.Productos.AdministrarProducts;
 import restaurante_gratitude.demp.Service.ServiceImplement.Productos.CrearProductoService;
 import restaurante_gratitude.demp.Service.ServiceImplement.Productos.EditarProductosService;
 import restaurante_gratitude.demp.Service.ServiceImplement.Productos.EliminarProductoService;
@@ -30,77 +35,32 @@ import restaurante_gratitude.demp.Service.ServiceImplement.Productos.ObtenerProd
  *
  * @author User
  */
-@RestController
-@RequestMapping(value = "producto")
+@Tag(
+        name = "Productos",
+        description = "Módulo encargado de adminitrar todas las funcionalidades con respecto a los productos")
+@RestController()
+@RequestMapping(value = "/api/v1/products")
 public class GestionarProductosController {
 
-    private CrearProductoService crearProductoService;
-    private ObtenerProductosService obtenerProdcutosService;
-    private EliminarProductoService eliminarProductsoServive;
-    private EditarProductosService editarProductosService;
+    private AdministrarProducts productosService;
 
-    @Autowired
-    public GestionarProductosController(CrearProductoService crearProductoService, ObtenerProductosService obtenerProdcutosService, EliminarProductoService eliminarProductsoServive, EditarProductosService editarProductosService) {
-        this.crearProductoService = crearProductoService;
-        this.obtenerProdcutosService = obtenerProdcutosService;
-        this.eliminarProductsoServive = eliminarProductsoServive;
-        this.editarProductosService = editarProductosService;
+    public GestionarProductosController(AdministrarProducts productosService) {
+        this.productosService = productosService;
     }
 
-    @PostMapping(value = "crear", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> crearProducto(@Valid
-            @RequestPart("imagen") MultipartFile imagen,
-            @RequestPart("producto") CrearProductoDto productodto) {
+    @Operation(
+            description = "Crear producto a travez de los datos solicitados",
+            method = "POST")
+    @PostMapping()
+    public ResponseEntity<BasicResponseDto> createProduct(
+            @Valid
+            @RequestPart(required = true, name = "producto") CrearProductoDto productoDto,
+            @RequestPart(required = true, name = "primary") MultipartFile primary,
+            @RequestPart(required = false, name = "gallery") List<MultipartFile> gallery
+    ) {
 
-        Map respuesta = crearProductoService.crearProducto(productodto, imagen);
-
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(respuesta);
-    }
-
-    @GetMapping(value = "/obtener/todos")
-    public ResponseEntity<?> obtnerTodolosProductos() {
-
-        return ResponseEntity.ok(obtenerProdcutosService.productosDatosBasicos());
-    }
-
-    @GetMapping(value = "by/categoria/{categoria}")
-    public ResponseEntity<?> obenerProductosByCaregorya(@PathVariable String categoria) {
-        ;
-        return ResponseEntity.ok(obtenerProdcutosService.productosByCategoria(categoria));
-    }
-
-    @DeleteMapping(value = "eliminar/byId/{id}")
-    public ResponseEntity<?> eliminarProductoById(@PathVariable Integer id) {
-
-        eliminarProductsoServive.eliminarProductoById(id);
-
-        Map<String, String> respuesta = new HashMap<>();
-
-        respuesta.put("mensaje", "El producto ha sido eliminado con exito.");
-
-        return ResponseEntity.ok(respuesta);
-    }
-
-    /*
-    @PostMapping(value = "/editar")
-    public ResponseEntity<?> editarDatosBasicosProductos(
-            @RequestBody EditarDatosBasicProductDto datosBasicProductDto) {
-
-        String respuesta = editarProductosService.editarProductoByid(datosBasicProductDto);
-
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(Map.of("mensaje", respuesta));
-    }*/
-
-    @PutMapping(value = "/editar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> EditarProducto(@Valid
-            @RequestPart("imagen") MultipartFile imagen,
-            @RequestPart("producto") CrearProductoDto productodto) {
-
-        Map respuesta = editarProductosService.editarProdcuto(productodto, imagen);
-
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(respuesta);
+        return ResponseEntity
+                .ok()
+                .body(productosService.createProduct(primary, gallery, productoDto));
     }
 }

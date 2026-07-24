@@ -12,6 +12,7 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.multipart.support.MissingServletRequestPartException;
 import restaurante_gratitude.demp.ControlExeptions.Execptions.ContraseñaIncorrectaExecption;
 import restaurante_gratitude.demp.ControlExeptions.Execptions.CorreoEnUso;
 import restaurante_gratitude.demp.ControlExeptions.Execptions.DatoInvalidoException;
@@ -213,5 +214,18 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(Map.of("message", "Los datos enviados tinen un formato invalido"));
+    }
+
+    @ExceptionHandler(MissingServletRequestPartException.class)
+    public ResponseEntity<Map<String, String>> handlerMissingServletRequestPartException(MissingServletRequestPartException exception) {
+
+        Map<String, String> response = new HashMap<>();
+
+        response.put("status", exception.getStatusCode().toString());
+        response.put("message", "Hace falta esta parte requerida: " + exception.getRequestPartName());
+
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(response);
     }
 }

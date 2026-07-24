@@ -29,5 +29,36 @@ public class CloudinaryFileHelpers {
         return utils;
 
     }
-;
+
+    public static Map<String, Object> prymaryFileProduct(String nameFile) {
+
+        Map<String, Object> utils = new HashMap<>();
+
+        utils.put("public_id", "products/primary_/".concat(nameFile));
+        utils.put("transformation", new Transformation<>()
+                .quality("auto")
+                .fetchFormat("auto")
+                .crop("limit")
+                .width(400)
+                .height(400));
+
+        return utils;
+
+    }
+
+    public static Map<String, Object> galleryFileProduct(String nameFile) {
+
+        Map<String, Object> utils = new HashMap<>();
+
+        utils.put("public_id", "products/gallery/".concat(nameFile));
+        utils.put("transformation", new Transformation<>()
+                .quality("auto")
+                .fetchFormat("auto")
+                .crop("limit")
+                .width(400)
+                .height(400));
+
+        return utils;
+
+    }
 }

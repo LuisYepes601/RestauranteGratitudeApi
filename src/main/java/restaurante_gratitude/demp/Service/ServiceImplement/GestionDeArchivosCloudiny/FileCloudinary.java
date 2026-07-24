@@ -21,6 +21,9 @@ public class FileCloudinary {
         this.file = file;
     }
 
+    public FileCloudinary() {
+    }
+
     public Map<String, Object> getObjectUtils() {
         return objectUtils;
     }

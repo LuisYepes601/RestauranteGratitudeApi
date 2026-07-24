@@ -6,6 +6,7 @@ package restaurante_gratitude.demp.Entidades.Productos;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -15,6 +16,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import java.time.LocalDateTime;
 import java.util.List;
 import restaurante_gratitude.demp.Entidades.Auditory.Auditable;
 import restaurante_gratitude.demp.Entidades.InventarioStockProducto.StockProducto;
@@ -60,7 +62,7 @@ public class Producto extends Auditable {
             nullable = false)
     private String imagen;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_categoria")
     private Categoria categoria;
 
@@ -68,21 +70,24 @@ public class Producto extends Auditable {
     @JoinColumn(name = "id_contenido")
     private Contenido contenido;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_promocion")
     private Promocion promocion;
 
     @OneToOne(mappedBy = "producto")
     private StockProducto stockProducto;
 
-    @OneToMany(mappedBy = "producto")
+    @OneToMany(mappedBy = "producto", fetch = FetchType.LAZY)
     private List<CalficacionProducto> calficacionProductos;
 
-    @OneToMany(mappedBy = "producto")
+    @OneToMany(mappedBy = "producto", fetch = FetchType.LAZY)
     private List<DetallePedido> detallePedidos;
 
-    @OneToMany(mappedBy = "producto")
+    @OneToMany(mappedBy = "producto", fetch = FetchType.LAZY)
     private List<ProductosFavoritos> productosFavoritos;
+
+    @OneToMany(mappedBy = "producto", fetch = FetchType.LAZY)
+    private List<ProductImage> ProductIamges;
 
     public Producto(int id, String nombre, double precio, String descripcion, String imagen, Categoria categoria, Contenido contenido, Promocion promocion, StockProducto stockProducto, List<CalficacionProducto> calficacionProductos, List<DetallePedido> detallePedidos, List<ProductosFavoritos> productosFavoritos) {
         this.id = id;
@@ -97,6 +102,23 @@ public class Producto extends Auditable {
         this.calficacionProductos = calficacionProductos;
         this.detallePedidos = detallePedidos;
         this.productosFavoritos = productosFavoritos;
+    }
+
+    public Producto(int id, String nombre, double precio, String descripcion, String imagen, Categoria categoria, Contenido contenido, Promocion promocion, StockProducto stockProducto, List<CalficacionProducto> calficacionProductos, List<DetallePedido> detallePedidos, List<ProductosFavoritos> productosFavoritos, List<ProductImage> ProductIamges, LocalDateTime createAt, LocalDateTime updateAt, LocalDateTime deleteAt, boolean isDelete, String createBy, String creatorName, String updateBy, String updateName, String deleteBy, String deleteName) {
+        super(createAt, updateAt, deleteAt, isDelete, createBy, creatorName, updateBy, updateName, deleteBy, deleteName);
+        this.id = id;
+        this.nombre = nombre;
+        this.precio = precio;
+        this.descripcion = descripcion;
+        this.imagen = imagen;
+        this.categoria = categoria;
+        this.contenido = contenido;
+        this.promocion = promocion;
+        this.stockProducto = stockProducto;
+        this.calficacionProductos = calficacionProductos;
+        this.detallePedidos = detallePedidos;
+        this.productosFavoritos = productosFavoritos;
+        this.ProductIamges = ProductIamges;
     }
 
     public Producto() {
@@ -196,6 +218,14 @@ public class Producto extends Auditable {
 
     public void setProductosFavoritos(List<ProductosFavoritos> productosFavoritos) {
         this.productosFavoritos = productosFavoritos;
+    }
+
+    public List<ProductImage> getProductIamges() {
+        return ProductIamges;
+    }
+
+    public void setProductIamges(List<ProductImage> ProductIamges) {
+        this.ProductIamges = ProductIamges;
     }
 
 }

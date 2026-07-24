@@ -4,128 +4,174 @@
  */
 package restaurante_gratitude.demp.Service.ServiceImplement.Productos;
 
-import com.cloudinary.Transformation;
-import com.cloudinary.utils.ObjectUtils;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import restaurante_gratitude.demp.ControlExeptions.Execptions.DatoInvalidoException;
+import restaurante_gratitude.demp.ControlExeptions.Execptions.DatoNoExistenteEcxeption;
+import restaurante_gratitude.demp.ControlExeptions.Execptions.DatoYaExistenteException;
+import restaurante_gratitude.demp.ControlExeptions.Execptions.NoDatosQueMostrarExecption;
+import restaurante_gratitude.demp.DTOS.Global.BasicResponseDto;
+import restaurante_gratitude.demp.DTOS.Request.Inventario.StockDto;
+import restaurante_gratitude.demp.DTOS.Request.Productos.Contenido.ContenidoDto;
 import restaurante_gratitude.demp.DTOS.Request.Productos.CrearProductoDto;
 import restaurante_gratitude.demp.Entidades.InventarioStockProducto.StockProducto;
-import restaurante_gratitude.demp.Entidades.Productos.Categoria;
 import restaurante_gratitude.demp.Entidades.Productos.Contenido;
+import restaurante_gratitude.demp.Entidades.Productos.ProductImage;
 import restaurante_gratitude.demp.Entidades.Productos.Producto;
 import restaurante_gratitude.demp.Entidades.Productos.TipoContenidoProducto;
+import restaurante_gratitude.demp.Helpers.Cloudinary.CloudinaryFileHelpers;
 import restaurante_gratitude.demp.Repositorys.Inventario.StockProductoRepository;
 import restaurante_gratitude.demp.Repositorys.Productos.CategoriaProductoRepository;
 import restaurante_gratitude.demp.Repositorys.Productos.ContenidoProducto;
+import restaurante_gratitude.demp.Repositorys.Productos.ImageProduct;
 import restaurante_gratitude.demp.Repositorys.Productos.ProductoRepository;
 import restaurante_gratitude.demp.Repositorys.Productos.TipoContenidoProductoRepository;
-import restaurante_gratitude.demp.Service.Productos.CrearProductos;
+import restaurante_gratitude.demp.Service.Inventario.IInventario;
+import restaurante_gratitude.demp.Service.Productos.AdministrarProducts;
+import restaurante_gratitude.demp.Service.Productos.Contenido.IContenidoProduct;
 import restaurante_gratitude.demp.Service.ServiceImplement.GestionDeArchivosCloudiny.CargarFileService;
 import restaurante_gratitude.demp.Service.ServiceImplement.GestionDeArchivosCloudiny.FileCloudinary;
-import restaurante_gratitude.demp.Validaciones.ValidacionesGlobales;
+import restaurante_gratitude.demp.Utils.AuditableUtils;
 
 /**
  *
  * @author Usuario
  */
 @Service
-public class CrearProductoService implements CrearProductos {
+public class CrearProductoService implements AdministrarProducts {
 
-    private ProductoRepository productoRepo;
-    private ContenidoProducto contenidoProductoRepo;
-    private TipoContenidoProductoRepository tipoContenidoProductoRepository;
+    private ProductoRepository productoRepository;
+    private CargarFileService cargarFileService;
+    private ImageProduct imageProductRepo;
     private CategoriaProductoRepository categoriaProductoRepository;
-    private StockProductoRepository stockProductoRepository;
-    private CargarFileService caragarImagenesService;
+    private IContenidoProduct contenidoService;
+    private IInventario iInventarioService;
+
+    @Autowired
+    public CrearProductoService(ProductoRepository productoRepository, CargarFileService cargarFileService, ImageProduct imageProductRepo, CategoriaProductoRepository categoriaProductoRepository, IContenidoProduct contenidoService, IInventario iInventarioService) {
+        this.productoRepository = productoRepository;
+        this.cargarFileService = cargarFileService;
+        this.imageProductRepo = imageProductRepo;
+        this.categoriaProductoRepository = categoriaProductoRepository;
+        this.contenidoService = contenidoService;
+        this.iInventarioService = iInventarioService;
+    }
 
     public CrearProductoService() {
     }
 
-    @Autowired
-    public CrearProductoService(ProductoRepository productoRepo, ContenidoProducto contenidoProductoRepo, TipoContenidoProductoRepository tipoContenidoProductoRepository, CategoriaProductoRepository categoriaProductoRepository, StockProductoRepository stockProductoRepository, CargarFileService caragarImagenesService) {
-        this.productoRepo = productoRepo;
-        this.contenidoProductoRepo = contenidoProductoRepo;
-        this.tipoContenidoProductoRepository = tipoContenidoProductoRepository;
-        this.categoriaProductoRepository = categoriaProductoRepository;
-        this.stockProductoRepository = stockProductoRepository;
-        this.caragarImagenesService = caragarImagenesService;
+    @CacheEvict(value = "products", allEntries = true)
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public BasicResponseDto createProduct(
+            MultipartFile primary,
+            List<MultipartFile> gallery,
+            CrearProductoDto productoDto) {
+
+        if (primary.isEmpty()) {
+
+            throw new DatoInvalidoException("La imagen principal del producto no puede quedar vacia.");
+        }
+
+        Optional<Producto> optional = productoRepository.findByNombreIgnoreCase(productoDto.getNombre()
+                .trim());
+
+        Producto producto;
+
+        if (optional.isPresent()) {
+
+            producto = optional.get();
+
+            if (producto.isIsDelete()) {
+
+                AuditableUtils.activate(producto, "prueba", "prueba");
+                productoRepository.save(producto);
+            } else {
+                throw new DatoYaExistenteException("El producto ya existe en el sistema");
+            }
+
+        }
+
+        producto = new Producto();
+
+        producto.setNombre(productoDto.getNombre().trim());
+
+        if (productoDto.getDescripcion() != null) {
+
+            producto.setDescripcion(productoDto.getDescripcion().trim());
+        }
+
+        producto.setCategoria(categoriaProductoRepository
+                .findById(productoDto.getId_categoria())
+                .orElseThrow(
+                        () -> new DatoNoExistenteEcxeption("La categoria seleccionada no existe en e sistema")));
+
+        producto.setPrecio(productoDto.getPrecio());
+
+        producto.setImagen(cargarFilePrimary(primary));
+
+        if (gallery != null) {
+
+            if (gallery.size() > 5) {
+                throw new DatoInvalidoException("Las imagenes del producto asociado no pueden superar la cantidad de 5");
+
+            }
+        }
+
+        Contenido contenido = contenidoService.create(new ContenidoDto(producto.getId(),
+                productoDto.getId_tipo_contenido(),
+                productoDto.getValorcontenido())
+        );
+
+        producto.setContenido(contenido);
+
+        AuditableUtils.create(
+                producto,
+                "prueba",
+                "prueba");
+        productoRepository.save(producto);
+
+        iInventarioService.addProduct(new StockDto(producto.getId(),
+                productoDto.getCantidadMax(),
+                productoDto.getCantidadMin(),
+                productoDto.getCantidad()));
+
+        return new BasicResponseDto("El prodcuto ha sido creado exitosamente");
+
     }
 
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public Map<String, String> crearProducto(CrearProductoDto crearProductoDto, MultipartFile file) {
+    public String cargarFilePrimary(MultipartFile file) {
 
-        /* ValidacionesGlobales.validarExistencia(
-                productoRepo
-                        .findByNombre(crearProductoDto.),
-                "Error. El producto: " + crearProductoDto.getNombre() + " ya se encuentra en el sistema."
-                + " Le invitamos a crear un producto que no exista.");
+        FileCloudinary fileCloudinary = new FileCloudinary();
+        fileCloudinary.setFile(file);
+        fileCloudinary.setObjectUtils(CloudinaryFileHelpers.prymaryFileProduct(file.getOriginalFilename()));
 
-        Producto producto = new Producto();
+        return cargarFileService.cargarArchivo(fileCloudinary);
 
-        producto.setNombre(crearProductoDto.getNombre());
-        producto.setDescripcion(crearProductoDto.getDescripcion());
-        producto.setPrecio(crearProductoDto.getPrecio());
+    }
 
-        Categoria categoria = ValidacionesGlobales.obtenerSiExiste(
-                categoriaProductoRepository.findBynombre(crearProductoDto.getCategoria()),
-                "La categoria: " + crearProductoDto.getCategoria() + " no se encuentra disponible en el sistema."
-                + " Le invitamos a ingresar una categoria valida. ");
+    public void cargarGalleryProducts(List<MultipartFile> files, Producto producto) {
 
-        producto.setCategoria(categoria);
+        for (MultipartFile file : files) {
+            ProductImage image = new ProductImage();
+            image.setProducto(producto);
 
-        Contenido contenidoProducto = new Contenido();
+            FileCloudinary fileCloudinary = new FileCloudinary();
+            fileCloudinary.setFile(file);
+            fileCloudinary.setObjectUtils(CloudinaryFileHelpers.galleryFileProduct(file.getOriginalFilename()));
 
-        contenidoProducto.setValor(crearProductoDto.getValorcontenido());
+            image.setUrl(cargarFileService.cargarArchivo(fileCloudinary));
 
-        TipoContenidoProducto tipoContenidoProducto = ValidacionesGlobales
-                .obtenerSiExiste(
-                        tipoContenidoProductoRepository.findByNombre(crearProductoDto.getTipoContenido()),
-                        "El tipo de contenido: " + crearProductoDto.getTipoContenido() + " no existe en el sistema."
-                        + "");
+            imageProductRepo.save(image);
 
-        contenidoProducto.setTipo(tipoContenidoProducto);
+        }
 
-        contenidoProductoRepo.save(contenidoProducto);
-
-        producto.setContenido(contenidoProducto);
-
-        String imagen;
-
-        Map<String, Object> objectUtils = new HashMap<>();
-
-        objectUtils.put("public_id", "productos/" + producto.getNombre());
-        objectUtils.put("transformation", new Transformation<>()
-                .quality("auto")
-                .fetchFormat("auto")
-                .width(300)
-                .height(300)
-                .crop("limit"));
-
-        imagen = caragarImagenesService.cargarArchivo(new FileCloudinary(objectUtils, file));
-
-        producto.setImagen(imagen);
-
-        productoRepo.save(producto);
-
-        StockProducto stockProducto = new StockProducto();
-
-        stockProducto.setCantidad(crearProductoDto.getCantidad());
-        stockProducto.setCantidadMin(crearProductoDto.getCantidadMin());
-        stockProducto.setCantidadMax(crearProductoDto.getCantidadMax());
-        stockProducto.setFecha_ingreso(crearProductoDto.getFecha_ingreso());
-        stockProducto.setProducto(producto);
-
-        stockProductoRepository.save(stockProducto);*/
-        Map<String, String> respuesta = new HashMap<>();
-
-        respuesta.put("mensaje", "El producto:  " + "ha sido agregado con exito al sistema.");
-
-        return respuesta;
     }
 
 }

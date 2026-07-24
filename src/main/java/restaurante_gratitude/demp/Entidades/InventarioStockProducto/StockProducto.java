@@ -11,42 +11,51 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import java.time.LocalDateTime;
 import java.util.Date;
+import restaurante_gratitude.demp.Entidades.Auditory.Auditable;
 import restaurante_gratitude.demp.Entidades.Productos.Producto;
 
 /**
  *
  * @author Usuario
  */
+@Table(
+        name = "stock_product")
 @Entity
-public class StockProducto {
+public class StockProducto extends Auditable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(nullable = false)
-    private Date fecha_ingreso;
-
     @OneToOne
-    @JoinColumn(name = "id_producto")
+    @JoinColumn(
+            name = "id_producto",
+            unique = true)
     private Producto producto;
 
-    @Column(nullable = false)
+    @Column(
+            name = "cantidad",
+            nullable = false)
     private int cantidad;
 
-    @Column(nullable = false)
+    @Column(
+            name = "cantidad_max",
+            nullable = false)
     private int cantidadMax;
 
-    @Column(nullable = false)
+    @Column(
+            name = "cantidad_min",
+            nullable = false)
     private int cantidadMin;
 
-    public StockProducto(int id, Date fecha_ingreso, Producto producto, int cantidad, int cantidadMax, int cantidadMin) {
+    public StockProducto(int id, Producto producto, int cantidad, int cantidadMax, int cantidadMin, LocalDateTime createAt, LocalDateTime updateAt, LocalDateTime deleteAt, boolean isDelete, String createBy, String creatorName, String updateBy, String updateName, String deleteBy, String deleteName) {
+        super(createAt, updateAt, deleteAt, isDelete, createBy, creatorName, updateBy, updateName, deleteBy, deleteName);
         this.id = id;
-        this.fecha_ingreso = fecha_ingreso;
         this.producto = producto;
         this.cantidad = cantidad;
         this.cantidadMax = cantidadMax;
@@ -62,14 +71,6 @@ public class StockProducto {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public Date getFecha_ingreso() {
-        return fecha_ingreso;
-    }
-
-    public void setFecha_ingreso(Date fecha_ingreso) {
-        this.fecha_ingreso = fecha_ingreso;
     }
 
     public Producto getProducto() {

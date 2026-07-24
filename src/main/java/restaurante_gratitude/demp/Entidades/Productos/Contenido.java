@@ -6,19 +6,22 @@ package restaurante_gratitude.demp.Entidades.Productos;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
+import java.time.LocalDateTime;
+import restaurante_gratitude.demp.Entidades.Auditory.Auditable;
 
 /**
  *
  * @author Usuario
  */
 @Entity
-public class Contenido {
+public class Contenido extends Auditable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,7 +30,7 @@ public class Contenido {
     @Column(nullable = false)
     private String valor;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_tipo_contenido")
     private TipoContenidoProducto tipo;
 
@@ -42,6 +45,14 @@ public class Contenido {
     }
 
     public Contenido() {
+    }
+
+    public Contenido(int id, String valor, TipoContenidoProducto tipo, Producto producto, LocalDateTime createAt, LocalDateTime updateAt, LocalDateTime deleteAt, boolean isDelete, String createBy, String creatorName, String updateBy, String updateName, String deleteBy, String deleteName) {
+        super(createAt, updateAt, deleteAt, isDelete, createBy, creatorName, updateBy, updateName, deleteBy, deleteName);
+        this.id = id;
+        this.valor = valor;
+        this.tipo = tipo;
+        this.producto = producto;
     }
 
     public int getId() {

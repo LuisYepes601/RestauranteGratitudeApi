@@ -11,6 +11,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import restaurante_gratitude.demp.DTOS.Request.Productos.Contenido.DetailsTipoContenidoProdcuct;
 import restaurante_gratitude.demp.DTOS.Response.Productos.Contenido.TipoContenidoDtoResponse;
 import restaurante_gratitude.demp.Entidades.Productos.TipoContenidoProducto;
 
@@ -44,4 +45,20 @@ public interface TipoContenidoProductoRepository extends JpaRepository<TipoConte
             @Param(value = "nombre") String nombre,
             @Param(value = "isDelete") Boolean isDelete,
             Pageable pageable);
+
+    @Query("""
+           SELECT NEW restaurante_gratitude.demp.DTOS.Request.Productos.Contenido.DetailsTipoContenidoProdcuct(
+           tcp.deleteAt,
+           tcp.creatorName,
+           tcp.updateBy,
+           tcp.updateName,
+           tcp.deleteName,
+           tcp.deleteBy
+           )
+           
+           FROM TipoContenidoProducto tcp
+           
+           WHERE (:id = tcp.id)
+           """)
+    public Optional<DetailsTipoContenidoProdcuct> getDetails(@Param(value = "id") Integer id);
 }

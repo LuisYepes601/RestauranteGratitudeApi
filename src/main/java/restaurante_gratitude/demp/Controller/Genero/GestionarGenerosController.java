@@ -47,7 +47,7 @@ public class GestionarGenerosController {
             method = "POST")
     @PostMapping()
     public ResponseEntity<BasicResponseDto> crearGenero(@Valid
-            @RequestBody GeneroDto generoDto) {
+            @RequestBody(required = true) GeneroDto generoDto) {
 
         gestionarGeneros.crearGenero(generoDto);
 

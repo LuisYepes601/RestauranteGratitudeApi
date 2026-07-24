@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import restaurante_gratitude.demp.ControlExeptions.Execptions.NoDatosQueMostrarExecption;
-import restaurante_gratitude.demp.DTOS.Response.Inventario.inventarioDto;
+import restaurante_gratitude.demp.DTOS.Response.Inventario.inventarioDtoResponse;
 import restaurante_gratitude.demp.Entidades.InventarioStockProducto.StockProducto;
 import restaurante_gratitude.demp.Repositorys.Inventario.StockProductoRepository;
 
@@ -19,10 +19,10 @@ import restaurante_gratitude.demp.Repositorys.Inventario.StockProductoRepository
 @Service
 public class Conversiones {
 
-    public static List<inventarioDto> productosValidosIventario(StockProductoRepository stockProductoRepository) {
+    /*public static List<inventarioDtoResponse> productosValidosIventario(StockProductoRepository stockProductoRepository) {
 
         List<StockProducto> productosInventario = stockProductoRepository.findAll();
-        List<inventarioDto> registrosValidos = new ArrayList<>();
+        List<inventarioDtoResponse> registrosValidos = new ArrayList<>();
 
         if (productosInventario.isEmpty()) {
             throw new NoDatosQueMostrarExecption("No hay prodcutos que mostrar en el inventario.");
@@ -32,7 +32,7 @@ public class Conversiones {
 
             if (!registro.getProducto().isIsDelete()) {
 
-                inventarioDto dto = new inventarioDto();
+                inventarioDtoResponse dto = new inventarioDtoResponse();
 
                 dto.setCantidad(registro.getCantidad());
                 dto.setCantidadMin(registro.getCantidadMin());
@@ -57,6 +57,6 @@ public class Conversiones {
         }
 
         return registrosValidos;
-    }
+    }*/
 
 }

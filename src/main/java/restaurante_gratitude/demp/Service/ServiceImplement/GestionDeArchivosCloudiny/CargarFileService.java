@@ -31,23 +31,22 @@ public class CargarFileService implements CargarArchivos {
 
     @Override
     public String cargarArchivo(FileCloudinary fileCloudinary) {
-
         if (fileCloudinary.getFile().isEmpty()) {
             throw new ErrorAlSubirArchivoException("Error, no se puedo cargar la imagen, no hay imagen que cargar.");
         }
-
-        Map<String, String> resultadoCarga = new HashMap<>();
-
+        Map<String, String> resultadoCarga;
         try {
             resultadoCarga = cloudinary
                     .uploader()
-                    .upload(fileCloudinary.getFile().getInputStream(), fileCloudinary.getObjectUtils());
-
+                    .uploadLarge(fileCloudinary.getFile().getInputStream(), fileCloudinary.getObjectUtils());
         } catch (IOException ex) {
+            System.out.println("=== ERROR REAL DE CLOUDINARY ===");
+            ex.printStackTrace();
+            System.out.println("Mensaje: " + ex.getMessage());
+            System.out.println("================================");
             throw new ErrorAlSubirArchivoException("Error, no se puedo cargar el archivo. Le invitamos "
                     + " a intentarlo nuevamente.");
         }
-
         return resultadoCarga.get("secure_url").toString();
     }
 

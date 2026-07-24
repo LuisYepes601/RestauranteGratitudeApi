@@ -13,18 +13,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import restaurante_gratitude.demp.DTOS.Global.BasicResponseDto;
 import restaurante_gratitude.demp.DTOS.PageResponse;
+import restaurante_gratitude.demp.DTOS.Request.Productos.Contenido.DetailsTipoContenidoProdcuct;
 import restaurante_gratitude.demp.DTOS.Request.Productos.Contenido.TipoContenidoDto;
 import restaurante_gratitude.demp.DTOS.Response.Productos.Contenido.TipoContenidoDtoResponse;
 import restaurante_gratitude.demp.Service.Productos.Contenido.GestionarTipoDeContenido;
-
 
 /**
  *
@@ -74,5 +77,64 @@ public class GestionarTipoContenidoProductoController {
         return ResponseEntity
                 .ok()
                 .body(tipoDeContenidoService.getAll(nombre, isDelete, pageable));
+    }
+
+    @Operation(
+            description = "Operación encargada de actualizar un tipo de contendido a travez del Id.",
+            method = "PUT")
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<BasicResponseDto> updateByID(
+            @Valid
+            @RequestBody TipoContenidoDto tipoContenidoDto,
+            @PathVariable(
+                    name = "id",
+                    required = true) Integer id) {
+
+        return ResponseEntity
+                .ok()
+                .body(tipoDeContenidoService.updateById(id, tipoContenidoDto));
+
+    }
+
+    @Operation(
+            description = "Operación encargada de eliminar un tipo de contenido en el sistema",
+            method = "DELETE")
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<BasicResponseDto> deleteById(
+            @PathVariable(
+                    name = "id", 
+                    required = true) Integer id) {
+
+        return ResponseEntity
+                .ok()
+                .body(tipoDeContenidoService.deletebyId(id));
+    }
+
+    @Operation(
+            description = "Operación encargada de activar un tipo de contenido en el sistema",
+            method = "PUT")
+    @PutMapping(value = "/{id}/activate")
+    public ResponseEntity<BasicResponseDto> activaetbyId(
+            @PathVariable(
+                    name = "id",
+                    required = true) Integer id) {
+
+        return ResponseEntity
+                .ok()
+                .body(tipoDeContenidoService.activateById(id));
+    }
+
+    @Operation(
+            description = "Operación encargada de mostrar los detalles de un tipo de contenido",
+            method = "GET")
+    @GetMapping(value = "/{id}/details")
+    public ResponseEntity<DetailsTipoContenidoProdcuct> getDetailI(
+            @PathVariable(
+                    name = "id",
+                    required = true) Integer id) {
+
+        return ResponseEntity
+                .ok()
+                .body(tipoDeContenidoService.getDeatil(id));
     }
 }

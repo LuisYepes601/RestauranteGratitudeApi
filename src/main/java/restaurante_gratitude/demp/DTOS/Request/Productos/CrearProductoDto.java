@@ -9,7 +9,6 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
-import java.util.Date;
 
 /**
  *
@@ -51,7 +50,8 @@ public class CrearProductoDto {
             requiredMode = Schema.RequiredMode.REQUIRED,
             description = "Id de la categoria elegida",
             example = "Panaderia")
-    @NotBlank(message = "El campo categoria no puede quedar vacio, le invitamos a escoger una opción"
+    @NotNull(
+            message = "El campo categoria no puede quedar vacio, le invitamos a escoger una opción"
             + " , por ejemplo; Categoria: Postres")
     private Integer id_categoria;
 
@@ -64,7 +64,7 @@ public class CrearProductoDto {
     private String Valorcontenido;
 
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
-    @NotBlank(message = "El campo tipo de contenido no puede quedar vacio, le invitamos"
+    @NotNull(message = "El campo tipo de contenido no puede quedar vacio, le invitamos"
             + " a ingresar "
             + "una opción, por ejemplo Mililitos(Ml)")
     private Integer id_tipo_contenido;
@@ -77,19 +77,92 @@ public class CrearProductoDto {
             + " una cantidad inicial, por ejemplo; Cantidad actual: 15 ")
     @PositiveOrZero(message = "La cantidad ingresada debe ser cero 0 o mayor a el."
             + "Por ejemplo; Cantidad: 15")
-    private int cantidad;
+    private Integer cantidad;
 
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
-    @NotBlank(message = "El campo cantidad máxima no puede quedar vacio, le invitamos a que rellene el campo."
+    @NotNull(
+            message = "El campo cantidad máxima no puede quedar vacio, le invitamos a que rellene el campo."
             + "Por ejemplo: Cantidad máxima = 120 ")
     @PositiveOrZero(message = "La cantidad ingresada debe ser cero 0 o mayor a el. "
             + "Por ejemplo; Cantidad: 120")
-    private int cantidadMax;
+    private Integer cantidadMax;
 
-    @NotBlank(message = "El campo cantidad minima no puede quedar vacio, le invitamos a que rellene el campo."
+    @NotNull(message = "El campo cantidad minima no puede quedar vacio, le invitamos a que rellene el campo."
             + "Por ejemplo: Cantidad minima = 12 ")
     @PositiveOrZero(message = "La cantidad ingresada debe ser cero 0 o mayor a el. "
             + "Por ejemplo; Cantidad: 12")
-    private int cantidadMin;
+    private Integer cantidadMin;
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public Double getPrecio() {
+        return precio;
+    }
+
+    public void setPrecio(Double precio) {
+        this.precio = precio;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public Integer getId_categoria() {
+        return id_categoria;
+    }
+
+    public void setId_categoria(Integer id_categoria) {
+        this.id_categoria = id_categoria;
+    }
+
+    public String getValorcontenido() {
+        return Valorcontenido;
+    }
+
+    public void setValorcontenido(String Valorcontenido) {
+        this.Valorcontenido = Valorcontenido;
+    }
+
+    public Integer getId_tipo_contenido() {
+        return id_tipo_contenido;
+    }
+
+    public void setId_tipo_contenido(Integer id_tipo_contenido) {
+        this.id_tipo_contenido = id_tipo_contenido;
+    }
+
+    public Integer getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(int cantidad) {
+        this.cantidad = cantidad;
+    }
+
+    public Integer getCantidadMax() {
+        return cantidadMax;
+    }
+
+    public void setCantidadMax(int cantidadMax) {
+        this.cantidadMax = cantidadMax;
+    }
+
+    public int getCantidadMin() {
+        return cantidadMin;
+    }
+
+    public void setCantidadMin(int cantidadMin) {
+        this.cantidadMin = cantidadMin;
+    }
 
 }

@@ -12,11 +12,11 @@ import restaurante_gratitude.demp.DTOS.PageResponse;
  * @author luis
  */
 public class PageResponseUtils {
-    
+
     public static PageResponse CreatePageReponse(Page page) {
-        
+
         PageResponse pageResponse = new PageResponse();
-        
+
         pageResponse.setContent(page.getContent());
         pageResponse.setEmpty(page.isEmpty());
         pageResponse.setNumber(page.getNumber());
@@ -26,8 +26,8 @@ public class PageResponseUtils {
         pageResponse.setSize(page.getSize());
         pageResponse.setTotalElements(page.getTotalElements());
         pageResponse.setTotalPages(page.getTotalPages());
-        
+
         return pageResponse;
-        
+
     }
 }

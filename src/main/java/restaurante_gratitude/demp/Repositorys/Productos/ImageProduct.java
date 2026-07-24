@@ -6,13 +6,13 @@ package restaurante_gratitude.demp.Repositorys.Productos;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import restaurante_gratitude.demp.Entidades.Productos.Contenido;
+import restaurante_gratitude.demp.Entidades.Productos.ProductImage;
 
 /**
  *
- * @author Usuario
+ * @author luis
  */
 @Repository
-public interface ContenidoProducto extends JpaRepository<Contenido, Integer> {
-
+public interface ImageProduct extends JpaRepository<ProductImage, Integer>{
+    
 }
